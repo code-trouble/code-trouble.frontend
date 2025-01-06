@@ -12,7 +12,12 @@ import { Tag } from '../Tag';
 import CustomButton from '../CustomButton';
 import { TooltipDescription } from './TooltipDescription';
 
-export const PostWriter: React.FC = () => {
+
+interface IPostWriter {
+    layout:  "q&a" | "blog";
+}
+
+export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
     useEffect(() => {
         const updateToolbarPosition = () => {
             if (window.innerWidth <= 1000 && window.visualViewport) {
@@ -298,54 +303,58 @@ export const PostWriter: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="editor-form">
                 <div className="editor-container">
-                    <textarea
-                        placeholder="Título"
-                        className="editor-title"
-                        onInput={(e) => {
-                            e.currentTarget.style.height = "auto";
-                            e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-                        }}
-                    />
-                    <div className="editor-tags">
-                        {selectedTags.length > 0 && (
-                            <div className="tags-container">
-                                <Tag
-                                    tags={selectedTags}
-                                    onTagRemove={handleRemoveTag}
-                                />
-                            </div>
-                        )}
-                        <div className="tags-button-wrapper">
-                            <button
-                                className="tags-button"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    toggleDropdown();
+                    {layout === "blog" && (
+                        <>
+                            <textarea
+                                placeholder="Título"
+                                className="editor-title"
+                                onInput={(e) => {
+                                    e.currentTarget.style.height = "auto";
+                                    e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
                                 }}
-                            >
-                                {selectedTags.length === 0 ? "Adicione tags +" : "+"}
-                            </button>
-                            {dropdownOpen && (
-                                <div className="tags-dropdown">
-                                    {allTags
-                                        .filter((tag) => !selectedTags.includes(tag)).length === 0 ? (
-                                            <span>There are no tags left.</span>
-                                        ) : 
-                                        allTags
-                                            .filter((tag) => !selectedTags.includes(tag))
-                                            .map((tag, index) => (
-                                            <button
-                                                key={index}
-                                                className="dropdown-tag-item"
-                                                onClick={() => handleAddTag(tag)}
-                                            >
-                                                {tag}
-                                            </button>
-                                        ))}
+                            />
+                            <div className="editor-tags">
+                                {selectedTags.length > 0 && (
+                                    <div className="tags-container">
+                                        <Tag
+                                            tags={selectedTags}
+                                            onTagRemove={handleRemoveTag}
+                                        />
+                                    </div>
+                                )}
+                                <div className="tags-button-wrapper">
+                                    <button
+                                        className="tags-button"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            toggleDropdown();
+                                        }}
+                                    >
+                                        {selectedTags.length === 0 ? "Adicione tags +" : "+"}
+                                    </button>
+                                    {dropdownOpen && (
+                                        <div className="tags-dropdown">
+                                            {allTags
+                                                .filter((tag) => !selectedTags.includes(tag)).length === 0 ? (
+                                                    <span>There are no tags left.</span>
+                                                ) : 
+                                                allTags
+                                                    .filter((tag) => !selectedTags.includes(tag))
+                                                    .map((tag, index) => (
+                                                    <button
+                                                        key={index}
+                                                        className="dropdown-tag-item"
+                                                        onClick={() => handleAddTag(tag)}
+                                                    >
+                                                        {tag}
+                                                    </button>
+                                                ))}
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
-                    </div>
+                            </div>
+                        </>
+                    )}
                     <div ref={quillRef} className="editor-area"></div>
                 </div>
             </form>
