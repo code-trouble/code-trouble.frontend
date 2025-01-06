@@ -206,19 +206,23 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
     return (
         <div className="postWriter-container">
             <div className="submitArea">
-                <div className='submitButtons'>
-                    <button>
-                        <img src={favoriteBadge} alt="favoritar"/>
-                    </button>
-                    <CustomButton
-                        text='Postar'
-                        padding='10px 100px'
-                        color='white'
-                        backgroundColor='#3348A4'
-                        fontSize='18px'
-                        fontWeight='500'
-                    />
-                </div>
+                {layout === "blog" && (
+                    <>
+                        <div className='submitButtons'>
+                            <button>
+                                <img src={favoriteBadge} alt="favoritar"/>
+                            </button>
+                            <CustomButton
+                                text='Postar'
+                                padding='10px 100px'
+                                color='white'
+                                backgroundColor='#3348A4'
+                                fontSize='18px'
+                                fontWeight='500'
+                            />
+                        </div>
+                    </>
+                )}
             </div>
             <div id="custom-toolbar" className="custom-toolbar">
                 <span className="ql-formats">
