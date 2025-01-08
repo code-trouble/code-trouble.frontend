@@ -11,7 +11,7 @@ export const TestingPage: React.FC = () => {
       <Header theme="blue" loggedIn={true}/>
 
   
-      <PostWriter/>
+      <PostWriter layout="blog"/>
     </div>
   );
 };
