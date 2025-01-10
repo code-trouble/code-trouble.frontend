@@ -8,7 +8,7 @@ export const TestingPage: React.FC = () => {
 
   return (
     <div className="main-wrapper">
-      <Header theme="blue" loggedIn={true}/>
+      <Header theme="base" loggedIn={false}/>
       <PostWriter layout="blog"/>
     </div>
   );
