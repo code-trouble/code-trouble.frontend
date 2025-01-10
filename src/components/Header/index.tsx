@@ -22,8 +22,13 @@ interface IHeader {
 export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const handleModalOpen = () => setIsModalOpen(true);
+
 
   return (
     <header className="header-container">
@@ -51,7 +56,7 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
         <img  src={lupa} alt="lupa"/>
         <input type="text" placeholder="Pesquisar"/>
       </div>
-     
+    
 
       <div>
         {loggedIn ? (
@@ -78,7 +83,7 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
               className={`background-overlay ${menuOpen ? "visible" : ""}`}
               onClick={toggleMenu}
             ></div>
-            <div className={`hamburger-menu ${menuOpen ? "open" : ""}`}>
+            <div className={`hamburger-menu ${menuOpen ? "open" : ""}`} onClick={(e) => e.stopPropagation()}>
               <div className="auth-buttons">
               {loggedIn ? (
                 <div className="BurgerloggedInContent">
@@ -97,21 +102,37 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
                 <img src={closeX} alt="" onClick={toggleMenu} />
               </div>
               <div className="nav-links-column">
-                <a className="icon-with-a" href="">
+                <a className="icon-with-a" href="#">
                   <img src={home} alt="" /> Home
                 </a>
-                <a className="icon-with-a" href="">
+                <a className="icon-with-a" href="#">
                   <img src={questions} alt="" /> Perguntas
                 </a>
-                <a className="icon-with-a" href="">
+                <a className="icon-with-a" href="#">
                   <img src={blog} alt="" /> Blog
                 </a>
                 {loggedIn ? (
-                  <a className="icon-with-a sair" href="">
+                  <a className="icon-with-a sair" onClick={handleModalOpen} href="#">
                     <img src={sair} alt="" /> Sair
                   </a>
                 ): ( 
                   ""
+                )}
+                {isModalOpen && (
+                  <div className="modal-overlay">
+                    <div className="modal-content">
+                      <h2 className="modal-title-content">Deseja sair?</h2>
+                      <p className="modal-text-content">Para voltar a postar no blog ou escrever perguntas e respostas, você precisará entrar novamente.</p>
+                      <div className="modal-buttons">
+                        <button className="voltar-button" onClick={() => setIsModalOpen(false)}>
+                          Voltar
+                        </button>
+                        <button className="sair-button">
+                          Sair
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
