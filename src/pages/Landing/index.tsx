@@ -10,7 +10,7 @@ import { Footer } from "../../components/Footer";
 export const LandingPage: React.FC = () => {
   return (
     <div className="landing-page-container">
-        <Header theme="base" loggedIn={true}/>
+        <Header theme="base" loggedIn={false}/>
         <div className="landingContainer">
           <div className="upperHero">
             <div className="">
