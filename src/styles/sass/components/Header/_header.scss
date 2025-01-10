@@ -146,7 +146,7 @@
 
 
 
-@media (max-width: 600px) {
+@media (max-width: 750px) {
     .header-container {
         .burguer-div, .hamburger {
             display: block;
@@ -167,7 +167,7 @@
             position: absolute;
             margin-top: 24px;
             right: -100%;
-            height: 310px;
+            height: 350px;
             width: 264px;
             display: flex;
             flex-direction: column;
@@ -203,6 +203,79 @@
             pointer-events: auto;
         }
         
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            padding: 46px 38px!important;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            gap: 46px;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            min-height: 30%;
+        }  
+
+        .modal-title-content {
+            font-weight: bold;
+            font-family: $montserratFont;
+            font-size: 37px;
+            color: $eerieBlack;
+        }
+
+        .modal-text-content {
+            color: $dimGray;
+            font-family: $hindFont;
+            font-size: 24px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 31px;
+            
+
+            button {
+                font-size: 20px;
+                font-family: $hindFont;
+                padding: 12px 100px;
+                border-radius: 6px;
+
+                @media (max-width: 600px) {
+                    padding: 12px 50px;
+                }
+
+                @media (max-width: 365px) {
+                    padding: 12px 30px;
+                }
+
+            }
+
+            .voltar-button {
+                color: $onyx;
+                border: 2px solid $onyx;
+                font-weight: 500;
+            }
+            .sair-button {
+                font-weight: bold;
+                color: white;
+                background-color: $dangerColor;
+            }
+        }
     
         
     
