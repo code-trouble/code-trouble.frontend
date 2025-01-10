@@ -12,6 +12,8 @@ import notifications from "../../assets/images/svg/notifications.svg"
 import blog from "../../assets/images/svg/blog.svg"
 import sair from "../../assets/images/svg/sair.svg"
 import { Avatar } from "../Avatar";
+import { AuthModal } from "../AuthModal";
+
 
 interface IHeader {
   theme?: 'base' | 'blue';
@@ -20,10 +22,14 @@ interface IHeader {
 
 
 export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
-
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<null | 'signIn' | 'signUp'>(null);
 
+
+  const handleCloseModal = () => {
+      setModalType(null);
+  };
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -57,21 +63,32 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
         <input type="text" placeholder="Pesquisar"/>
       </div>
     
-
       <div>
-        {loggedIn ? (
-          <div className="loggedInContent">
-            <Avatar sizes="medium" />
-            <img className="NotificationBell" src={notifications}/>
-          </div>
-        ) : (
-          <div className="authButtons">
-            <button className={theme === 'base' ? "login" : "loginBlue"}>Login</button>
-            <button className={theme === 'base' ? "cadastro" : "cadastroBlue"}>Cadastro</button>
-          </div>
-        )}
-      </div>
-
+            {loggedIn ? (
+                <div className="loggedInContent">
+                    <Avatar sizes="medium" />
+                    <img className="NotificationBell" src={notifications} />
+                </div>
+            ) : (
+                <div className="authButtons">
+                    <button
+                        className={theme === 'base' ? "login" : "loginBlue"}
+                        onClick={() => setModalType('signIn')}
+                    >
+                        Login
+                    </button>
+                    <button
+                        className={theme === 'base' ? "cadastro" : "cadastroBlue"}
+                        onClick={() => setModalType('signUp')}
+                    >
+                        Cadastro
+                    </button>
+                </div>
+            )}
+            {modalType && (
+                <AuthModal type={modalType} onClose={handleCloseModal} />
+            )}
+        </div>
 
       {/* HAMBURGUER MENU */}
       <div className="burguer-div" onClick={toggleMenu}>
@@ -94,9 +111,24 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
                   </div>
                 </div>
               ) : (
-                <div className="auth-col">
-                  <button className={theme === 'base' ? "login" : "loginBlue"}>Entrar</button>
-                  <button className={theme === 'base' ? "cadastro" : "cadastroBlue"}>Cadastro</button>
+                <div>
+                  <div className="auth-col">
+                      <button
+                          className={theme === 'base' ? "login" : "loginBlue"}
+                          onClick={() => setModalType('signIn')}
+                      >
+                          Login
+                      </button>
+                      <button
+                          className={theme === 'base' ? "cadastro" : "cadastroBlue"}
+                          onClick={() => setModalType('signUp')}
+                      >
+                          Cadastro
+                      </button>
+                  </div>
+                  {modalType && (
+                      <AuthModal type={modalType} onClose={handleCloseModal} />
+                  )}
                 </div>
               )}
                 <img src={closeX} alt="" onClick={toggleMenu} />
