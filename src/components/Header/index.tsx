@@ -24,6 +24,7 @@ interface IHeader {
 export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const [modalType, setModalType] = useState<null | 'signIn' | 'signUp'>(null);
 
 

@@ -8,6 +8,7 @@ interface ICustomButton {
     fontSize?: string;    
     fontWeight?: string;
     icon?: string; 
+    onClick?: () => void;
 }
 
 
@@ -18,7 +19,8 @@ export const CustomButton: React.FC<ICustomButton> = ({
     backgroundColor,
     fontSize, 
     fontWeight,
-    icon
+    icon,
+    onClick
 }) => {
     return (  
         <button className="custom-button" style={{ 
@@ -27,7 +29,9 @@ export const CustomButton: React.FC<ICustomButton> = ({
             backgroundColor,
             fontSize, 
             fontWeight        
-            }}>
+            }}
+            onClick={onClick}
+            >
             {text}
             {icon && <img src={icon}/>}
         </button>
