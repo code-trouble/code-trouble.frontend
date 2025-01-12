@@ -30,7 +30,7 @@ export const LandingPage: React.FC = () => {
                   fontSize="18px"
                   fontWeight="500"
                 />
-
+                
                 <CustomButton 
                   text="Visitar a comunidade"
                   backgroundColor="transparent"  
