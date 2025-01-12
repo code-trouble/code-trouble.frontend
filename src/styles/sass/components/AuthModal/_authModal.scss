@@ -122,3 +122,10 @@
     }
   }
 }
+
+
+@media (max-width: 750px) {
+  .overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
