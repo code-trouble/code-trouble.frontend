@@ -1,0 +1,100 @@
+.questions-container {
+    overflow-x: hidden;
+
+    .questions-inner-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-family: $montserratFont;
+        
+
+        .questions-area {
+            height: 1070px;
+            width: 65%;
+            padding: 41px 60px;
+            overflow-y: scroll;
+
+                        /* Custom scrollbar styles for WebKit browsers */
+            &::-webkit-scrollbar {
+                width: 12px; /* Width of the scrollbar */
+            }
+
+            &::-webkit-scrollbar-track {
+                background: #f1f1f1; /* Background of the scrollbar track */
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #888; /* Color of the scrollbar thumb */
+                border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: #555; /* Color of the scrollbar thumb on hover */
+            }
+
+            &::-webkit-scrollbar-button {
+                display: none; /* Remove the top and bottom arrows */
+            }
+
+            .questions-title {
+                display: flex;
+                justify-content: space-between;
+                
+    
+                h1 {
+                    font-size: 40px;
+                    font-weight: 600;
+                    color: $eerieBlack;
+                }
+            }
+
+            .category-selection {
+                margin-top: 30px;
+                width: 100%;
+                border-bottom: 1px solid $dimGray;
+                display: flex;
+                gap: 32px;
+                padding: 0px 10px;
+                a {
+                    text-decoration: none;
+                    color: $dimGray;
+                    font-size: 20px;
+                    font-weight: 300;
+                    font-family: $hindFont;
+                    position: relative; 
+            
+                    &:hover,
+                    &:focus,
+                    &:active {
+                        color: $primaryColor; 
+                    }
+            
+                    &:hover::after,
+                    &:focus::after,
+                    &:active::after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        bottom: -5px; 
+                        width: 100%;
+                        height: 5px; 
+                        background-color: $primaryColor; 
+                    }
+                }
+            }
+        }
+
+        .topics-area {
+            .recommended-topics {
+                width: 382px;
+                .tags-group {
+                    width: 264px;
+                    height: 70px;
+                }
+            }
+        }
+
+    }
+}
+
+
