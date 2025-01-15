@@ -9,9 +9,13 @@ import {
   whatsApp,
 } from "../../assets/images/svg/icons";
 
-export const Footer: React.FC = () => {
+interface IFooter {
+  customStyle?: React.CSSProperties;
+}
+
+export const Footer: React.FC<IFooter> = ({customStyle}) => {
   return (
-    <footer className="footer-container">
+  <footer className="footer-container" style={customStyle}>
       <img
         className="footer-logo"
         src={logoCodePrimaryFull}
