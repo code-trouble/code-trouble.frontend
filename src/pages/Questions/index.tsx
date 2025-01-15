@@ -2,6 +2,7 @@ import React from "react";
 import { Header } from "../../components/Header";
 import { Footer } from "../../components/Footer";
 import CustomButton from "../../components/CustomButton";
+import { QuestionsPreview } from "../../components/QuestionPreview";
 
 
 export const Questions: React.FC = () => {
@@ -29,9 +30,26 @@ export const Questions: React.FC = () => {
                         <a href="#">Semana</a>
                         <a href="#">Mês</a>
                     </div>
-                    <div>
-
-                    </div>
+                    <div className="questions-list">
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                        <QuestionsPreview/>
+                    </div>  
                 </div>
 
                 <div className="topics-area">
