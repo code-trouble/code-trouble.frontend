@@ -9,31 +9,31 @@
         
 
         .questions-area {
-            height: 1070px;
+            height: 1005px;
             width: 65%;
             padding: 41px 60px;
-            overflow-y: scroll;
+            overflow-y: auto;
 
-                        /* Custom scrollbar styles for WebKit browsers */
+                        
             &::-webkit-scrollbar {
-                width: 12px; /* Width of the scrollbar */
+                width: 12px; 
             }
 
             &::-webkit-scrollbar-track {
-                background: #f1f1f1; /* Background of the scrollbar track */
+                background: #f1f1f1; 
             }
 
             &::-webkit-scrollbar-thumb {
-                background: #888; /* Color of the scrollbar thumb */
-                border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+                background: #888; 
+                border-radius: 10px; 
             }
 
             &::-webkit-scrollbar-thumb:hover {
-                background: #555; /* Color of the scrollbar thumb on hover */
+                background: #555; 
             }
 
             &::-webkit-scrollbar-button {
-                display: none; /* Remove the top and bottom arrows */
+                display: none; 
             }
 
             .questions-title {
@@ -81,6 +81,12 @@
                         background-color: $primaryColor; 
                     }
                 }
+            }
+            .questions-list {
+                margin-top: 23px;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
             }
         }
 
