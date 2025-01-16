@@ -4,6 +4,7 @@ import { ComingSoonPage } from "./pages/ComingSoon";
 import { TestingPage } from "./pages/TestingPage";
 import { LandingPage } from "./pages/Landing";
 import { Questions } from "./pages/Questions";
+import { Blog } from "./pages/Blog/Index";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="*" element={<ErrorPage />} />              {/* Página 404 */}
         <Route path="test" element={<TestingPage />} />              {/* Pagina de testes */}
         <Route path="questions" element={<Questions />} />              {/* Faça uma pergunta */}
+        <Route path="blog" element={<Blog />} />              {/* Faça uma pergunta */}
       </Routes>
     </>
   );
