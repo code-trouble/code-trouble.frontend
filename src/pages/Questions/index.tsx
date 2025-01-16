@@ -9,7 +9,7 @@ export const Questions: React.FC = () => {
     
     return (
         <div className="questions-container">
-            <Header theme="base" loggedIn={true}/>
+            <Header theme="base" loggedIn={false}/>
             <div className="questions-inner-container">
                 <div className="questions-area">
                     <div className="questions-title">
