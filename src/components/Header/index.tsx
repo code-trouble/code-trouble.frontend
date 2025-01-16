@@ -13,6 +13,7 @@ import blog from "../../assets/images/svg/blog.svg"
 import sair from "../../assets/images/svg/sair.svg"
 import { Avatar } from "../Avatar";
 import { AuthModal } from "../AuthModal";
+import { useNavigate } from "react-router-dom";
 
 
 interface IHeader {
@@ -27,6 +28,7 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
   
   const [modalType, setModalType] = useState<null | 'signIn' | 'signUp'>(null);
 
+  const navigate = useNavigate();
 
   const handleCloseModal = () => {
       setModalType(null);
@@ -39,7 +41,7 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
 
   return (
     <header className="header-container">
-      <div className="logo-container">
+      <div className="logo-container"  style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
         <img 
         className="normal-logo" 
         src={theme === 'base' ? code : codeBlue} 
@@ -54,9 +56,9 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
       </div>
       
       <div className="nav-links">
-        <a href="">Home</a>
-        <a href="">Blog</a>
-        <a href="">Questões</a>
+        <a href="/">Home</a>
+        <a href="/blog">Blog</a>
+        <a href="/questions">Questões</a>
       </div>
 
       <div className="searchBar">
