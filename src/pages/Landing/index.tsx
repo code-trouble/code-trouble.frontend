@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "../../components/Header";
 import messageBox from "../../assets/images/svg/messageBox.svg"
 import CustomButton from "../../components/CustomButton";
 import buttonArrow from "../../assets/images/svg/buttonArrow.svg"
 import { StackedCards } from "../../components/StackedCards";
 import { Footer } from "../../components/Footer";
+import { AuthModal } from "../../components/AuthModal";
+import { useNavigate } from "react-router-dom";
 
 
 export const LandingPage: React.FC = () => {
+  const [modalType, setModalType] = useState<null | "signIn" | "signUp">(null);
+
+  const navigate = useNavigate();
+
+  const handleOpenModal = (type: "signIn" | "signUp") => {
+    setModalType(type);
+  };
+
+  const handleCloseModal = () => {
+    setModalType(null);
+  };
+
+
+
   return (
     <div className="landing-page-container">
         <Header theme="base" loggedIn={false}/>
@@ -29,8 +45,9 @@ export const LandingPage: React.FC = () => {
                   color="white"
                   fontSize="18px"
                   fontWeight="500"
+                  onClick={() => handleOpenModal("signUp")}
+                  customId="CadastroButton"
                 />
-                
                 <CustomButton 
                   text="Visitar a comunidade"
                   backgroundColor="transparent"  
@@ -39,7 +56,9 @@ export const LandingPage: React.FC = () => {
                   fontSize="16px"
                   fontWeight="400"
                   icon={buttonArrow}
+                  customId="VisitarComunidade"
                 />
+
               </div>
             </div>
             <div className="messageBox">
@@ -66,12 +85,19 @@ export const LandingPage: React.FC = () => {
                   color="white"
                   fontSize="18px"
                   fontWeight="500"
+                  customId="VisitarBlog"
+                  onClick={() => {
+                    window.scrollTo(0, 0);
+                    navigate("/blog");
+                  }}
                 />
               </div>
             </div>
 
           </div>
         </div>
+
+        {modalType && <AuthModal type={modalType} onClose={handleCloseModal} />}
         <Footer/>
     </div>
   );
