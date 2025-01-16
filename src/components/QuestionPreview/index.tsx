@@ -1,12 +1,20 @@
 import React from "react";
 import { Avatar } from "../Avatar";
 import comments from "../../assets/images/svg/comments.svg"
+import { Tag } from "../Tag";
 
-export const QuestionsPreview: React.FC = () => {
+const tags = ["localization", "sphinx", "read-the-docs"];
+
+interface IQuestionsPreview {
+    questionTitle: string;
+    questionDescription: string;
+}
+
+export const QuestionsPreview: React.FC<IQuestionsPreview> = ({questionTitle, questionDescription}) => {
     return (
         <div className="previewQuestion">
-            <h1>Sphinx PDF build failing on reathedocs for Russian Translation</h1>
-            <p>PDF build of Sphinx’s own documentation are failing for Russian translation (example build). .readthedocs.yml is set to vuild HTML and then PDFm and its in the second step the failure arises lorem ipsum dolor sit amet lorem ipsum dolor</p>
+            <h1>{questionTitle}</h1>
+            <p>{questionDescription}</p>
             <div className="previewQuestion-bottom">
                 <div className="previewQuestion-avatar-area">
                     <Avatar sizes="small" name="Joana Lima" role="8 minutos atrás"/>
@@ -16,7 +24,7 @@ export const QuestionsPreview: React.FC = () => {
                     </div>
                 </div>
                 <div>
-                    tags
+                    <Tag tags={tags} />
                 </div>
             </div>
         </div>
