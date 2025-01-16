@@ -15,7 +15,7 @@ export default function App() {
         <Route path="*" element={<ErrorPage />} />              {/* Página 404 */}
         <Route path="test" element={<TestingPage />} />              {/* Pagina de testes */}
         <Route path="questions" element={<Questions />} />              {/* Faça uma pergunta */}
-        <Route path="blog" element={<Blog />} />              {/* Faça uma pergunta */}
+        <Route path="blog" element={<Blog />} />              {/* BlogPage */}
       </Routes>
     </>
   );

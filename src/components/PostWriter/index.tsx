@@ -102,6 +102,25 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                                     const format = this.quill.getFormat(range);
                                     this.quill.format('code-block', !format['code-block']);
                                 }
+                            },
+                            'image': function (this: { quill: Quill }) {
+                                const range = this.quill.getSelection();
+                                const input = document.createElement('input');
+                                input.setAttribute('type', 'file');
+                                input.setAttribute('accept', 'image/*');
+                                input.click();
+                                input.onchange = () => {
+                                    const file = input.files ? input.files[0] : null;
+                                    if (!file) return;
+                        
+                                    const reader = new FileReader();
+                                    reader.onload = () => {
+                                        const rangeToInsert = range || { index: this.quill.getLength(), length: 0 }; 
+                                        this.quill.insertEmbed(rangeToInsert.index, 'image', reader.result);
+                                        this.quill.setSelection(rangeToInsert.index + 1);
+                                    };
+                                    reader.readAsDataURL(file);
+                                };
                             }
                         }
                     }
