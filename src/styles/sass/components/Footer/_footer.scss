@@ -135,6 +135,10 @@
       background-color: #3348A4;
       border-radius: 8px;
       height: 38px;
+      transition: ease-in-out 0.2s;
+      &:hover {
+          scale: 1.05;
+      }
     }
   }
 }

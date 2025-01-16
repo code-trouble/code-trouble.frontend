@@ -9,6 +9,7 @@ interface ICustomButton {
     fontWeight?: string;
     icon?: string; 
     onClick?: () => void;
+    customId?: string;
 }
 
 
@@ -20,10 +21,11 @@ export const CustomButton: React.FC<ICustomButton> = ({
     fontSize, 
     fontWeight,
     icon,
-    onClick
+    onClick,
+    customId
 }) => {
     return (  
-        <button className="custom-button" style={{ 
+        <button className="custom-button" id={customId} style={{ 
             padding,
             color,
             backgroundColor,
