@@ -3,13 +3,12 @@
 
     .questions-inner-container {
         display: flex;
-        justify-content: space-between;
         align-items: baseline;
         font-family: $montserratFont;
         
 
         .questions-area {
-            height: 1005px;
+            height: 869px;
             width: 65%;
             padding: 41px 60px;
             overflow-y: auto;
@@ -90,16 +89,84 @@
             }
         }
 
-        .topics-area {
-            .recommended-topics {
-                width: 382px;
-                .tags-group {
-                    width: 264px;
-                    height: 70px;
+        .right-side {
+            display: flex;
+            flex-direction: column;
+            width: 35%;
+
+            .topics-area {
+                padding-bottom: 83px;
+                border-bottom: 1px solid #C9C9C9;
+                
+
+                .recommended-topics {
+                    width: 382px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 30px;
+                    margin-left: 67px;
+                    
+
+                    .tag-group {
+                        width: 364px;
+                        height: 70px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-content: flex-start;
+                        
+
+                        .tag-list {
+                            display: flex;
+                            flex-wrap: wrap;
+                            
+                        }
+                    }
+
+                    span {
+                        font-family: $hindFont;
+                        font-size: 16px;
+                        font-weight: 400;
+                        color: $tertiaryColor;
+                        line-height: 20px;
+                    }
+
+
+                }
+            }
+
+            .custom-filters {
+                margin-left: 67px;
+                margin-top: 23px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+
+                span {
+                    display: flex;
+                    align-items: center;
+                    gap: 7px;
+                    font-family: $hindFont;
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: $tertiaryColor;
+                    line-height: 20px;
                 }
             }
         }
 
+    }
+}
+
+@media (max-width: 1000px) {
+    .questions-container {
+        .questions-area {
+            width: 100%!important;
+            padding: 20px 30px!important;
+        }
+
+        .topics-area {
+            display: none;
+        }
     }
 }
 
