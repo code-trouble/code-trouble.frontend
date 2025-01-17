@@ -3,7 +3,12 @@ import { Header } from "../../components/Header";
 import { Footer } from "../../components/Footer";
 import CustomButton from "../../components/CustomButton";
 import { QuestionsPreview } from "../../components/QuestionPreview";
+import { Tag } from "../../components/Tag";
 
+import filterSettings from "../../assets/images/svg/filterSettings.svg";
+
+
+const tags = ["Design", "Programação", "Arte", "Ciência de Dados", "Tecnologia"]
 
 export const Questions: React.FC = () => {
     
@@ -57,11 +62,22 @@ export const Questions: React.FC = () => {
                         />
                     </div>  
                 </div>
-
-                <div className="topics-area">
-                    <div className="recommended-topics">
-                        <h2>Tópicos Recomendados</h2>
-                        
+                <div className="right-side">
+                    <div className="topics-area">
+                        <div className="recommended-topics">
+                            <h2>Tópicos Recomendados</h2>
+                            <div className="tag-group">
+                                <Tag tags={tags} />
+                            </div>
+                            <span>Ver mais tópicos</span>
+                        </div>
+                    </div>
+                    <div className="custom-filters">
+                        <h2>Filtros Customizados</h2>
+                        <span>
+                            <img src={filterSettings} alt="filter settings icon"/>
+                            Criar Filtro Customizado
+                        </span>
                     </div>
                 </div>
             </div>
