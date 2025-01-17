@@ -38,6 +38,11 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
 
   const handleModalOpen = () => setIsModalOpen(true);
 
+  function navigateTo(path: string) {
+    window.scrollTo(0, 0); 
+    navigate(path);
+  }
+
 
   return (
     <header className="header-container">
@@ -56,9 +61,9 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
       </div>
       
       <div className="nav-links">
-        <a href="/">Home</a>
-        <a href="/blog">Blog</a>
-        <a href="/questions">Questões</a>
+        <span onClick={() => {navigateTo("/")}}>Home</span>
+        <span onClick={() => {navigateTo("/blog")}}>Blog</span>
+        <span onClick={() => {navigateTo("/questions")}}>Questões</span>
       </div>
 
       <div className="searchBar">
