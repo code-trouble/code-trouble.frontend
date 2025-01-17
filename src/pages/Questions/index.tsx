@@ -31,24 +31,30 @@ export const Questions: React.FC = () => {
                         <a href="#">Mês</a>
                     </div>
                     <div className="questions-list">
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
-                        <QuestionsPreview/>
+                        <QuestionsPreview
+                            questionTitle="Sphinx PDF build failing on reathedocs for Russian translation"
+                            questionDescription="PDF build of Sphinx’s own documentation are failing for Russian translation (example build). .readthedocs.yml is set to vuild HTML and then PDFm and its in the second step the failure arises lorem ipsum dolor sit amet lorem ipsum dolor adsasdasd  "
+                        />
+                        <QuestionsPreview
+                            questionTitle="Inconsistent results between custom function using terra and a simplified version to calculate global statistic of a raster"
+                            questionDescription="I am running an access poverty analysis on a raster of travel times. Using a slightly altered version of the Fpster-Greer-Throbecke ondex woth exponent Alpha = 0, the following equality holds: here lorem ipsum dolor sit amet lorem ipsum dolor sit amet"
+                        />
+                        <QuestionsPreview
+                            questionTitle="How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)"
+                            questionDescription="How can i intercept (and modify) outgoing Sql statements using Quarkus and Hivernate Reactive? I tried to do so bby implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit ametlorem ipsum dolor sit amet"
+                        />
+                        <QuestionsPreview
+                            questionTitle="How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)"
+                            questionDescription="How can i intercept (and modify) outgoing Sql statements using Quarkus and Hivernate Reactive? I tried to do so bby implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit ametlorem ipsum dolor sit amet"
+                        />
+                        <QuestionsPreview
+                            questionTitle="How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)"
+                            questionDescription="How can i intercept (and modify) outgoing Sql statements using Quarkus and Hivernate Reactive? I tried to do so bby implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit ametlorem ipsum dolor sit amet"
+                        />
+                        <QuestionsPreview
+                            questionTitle="How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)"
+                            questionDescription="How can i intercept (and modify) outgoing Sql statements using Quarkus and Hivernate Reactive? I tried to do so bby implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit ametlorem ipsum dolor sit amet"
+                        />
                     </div>  
                 </div>
 
