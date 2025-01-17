@@ -8,6 +8,8 @@
         font-size: 32px;
         font-weight: 500;
         font-family: $montserratFont;
+        line-height: 120%;
+        letter-spacing: -1px;
     }
 
     p {
@@ -60,3 +62,18 @@
         justify-content: space-between;
     }
 }
+
+
+@media (max-width: 1000px) {
+    .previewQuestion {
+        .previewQuestion-bottom {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
+    }
+}
+
+
+
+
