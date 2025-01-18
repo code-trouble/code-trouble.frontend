@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "../../components/Header";
 import { Footer } from "../../components/Footer";
 import CustomButton from "../../components/CustomButton";
@@ -11,6 +11,11 @@ import filterSettings from "../../assets/images/svg/filterSettings.svg";
 const tags = ["Design", "Programação", "Arte", "Ciência de Dados", "Tecnologia"]
 
 export const Questions: React.FC = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const toggleModal = () => {
+        setIsModalOpen((prev) => !prev);
+    };
     
     return (
         <div className="questions-container">
@@ -74,7 +79,7 @@ export const Questions: React.FC = () => {
                     </div>
                     <div className="custom-filters">
                         <h2>Filtros Customizados</h2>
-                        <span>
+                        <span onClick={toggleModal}>
                             <img src={filterSettings} alt="filter settings icon"/>
                             Criar Filtro Customizado
                         </span>
@@ -82,6 +87,11 @@ export const Questions: React.FC = () => {
                 </div>
             </div>
             <Footer customStyle={{bottom: 0}}/>
+            {isModalOpen && (
+                <div className="modal-overlay" onClick={toggleModal}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()} />
+                </div>
+            )}
         </div>
     );
     
