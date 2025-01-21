@@ -34,7 +34,7 @@
         &:checked {
             background-color: transparent;
             border-color: $primaryColor;
-            background-image: url('https://7005aueapm.ufs.sh/f/juM9qQBxqbA82h3cILSuhmeYBiZzr9N4DI5qs0QFfJVRtdHp'); 
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkiIGhlaWdodD0iMTkiIHZpZXdCb3g9IjAgMCAxOSAxOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE1Ljc1IDQuODEyNUw3LjE1NjI1IDEzLjQwNjJMMy4yNSA5LjUiIHN0cm9rZT0iIzJEQkE0RiIgc3Ryb2tlLXdpZHRoPSIzLjMzMzIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K');
             background-repeat: no-repeat;
             background-position: center;
             background-size: 80%;
@@ -106,5 +106,13 @@
             display: flex;
             gap: 20px;
         }
+
+
+        #cancel-button {
+            &:hover {
+                color: #8a2325!important;
+            }
+        }
+        
     }
 }
