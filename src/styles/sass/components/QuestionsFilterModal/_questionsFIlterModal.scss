@@ -1,0 +1,118 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    width: 908px;
+    height: 315px;
+    padding: 30px 60px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    font-family: $hindFont;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+
+    input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 8px;
+        border: 2px solid #C7C7C7;
+        &:checked {
+            background-color: transparent;
+            border-color: $primaryColor;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkiIGhlaWdodD0iMTkiIHZpZXdCb3g9IjAgMCAxOSAxOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE1Ljc1IDQuODEyNUw3LjE1NjI1IDEzLjQwNjJMMy4yNSA5LjUiIHN0cm9rZT0iIzJEQkE0RiIgc3Ryb2tlLXdpZHRoPSIzLjMzMzIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 80%;
+        }
+    
+        &:hover {
+            border-color: $primaryColor;
+        }
+    
+
+    }
+
+    input[type="text"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 222px;
+        height: 34px;
+        padding: 5px 14px;
+        border-radius: 8px;
+        border: 1px solid #C7C7C7;
+
+        &::placeholder {
+            font-size: 14px;
+            color: #C9C9C9;
+            font-weight: 600;
+        }
+    }
+
+    .modal-header {
+        width: 789px;
+        display: flex;
+        gap: 82px;
+        border-bottom: 1px solid #C9C9C9;
+        padding-bottom: 23px;
+        
+
+        .modal-checkbox-list {
+            display: flex;
+            flex-direction: column;
+            
+            p {
+                margin-bottom: 24px;
+            }
+
+            .inputs {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .secondCol {
+                gap: 10px!important;
+            }
+
+            .checkbox-div {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+        }
+    }
+    
+    .modal-footer {
+        display: flex;
+        justify-content: space-between;
+
+        .modal-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 20px;
+        }
+
+
+        #cancel-button {
+            &:hover {
+                color: #8a2325!important;
+            }
+        }
+        
+    }
+}

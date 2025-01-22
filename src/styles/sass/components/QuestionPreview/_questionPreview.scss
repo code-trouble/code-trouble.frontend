@@ -8,6 +8,8 @@
         font-size: 32px;
         font-weight: 500;
         font-family: $montserratFont;
+        line-height: 120%;
+        letter-spacing: -1px;
     }
 
     p {
@@ -60,3 +62,41 @@
         justify-content: space-between;
     }
 }
+
+
+@media (max-width: 1000px) {
+    .previewQuestion {
+        .previewQuestion-bottom {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
+    }
+}
+
+
+
+
+@media (max-width: 700px) {
+    .previewQuestion {
+        
+        h1 {
+            font-size: 24px;
+        }
+        p {
+            font-size: 16px;
+        }
+
+        .previewQuestion-bottom {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 20px;
+
+            .previewQuestion-avatar-area {
+                align-self: flex-end;
+            }
+        }
+    }
+}
+
+
