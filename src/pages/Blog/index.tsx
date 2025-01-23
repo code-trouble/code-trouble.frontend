@@ -7,12 +7,12 @@ import CustomButton from "../../components/CustomButton";
 export const Blog: React.FC = () => {
     
     return (
-        <div className="questions-container">
+        <div className="blog-container">
             <Header theme="blue" loggedIn={false}/>
-            <div className="questions-inner-container">
-                <div className="questions-area">
-                    <div className="questions-title">
-                        <h1>Todas as Perguntas</h1>
+            <div className="blog-inner-container">
+                <div className="blog-area">
+                    <div className="blog-title">
+                        <h1>Todos os Posts</h1>
                         <CustomButton 
                             backgroundColor="#3348A4"
                             color="white"
@@ -23,14 +23,15 @@ export const Blog: React.FC = () => {
                         />
                     </div>
                     <div className="category-selection">
-                        <a href="#">Novo</a>
-                        <a href="#">Top</a>
-                        <a href="#">Bounty</a>
-                        <a href="#">Semana</a>
-                        <a href="#">Mês</a>
+                        <a href="#">Para Você</a>
+                        <a href="#">Seguindo</a>
+                        <a href="#">Design</a>
+                        <a href="#">Desenvolvimento</a>
+                        <a href="#">UX</a>
+                        <a href="#">UI</a>
                     </div>
-                    <div className="questions-list">
-                        <h1>WORK IN PROGRESS.</h1>
+                    <div className="blog-list">
+                        
                     </div>  
                 </div>
 
@@ -41,7 +42,7 @@ export const Blog: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <Footer customStyle={{bottom: 0}}/>
+            <Footer customStyle={{bottom: 0, position: "fixed"}}/>
         </div>
     );
     
