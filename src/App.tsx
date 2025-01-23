@@ -4,7 +4,7 @@ import { ComingSoonPage } from "./pages/ComingSoon";
 import { TestingPage } from "./pages/TestingPage";
 import { LandingPage } from "./pages/Landing";
 import { Questions } from "./pages/Questions";
-import { Blog } from "./pages/Blog/Index";
+import { Blog } from "./pages/Blog";
 
 export default function App() {
   return (
