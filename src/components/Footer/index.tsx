@@ -8,12 +8,22 @@ import {
   logoCodePrimaryFull,
   whatsApp,
 } from "../../assets/images/svg/icons";
+import { useNavigate } from "react-router-dom";
 
 interface IFooter {
   customStyle?: React.CSSProperties;
 }
 
 export const Footer: React.FC<IFooter> = ({customStyle}) => {
+
+    const navigate = useNavigate();
+
+
+    function navigateTo(path: string) {
+      window.scrollTo(0, 0); 
+      navigate(path);
+    }
+
   return (
   <footer className="footer-container" style={customStyle}>
       <img
@@ -24,9 +34,9 @@ export const Footer: React.FC<IFooter> = ({customStyle}) => {
       <main>
         <nav className="exploreNav">
           <h1>Explore</h1>
-          <a href="">Home</a>
-          <a href="">Blog</a>
-          <a href="">Questões</a>
+          <a onClick={() => {navigateTo("/")}} href="">Home</a>
+          <a onClick={() => {navigateTo("/blog")}} href="">Blog</a>
+          <a onClick={() => {navigateTo("/questions")}} href="">Questões</a>
         </nav>
         <section className="contactSection">
           <nav className="contactNav">
