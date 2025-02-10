@@ -129,3 +129,11 @@
     background: rgba(0, 0, 0, 0.5);
   }
 }
+
+@media (max-width: 420px) {
+  .overlay {
+    aside {
+      margin-left: 0.5px;
+    }
+  }
+}
