@@ -1,14 +1,32 @@
 .blog-container {
+    overflow-x: hidden;
+
     .blog-inner-container {
         display: flex;
         font-family: $montserratFont;
 
         .blog-area {    
             padding: 40px 60px;
-            height: 804px;
+            height: 1192px;
             width: 100%;
+            overflow-x: hidden;
             overflow-y: auto;
 
+            .blog-title {
+
+                h1 {
+                    font-size: 40px;
+                    font-weight: 600;
+                    font-family: $montserratFont;
+                }
+            }
+
+            .blog-list {
+                margin-top: 44px;
+                display: flex;
+                flex-direction: column;
+                gap: 120px;
+            }
                 
                 &::-webkit-scrollbar {
                     width: 12px; 
@@ -78,6 +96,27 @@
             flex-direction: column;
             gap: 62px;
 
+
+            .community-choices {
+                display: flex;
+                flex-direction: column;
+                gap: 25px;
+
+                .community-choice {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    
+                    p {
+                        font-size: 16px;
+                        font-weight: 600;
+                        font-family: $montserratFont;
+                        line-height: 20px;
+                    }
+                }
+            }
+
+
             .topics-area {
                 .recommended-topics {
                     width: 382px;
@@ -112,6 +151,43 @@
 
 
                 }
+            }
+
+            .who-to-follow {
+                display: flex;
+                flex-direction: column;
+
+                .follow-area {
+                    margin-top: 30px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 30px;
+                    .follow-block {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 15px;
+                        p {
+                            font-size: 14px;
+                            font-family: $hindFont;
+                            line-height: 20px;
+                            color: $eerieBlack;
+                            font-weight: 400;
+                        }
+
+                        .follow-info {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+
+                            .avatar-role-medium {
+                                font-family: $montserratFont;
+                                color: $dimGray;
+                                font-size: 12px;
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }
