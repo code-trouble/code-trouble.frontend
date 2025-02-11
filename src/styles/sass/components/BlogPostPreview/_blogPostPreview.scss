@@ -1,0 +1,50 @@
+.blog-wrapper {
+    gap: 20px;
+    justify-content: space-between;
+    .blog-post {
+        display: flex;
+        flex-direction: column;
+        gap: 49px;
+        min-width: 804px;
+        .blog-post-content {
+            .blog-post-text {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+    
+                h1 {
+                    font-family: $montserratFont;
+                    font-weight: 600;
+                    font-size: 32px;
+                    color: $eerieBlack;
+                }
+    
+                p {
+                    font-family: $loraItalicFont;
+                    font-style: italic;
+                    font-size: 22px;
+                    color: $eerieBlack;
+                }
+            }
+        }
+    
+        .blog-post-footer {
+            display: flex;
+            justify-content: space-between;
+            .blog-post-footer-left {
+                display: flex;
+                gap: 15px;
+                
+                .date-p {
+                    margin-right: 15px;
+                }
+        
+                p {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                }
+            }
+        }
+    }
+}
