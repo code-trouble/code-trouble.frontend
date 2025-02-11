@@ -6,29 +6,32 @@ interface IPaginationProps {
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
+    activeColor?: string;
 }
 
 export const Pagination: React.FC<IPaginationProps> = ({
     currentPage,
     totalPages,
     onPageChange,
+    activeColor = "#2DBA4F"
 }) => {
     if (totalPages <= 1) return null;
 
     const getPageNumbers = () => {
         const pages = [];
         const maxVisiblePages = 5;
-        const rangeStart = Math.max(2, Math.min(currentPage - 2, totalPages - maxVisiblePages + 1));
+        const rangeStart = Math.max(
+            2,
+            Math.min(currentPage - 2, totalPages - maxVisiblePages + 1)
+        );
         const rangeEnd = Math.min(totalPages - 1, rangeStart + maxVisiblePages - 2);
-    
+
         for (let i = rangeStart; i <= rangeEnd; i++) {
             pages.push(i);
         }
-    
+
         return pages;
     };
-    
-    
 
     const handlePrevious = () => {
         if (currentPage > 1) onPageChange(currentPage - 1);
@@ -36,6 +39,12 @@ export const Pagination: React.FC<IPaginationProps> = ({
 
     const handleNext = () => {
         if (currentPage < totalPages) onPageChange(currentPage + 1);
+    };
+
+    const activeStyle = {
+        border: `1px solid ${activeColor}`,
+        padding: "2px 4px",
+        borderRadius: "2px"
     };
 
     return (
@@ -48,18 +57,15 @@ export const Pagination: React.FC<IPaginationProps> = ({
                 <img src={previousPage} alt="Previous Page" />
             </button>
 
-            {currentPage <= 5 && (
+            {currentPage <= 5 ? (
                 <button
                     onClick={() => onPageChange(1)}
-                    className={`pagination-button ${
-                        currentPage === 1 ? "active" : ""
-                    }`}
+                    className={`pagination-button ${currentPage === 1 ? "active" : ""}`}
+                    style={currentPage === 1 ? activeStyle : {}}
                 >
                     1
                 </button>
-            )}
-
-            {currentPage > 5 && (
+            ) : (
                 <span className="pagination-dots">
                     <img src={pagination3Dots} alt="3 dots" />
                 </span>
@@ -69,9 +75,8 @@ export const Pagination: React.FC<IPaginationProps> = ({
                 <button
                     key={page}
                     onClick={() => onPageChange(page)}
-                    className={`pagination-button ${
-                        currentPage === page ? "active" : ""
-                    }`}
+                    className={`pagination-button ${currentPage === page ? "active" : ""}`}
+                    style={currentPage === page ? activeStyle : {}}
                 >
                     {page}
                 </button>
@@ -85,9 +90,8 @@ export const Pagination: React.FC<IPaginationProps> = ({
 
             <button
                 onClick={() => onPageChange(totalPages)}
-                className={`pagination-button ${
-                    currentPage === totalPages ? "active" : ""
-                }`}
+                className={`pagination-button ${currentPage === totalPages ? "active" : ""}`}
+                style={currentPage === totalPages ? activeStyle : {}}
             >
                 {totalPages}
             </button>
@@ -97,7 +101,8 @@ export const Pagination: React.FC<IPaginationProps> = ({
                 disabled={currentPage === totalPages}
                 className="pagination-button"
             >
-                <span className="pagination-control">/</span> <img src={nextPage} alt="Next Page" />
+                <span className="pagination-control">/</span>
+                <img src={nextPage} alt="Next Page" />
             </button>
         </div>
     );
