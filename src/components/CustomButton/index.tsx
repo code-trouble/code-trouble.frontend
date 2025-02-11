@@ -4,6 +4,7 @@ interface ICustomButton {
     text?: string;
     padding?: string;
     color?: string;
+    borderRadius?: string;
     border?: string;
     backgroundColor?: string;
     fontSize?: string;    
@@ -18,6 +19,7 @@ export const CustomButton: React.FC<ICustomButton> = ({
     text,
     padding,
     color,
+    borderRadius,
     border,
     backgroundColor,
     fontSize, 
@@ -33,7 +35,8 @@ export const CustomButton: React.FC<ICustomButton> = ({
             backgroundColor,
             fontSize, 
             fontWeight,
-            border        
+            border,
+            borderRadius        
             }}
             onClick={onClick}
             >
