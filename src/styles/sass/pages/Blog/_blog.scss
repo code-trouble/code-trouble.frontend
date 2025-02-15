@@ -12,6 +12,8 @@
             overflow-x: hidden;
             overflow-y: auto;
 
+
+
             .blog-title {
 
                 h1 {
@@ -188,6 +190,23 @@
                     }
                 }
 
+            }
+        }
+    }
+}
+
+@media (max-width: 1050px) {
+    .blog-container {
+        .blog-inner-container {
+            flex-direction: column;
+
+            #blogPagination {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .right-side {
+                width: 100%;
             }
         }
     }
