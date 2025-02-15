@@ -7,13 +7,15 @@ interface IPaginationProps {
     totalPages: number;
     onPageChange: (page: number) => void;
     activeColor?: string;
+    customId?: string;
 }
 
 export const Pagination: React.FC<IPaginationProps> = ({
     currentPage,
     totalPages,
     onPageChange,
-    activeColor = "#2DBA4F"
+    activeColor = "#2DBA4F",
+    customId
 }) => {
     if (totalPages <= 1) return null;
 
@@ -48,7 +50,7 @@ export const Pagination: React.FC<IPaginationProps> = ({
     };
 
     return (
-        <div className="pagination">
+        <div className="pagination" id={customId}>
             <button
                 onClick={handlePrevious}
                 disabled={currentPage === 1}
