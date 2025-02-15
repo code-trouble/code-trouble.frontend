@@ -19,7 +19,7 @@ const blogPosts: IBlogPost[] = [
     {
         title: "Como faz array no javascript?",
         description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-        image: false,
+        image: true,
     },
     {
         title: "Entendendo closures em JavaScript",
@@ -29,7 +29,7 @@ const blogPosts: IBlogPost[] = [
     {
         title: "Dicas para otimizar performance em React",
         description: "Aprenda técnicas para melhorar a performance dos seus componentes.",
-        image: false,
+        image: true,
     },
     {
         title: "Introdução ao TypeScript",
@@ -39,12 +39,12 @@ const blogPosts: IBlogPost[] = [
     {
         title: "Estilos dinâmicos com Styled Components",
         description: "Como aplicar estilos dinâmicos em React usando Styled Components.",
-        image: false,
+        image: true,
     },
     {
         title: "Gerenciando estado com Redux",
         description: "Conceitos essenciais para utilizar Redux em aplicações React.",
-        image: false,
+        image: true,
     },
     {
         title: "React Hooks: useState e useEffect",
@@ -54,17 +54,17 @@ const blogPosts: IBlogPost[] = [
     {
         title: "Construindo uma API REST com Node.js",
         description: "Passo a passo para criar uma API RESTful utilizando Node.js e Express.",
-        image: false,
+        image: true,
     },
     {
         title: "Post 9",
         description: "Descrição do post 9.",
-        image: false,
+        image: true,
     },
     {
         title: "Post 10",
         description: "Descrição do post 10.",
-        image: false,
+        image: true,
     },
     {
         title: "Post 11",
@@ -155,37 +155,47 @@ export const Blog: React.FC = () => {
         <div className="blog-container">
             <Header theme="blue" loggedIn={false} />
             <div className="blog-inner-container">
-                <div className="blog-area">
-                    <div className="blog-title">
-                        <h1>Todos os Posts</h1>
-                        <CustomButton
-                            backgroundColor="#3348A4"
-                            color="white"
-                            fontWeight="500"
-                            fontSize="18px"
-                            text="Perguntar"
-                            padding="8px 41px"
-                        />
-                    </div>
-                    <div className="category-selection-blue">
-                        <a href="#">Para Você</a>
-                        <a href="#">Seguindo</a>
-                        <a href="#">Design</a>
-                        <a href="#">Desenvolvimento</a>
-                        <a href="#">UX</a>
-                        <a href="#">UI</a>
-                    </div>
-                    <div className="blog-list">
-                        {displayedPosts.map((post, index) => (
-                            <BlogPostPreview
-                                key={index}
-                                blogPostTitle={post.title}
-                                blogPostDescription={post.description}
-                                image={post.image}
+                <div className="paginationWrapper">
+                    <div className="blog-area">
+                        <div className="blog-title">
+                            <h1>Todos os Posts</h1>
+                            <CustomButton
+                                backgroundColor="#3348A4"
+                                color="white"
+                                fontWeight="500"
+                                fontSize="18px"
+                                text="Perguntar"
+                                padding="8px 41px"
                             />
-                        ))}
+                        </div>
+                        <div className="category-selection-blue">
+                            <a href="#">Para Você</a>
+                            <a href="#">Seguindo</a>
+                            <a href="#">Design</a>
+                            <a href="#">Desenvolvimento</a>
+                            <a href="#">UX</a>
+                            <a href="#">UI</a>
+                        </div>
+                        <div className="blog-list">
+                            {displayedPosts.map((post, index) => (
+                                <BlogPostPreview
+                                    key={index}
+                                    blogPostTitle={post.title}
+                                    blogPostDescription={post.description}
+                                    image={post.image}
+                                />
+                            ))}
+                        </div>
                     </div>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                        activeColor="#3348A4"
+                        customId="blogPagination"
+                    />
                 </div>
+
                 <div className="right-side">
                     <div className="community-choices">
                         <h2>Escolhas da Comunidade</h2>
@@ -259,12 +269,7 @@ export const Blog: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-                activeColor="#3348A4"
-            />
+
             <Footer />
         </div>
     );
