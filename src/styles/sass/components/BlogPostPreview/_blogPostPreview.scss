@@ -5,7 +5,7 @@
         display: flex;
         flex-direction: column;
         gap: 49px;
-        min-width: 804px;
+        
         .blog-post-content {
             .blog-post-text {
                 display: flex;
@@ -45,6 +45,14 @@
                     gap: 5px;
                 }
             }
+        }
+    }
+}
+
+@media (max-width: 744px) {
+    .blog-wrapper {
+        .blog-post {
+
         }
     }
 }
