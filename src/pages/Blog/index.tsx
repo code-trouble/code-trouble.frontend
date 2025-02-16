@@ -19,7 +19,7 @@ const blogPosts: IBlogPost[] = [
     {
         title: "Como faz array no javascript?",
         description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-        image: true,
+        image: false,
     },
     {
         title: "Entendendo closures em JavaScript",
