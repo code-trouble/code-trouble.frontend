@@ -30,9 +30,12 @@ export const BlogPostPreview: React.FC<IBlogPostPreview> = ({ blogPostTitle, blo
                         </div>
                     </div>
                 </div>
-                <div className="post-image">
-                    {image && <img src={dogImage} alt=""/>}
-                </div>
+                {image && ( // Conditionally render the image container
+                    <div className="post-image">
+                        <img src={dogImage} alt="Blog Post" />
+                    </div>
+                )}
+
 
             </div>
             <div className="blog-post-mobile-footer">
