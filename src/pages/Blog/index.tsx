@@ -22,58 +22,13 @@ const blogPosts: IBlogPost[] = [
         image: false,
     },
     {
-        title: "Entendendo closures em JavaScript",
-        description: "Uma explicação rápida sobre closures e seu funcionamento no JS.",
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
         image: true,
     },
     {
-        title: "Dicas para otimizar performance em React",
-        description: "Aprenda técnicas para melhorar a performance dos seus componentes.",
-        image: true,
-    },
-    {
-        title: "Introdução ao TypeScript",
-        description: "Um guia básico para começar a utilizar TypeScript em seus projetos.",
-        image: true,
-    },
-    {
-        title: "Estilos dinâmicos com Styled Components",
-        description: "Como aplicar estilos dinâmicos em React usando Styled Components.",
-        image: true,
-    },
-    {
-        title: "Gerenciando estado com Redux",
-        description: "Conceitos essenciais para utilizar Redux em aplicações React.",
-        image: true,
-    },
-    {
-        title: "React Hooks: useState e useEffect",
-        description: "Aprenda a usar os principais hooks do React para gerenciar estado e efeitos colaterais.",
-        image: true,
-    },
-    {
-        title: "Construindo uma API REST com Node.js",
-        description: "Passo a passo para criar uma API RESTful utilizando Node.js e Express.",
-        image: true,
-    },
-    {
-        title: "Post 9",
-        description: "Descrição do post 9.",
-        image: true,
-    },
-    {
-        title: "Post 10",
-        description: "Descrição do post 10.",
-        image: true,
-    },
-    {
-        title: "Post 11",
-        description: "Descrição do post 11.",
-        image: true,
-    },
-    {
-        title: "Post 12",
-        description: "Descrição do post 12.",
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
         image: false,
     },
     {
@@ -82,58 +37,103 @@ const blogPosts: IBlogPost[] = [
         image: false,
     },
     {
-        title: "Entendendo closures em JavaScript",
-        description: "Uma explicação rápida sobre closures e seu funcionamento no JS.",
-        image: true,
-    },
-    {
-        title: "Dicas para otimizar performance em React",
-        description: "Aprenda técnicas para melhorar a performance dos seus componentes.",
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
         image: false,
     },
     {
-        title: "Introdução ao TypeScript",
-        description: "Um guia básico para começar a utilizar TypeScript em seus projetos.",
-        image: true,
-    },
-    {
-        title: "Estilos dinâmicos com Styled Components",
-        description: "Como aplicar estilos dinâmicos em React usando Styled Components.",
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
         image: false,
     },
     {
-        title: "Gerenciando estado com Redux",
-        description: "Conceitos essenciais para utilizar Redux em aplicações React.",
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
         image: false,
     },
     {
-        title: "React Hooks: useState e useEffect",
-        description: "Aprenda a usar os principais hooks do React para gerenciar estado e efeitos colaterais.",
-        image: true,
-    },
-    {
-        title: "Construindo uma API REST com Node.js",
-        description: "Passo a passo para criar uma API RESTful utilizando Node.js e Express.",
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
         image: false,
     },
     {
-        title: "Post 9",
-        description: "Descrição do post 9.",
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
         image: false,
     },
     {
-        title: "Post 10",
-        description: "Descrição do post 10.",
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
         image: false,
     },
     {
-        title: "Post 11",
-        description: "Descrição do post 11.",
-        image: true,
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
     },
     {
-        title: "Post 12",
-        description: "Descrição do post 12.",
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+        image: false,
+    },
+    {
+        title: "Como faz array no javascript?",
+        description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
         image: false,
     }
 ];
@@ -197,29 +197,31 @@ export const Blog: React.FC = () => {
                 </div>
 
                 <div className="right-side">
-                    <div className="community-choices">
-                        <h2>Escolhas da Comunidade</h2>
-                        <div className="community-choice">
-                            <Avatar sizes="medium" name="Joana Lima" />
-                            <p>Porque Designer Merece mais</p>
-                        </div>
-                        <div className="community-choice">
-                            <Avatar sizes="medium" name="Joana Lima" />
-                            <p>Pix agora ou agora?</p>
-                        </div>
-                        <div className="community-choice">
-                            <Avatar sizes="medium" name="Joana Lima" />
-                            <p>Porque dev não merece mais</p>
-                        </div>
-                        <a href="">Ver lista completa</a>
-                    </div>
-                    <div className="topics-area">
-                        <div className="recommended-topics">
-                            <h2>Tópicos Recomendados</h2>
-                            <div className="tag-group">
-                                <Tag tags={tags} />
+                    <div className="first-two">
+                        <div className="community-choices">
+                            <h2>Escolhas da Comunidade</h2>
+                            <div className="community-choice">
+                                <Avatar sizes="medium" name="Joana Lima" />
+                                <p>Porque Designer Merece mais</p>
                             </div>
-                            <span>Ver mais tópicos</span>
+                            <div className="community-choice">
+                                <Avatar sizes="medium" name="Joana Lima" />
+                                <p>Pix agora ou agora?</p>
+                            </div>
+                            <div className="community-choice">
+                                <Avatar sizes="medium" name="Joana Lima" />
+                                <p>Porque dev não merece mais</p>
+                            </div>
+                            <a href="">Ver lista completa</a>
+                        </div>
+                        <div className="topics-area">
+                            <div className="recommended-topics">
+                                <h2>Tópicos Recomendados</h2>
+                                <div className="tag-group">
+                                    <Tag tags={tags} />
+                                </div>
+                                <span>Ver mais tópicos</span>
+                            </div>
                         </div>
                     </div>
                     <div className="who-to-follow">
