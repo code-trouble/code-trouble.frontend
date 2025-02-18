@@ -18,6 +18,10 @@ interface IPostWriter {
 }
 
 export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
+
+    const toolbarId = useRef('custom-toolbar-' + Math.random().toString(36).substring(2, 9));
+
+
     useEffect(() => {
         const updateToolbarPosition = () => {
             if (window.innerWidth <= 1000 && window.visualViewport) {
@@ -66,7 +70,7 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                 theme: 'snow',
                 modules: {
                     toolbar: {
-                        container: '#custom-toolbar',
+                        container: '#' + toolbarId.current,
                         handlers: {
                             'bold': function(this: { quill: Quill }) {
                                 const range = this.quill.getSelection();
@@ -148,26 +152,25 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
     
             // Customize toolbar icons
             setTimeout(() => {
-                const toolbarContainer = document.getElementById('custom-toolbar')!;
-    
+                const toolbarContainer = document.getElementById(toolbarId.current)!
                 const replaceIcon = (selector: string, newIcon: string) => {
-                    const button = toolbarContainer.querySelector(selector);
-                    if (button) {
-                        button.innerHTML = newIcon;
-                    }
-                };
-    
-                replaceIcon('.ql-bold', 'Bold');
-                replaceIcon('.ql-italic', 'Italic');
-                replaceIcon('.ql-underline', 'Underline');
-                replaceIcon('.ql-strike', 'Strike');
-                replaceIcon('.ql-list[value="bullet"]', `<img src="${toolbarList}" alt="Bullet List" />`);
-                replaceIcon('.ql-list[value="ordered"]', `<img src="${toolbarOrdered}" alt="Ordered List" />`);
-                replaceIcon('.ql-code-block', `<img src="${codespace}" alt="Code Block" />`);
-                replaceIcon('.ql-link', `<img src="${toolbarLink}" alt="Link" />`);
-                replaceIcon('.ql-image', `<img src="${toolbarImg}" alt="Image" />`);
-                replaceIcon('.ql-video', `<img src="${toolbarVideo}" alt="Video" />`);
-            }, 0);
+                const button = toolbarContainer.querySelector(selector)
+                if (button) {
+                    button.innerHTML = newIcon
+                }
+                }
+            
+                replaceIcon('.ql-bold', 'Bold')
+                replaceIcon('.ql-italic', 'Italic')
+                replaceIcon('.ql-underline', 'Underline')
+                replaceIcon('.ql-strike', 'Strike')
+                replaceIcon('.ql-list[value="bullet"]', `<img src="${toolbarList}" alt="Bullet List" />`)
+                replaceIcon('.ql-list[value="ordered"]', `<img src="${toolbarOrdered}" alt="Ordered List" />`)
+                replaceIcon('.ql-code-block', `<img src="${codespace}" alt="Code Block" />`)
+                replaceIcon('.ql-link', `<img src="${toolbarLink}" alt="Link" />`)
+                replaceIcon('.ql-image', `<img src="${toolbarImg}" alt="Image" />`)
+                replaceIcon('.ql-video', `<img src="${toolbarVideo}" alt="Video" />`)
+            }, 100)
         }
     }, []);
     
@@ -243,7 +246,7 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                     </>
                 )}
             </div>
-            <div id="custom-toolbar" className="custom-toolbar">
+            <div id={toolbarId.current} className="custom-toolbar">
                 <span className="ql-formats">
                     {window.innerWidth > 1200 ? (
                         <TooltipDescription text="Negrito">
