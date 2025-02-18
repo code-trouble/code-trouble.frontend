@@ -10,6 +10,7 @@ export const TestingPage: React.FC = () => {
     <div className="main-wrapper">
       <Header theme="base" loggedIn={false}/>
       <PostWriter layout="blog"/>
+      <PostWriter layout="blog"/>
     </div>
   );
 };
