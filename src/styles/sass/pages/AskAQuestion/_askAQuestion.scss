@@ -1,88 +1,184 @@
 .askAquestion-container {
-    .left-side {
-        padding: 30px 60px 60px 60px;
+    .askAquestion-wrapper {
+        width: 100%;
         display: flex;
-        flex-direction: column;
-        gap: 30px;
-        width: 918px;
+        gap: 20px;
 
-
-        h1 {
-            font-size: 40px;
-            font-family: $montserratFont;
-            font-weight: bold;
-        }
-
-        .title-area {
-            border: 1px solid #C7C7C7;
+        .left-side {
+            padding: 30px 0px 60px 60px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            padding: 20px;
-            border-radius: 8px;
+            gap: 30px;
+            width: 69.30%;
 
-            input {
-                width: 100%;
+            h1 {
+                font-size: 40px;
+                font-family: $montserratFont;
+                font-weight: bold;
+            }
+
+            h6 {
+                font-family: $hindFont;
+                font-size: 16px;
+                font-weight: 500;
+                color: $eerieBlack;
+            }
+
+            p {
+                font-family: $hindFont;
+                font-size: 14px;
+                color: $dimGray;
+            }
+
+            .title-area {
+                border: 1px solid #C7C7C7;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                padding: 20px;
+                border-radius: 8px;
+
+                .input-area {
+                    width: 100%;
+                    border: 1px solid #C7C7C7;
+                    border-radius: 8px;
+                    padding: 10px 14px;
+                }
+            }
+
+            .question-details {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
                 border: 1px solid #C7C7C7;
                 border-radius: 8px;
-                padding: 10px 14px;
+                padding: 30px 20px;
+                gap: 10px;
+
+                .postWriter-container {
+                    margin: 0;
+                    width: 100%;
+
+                    .editor-container {
+                        padding: 25px;
+                    }
+
+                    .ql-toolbar {
+                        display: flex;
+                        justify-content: space-between;
+
+                        .ql-formats {
+                            display: flex;
+                            flex: 1;
+                            justify-content: space-between;
+                            width: 100%;
+                        }
+                    }
+
+                    .editor-area {
+                        .ql-editor::before {
+                            font-size: 16px;
+                        }
+                    }
+
+                    button {
+                        font-size: 14px;
+                    }
+
+                    img {
+                        width: 20px;
+                        height: 15px;
+                    }
+
+                    .ql-formats {
+                        .ql-bold, .ql-italic, .ql-strike {
+                            width: 70px;
+                        }
+
+                        .ql-underline {
+                            width: 100px;
+                        }
+                        
+
+                        button {
+                            width: 50px;
+                            height: 38px;
+                        }
+
+                    }
+
+                    .editor-container {
+                        margin: 0;
+                    }
+                }
+            }
+
+            .tag-area {
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+                border: 1px solid #C7C7C7;
+                border-radius: 8px;
+                gap: 10px;
+                
+                .input-area {
+                    width: 100%;
+                    border: 1px solid #C7C7C7;
+                    border-radius: 8px;
+                    padding: 10px 14px;
+                }
+
+            }
+
+
+
+            .revision-message {
+                padding: 10px 20px;
+                border: 1px solid $successColor;
+                border-radius: 8px;
+                background-color: #E2F9ED;
+                
+            }
+
+            .submit-question {
+                width: 382px;
+                display: flex;
+                justify-content: space-between;
             }
         }
 
-        .question-details {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            border: 1px solid #C7C7C7;
-            border-radius: 8px;
-            padding: 30px 20px;
-            gap: 10px;
+        .right-side {
+            width: 30.70%;
+            padding: 100px 60px 0px 0px;
+            .message-box {
+                padding: 20px;
+                border: 1px solid $successColor;
+                background-color: #E2F9ED;
+                border-radius: 8px;
 
-            .postWriter-container {
-                margin: 0;
-                width: 100%;
 
-                .editor-container {
-                    padding: 25px;
-                }
-
-                .editor-area {
-                    .ql-editor::before {
-                        font-size: 16px;
-                    }
-                }
-                button {
-                    font-size: 14px;
-                }
-
-                img {
-                    width: 20px;
-                    height: 15px;
-                }
-
-                .ql-formats {
-                    button {
-                        width: 63px;
-                        height: 38px;
-                    }
-
-                    .tooltip:hover .tooltipText {
-                        top: -135%;
-                    }
-
-                    .ql-italic {
-                        margin-right: 15px;
-                    }
-
-                    .ql-underline {
-                        margin-right: 15px;
-                    }
-                }
-
-                .editor-container {
-                    margin: 0;
+                h1 {
+                    font-family: $loraItalicFont;
+                    font-style: italic;
                 }
             }
+        }
+    }
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 1000px) {
+    .askAquestion-container {
+        .left-side {
+            padding: 20px 40px 40px 40px;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .askAquestion-container {
+        .left-side {
+            padding: 15px 20px;
         }
     }
 }
