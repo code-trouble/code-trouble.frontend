@@ -150,16 +150,83 @@
         .right-side {
             width: 30.70%;
             padding: 100px 60px 0px 0px;
+            display: flex;
+            flex-direction: column;
+            gap: 34px;
+
             .message-box {
                 padding: 20px;
                 border: 1px solid $successColor;
                 background-color: #E2F9ED;
                 border-radius: 8px;
-
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
 
                 h1 {
                     font-family: $loraItalicFont;
                     font-style: italic;
+                    font-size: 20px;
+                }
+
+                p {
+                    font-family: $hindFont;
+                    font-size: 14px;
+                    line-height: 130%;
+                    color: $onyx;
+                }
+
+                ul {
+                    list-style-type: disc;
+                    display: flex;
+                    flex-direction: column;
+                    
+
+                    span {
+                        font-size: 16px;
+                        font-family: $hindFont;
+                        font-weight: 600;
+                        color: $eerieBlack;
+                    }
+
+                    li {
+                        margin-left: 25px;
+                        font-size: 14px;
+                        font-family: $hindFont;
+                        font-weight: 300;
+                        color: $eerieBlack;
+                        line-height: 150%;
+                    }
+                }
+
+                .imageMessage-box {
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    padding: 16px 10px;
+
+                    .text-div {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        font-family: $hindFont;
+                        font-size: 14px;
+                        line-height: 20px;
+                    }
+                    img {
+                        height: 120px;
+                        width: 120px;
+                    }
+                }
+            }
+
+            .second-box {
+                padding: 0px;
+                h1 {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: $eerieBlack;
+                    padding: 10px 20px 0px 20px;
                 }
             }
         }
