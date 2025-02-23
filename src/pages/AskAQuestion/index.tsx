@@ -1,7 +1,7 @@
 import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
 import { Header } from "../../components/Header";
-import correa from "../../assets/images/svg/illustration/professor-correa.svg"
+import correa from "../../assets/images/svg/mascote sp 1.svg"
 
 
 export const AskAQuestion: React.FC = () => {
@@ -52,18 +52,17 @@ export const AskAQuestion: React.FC = () => {
                         <h1>Como escrever uma boa pergunta</h1>
                         <p>Você precisa perguntar algo? Esse formulário irá te ajudar durante o processo.</p>
                         <ul>
-                            <span>Passos a se seguir:</span>
+                            <span className="tittle-span">Passos a se seguir:</span>
                             <li>Resuma sua questão em um título curto, que retrate bem o que precisa.</li>
                             <li>Descreva seu problema com mais detalhes.</li>
                             <li>Descreva o que você já tentou e o que espera que aconteça.</li>
-                            <li>Adicione tags para que sua pergunta seja entregue para os membros certos da comunidade.</li>
+                            <li>Adicione <span>tags</span> para que sua pergunta seja entregue para os membros certos da comunidade.</li>
                             <li>Revise sua pergunta antes de postar.</li>
                             <li>E pronto, agora só postar!</li>
                         </ul>
                     </div>
                     <div className="message-box second-box">
                         <h1>Escrevendo um bom título</h1>
-
                         <div className="imageMessage-box">
                             <img src={correa} alt="" />
                             <div className="text-div">
@@ -71,8 +70,26 @@ export const AskAQuestion: React.FC = () => {
                                 <p>Lembre-se sempre de usar palavras chave, para a sua pergunta ter mais chance de aperecer em pesquisas dos usuários.</p>
                             </div>
                         </div>
-
-
+                    </div>
+                    <div className="message-box second-box">
+                        <h1>Revise antes de postar</h1>
+                        <div className="imageMessage-box">
+                            <img src={correa} alt="" />
+                            <div className="text-div">
+                                <p>Agora que está pronto para postar sua pergunta, releia do começo ao fim. Ela faz sentido?</p>
+                                <p>Adicione quaisquer detalhes que possa ter esquecido e releia novamente. Agora é um bom momento para ter certeza de que o título ainda descreve bem o seu problema.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="message-box second-box">
+                        <h1>Adicionando tags</h1>
+                        <div className="imageMessage-box">
+                            <img src={correa} alt="" />
+                            <div className="text-div">
+                                <p>As tags garantem que sua pergunta terá atenção das pessoas certas.</p>
+                                <p>Adicione tags de linguagens ou tecnologias usadas.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
