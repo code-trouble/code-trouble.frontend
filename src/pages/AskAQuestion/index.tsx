@@ -11,6 +11,7 @@ export const AskAQuestion: React.FC = () => {
             <div className="askAquestion-wrapper">
                 <div className="left-side">
                     <h1>Fazer uma pergunta</h1>
+            
                     <div className="title-area">
                         <h6>Título</h6>
                         <p>Seja específico e imagine que está fazendo uma pergunta para outra pessoa.</p>
