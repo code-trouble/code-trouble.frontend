@@ -11,6 +11,11 @@
             gap: 30px;
             width: 69.30%;
 
+            .hide-on-larger-screens {
+                display: none;
+            }
+            
+
             h1 {
                 font-size: 40px;
                 font-family: $montserratFont;
@@ -70,6 +75,8 @@
                     .ql-toolbar {
                         display: flex;
                         justify-content: space-between;
+                        border-bottom-right-radius: 0px;
+                        border-bottom-left-radius: 0px;
 
                         .ql-formats {
                             display: flex;
@@ -80,6 +87,7 @@
                     }
 
                     .editor-area {
+                        min-height: 0;
                         .ql-editor::before {
                             font-size: 16px;
                         }
@@ -242,19 +250,81 @@
     }
 }
 
-/* Responsive adjustments for smaller screens */
-@media (max-width: 1000px) {
+.postWriter-container.alt .ql-toolbar {
+    --scale-factor: clamp(0.5, calc((100vw - 320px) / 1600), 1);
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    gap: calc(10px * var(--scale-factor));
+}
+
+.postWriter-container.alt .ql-toolbar .ql-formats {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: calc(10px * var(--scale-factor));
+}
+
+.postWriter-container.alt .ql-toolbar .ql-formats button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: none;
+    border: none;
+    font-family: $montserratFont;
+    font-size: calc(20px * var(--scale-factor));
+    height: calc(64px * var(--scale-factor));
+    padding: 0 calc(10px * var(--scale-factor));
+}
+
+.postWriter-container.alt .ql-toolbar .ql-formats .ql-bold,
+.postWriter-container.alt .ql-toolbar .ql-formats .ql-italic {
+    width: calc(100px * var(--scale-factor));
+}
+
+.postWriter-container.alt .ql-toolbar .ql-formats .ql-underline,
+.postWriter-container.alt .ql-toolbar .ql-formats .ql-strike {
+    width: calc(128px * var(--scale-factor));
+}
+
+.postWriter-container.alt .ql-toolbar .ql-image,
+.postWriter-container.alt .ql-toolbar .ql-video,
+.postWriter-container.alt .ql-toolbar .ql-link {
+    width: calc(75px * var(--scale-factor));
+}
+
+.postWriter-container.alt .ql-toolbar .ql-code-block,
+.postWriter-container.alt .ql-toolbar .ql-list[value="bullet"],
+.postWriter-container.alt .ql-toolbar .ql-list[value="ordered"] {
+    width: calc(102px * var(--scale-factor));
+}
+
+.postWriter-container.alt .separator {
+    margin-left: calc(20px * var(--scale-factor));
+    margin-right: calc(20px * var(--scale-factor));
+}
+
+
+
+@media (max-width: 1100px) {
+    
     .askAquestion-container {
-        .left-side {
-            padding: 20px 40px 40px 40px;
+        .askAquestion-wrapper {
+            .left-side {
+                padding: 30px;
+                width: 100%;
+
+                .hide-on-larger-screens {
+                    display: block;
+                }
+            }
+
+            .right-side {
+                display: none;
+                
+            }
         }
     }
 }
 
-@media (max-width: 600px) {
-    .askAquestion-container {
-        .left-side {
-            padding: 15px 20px;
-        }
-    }
-}
