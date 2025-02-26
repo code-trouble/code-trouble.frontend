@@ -1,15 +1,90 @@
+.message-box {
+    padding: 20px;
+    border: 1px solid $successColor;
+    background-color: #E2F9ED;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    h1 {
+        font-family: $loraItalicFont;
+        font-style: italic;
+        font-size: 20px;
+    }
+
+    p {
+        font-family: $hindFont;
+        font-size: 14px;
+        line-height: 130%;
+        color: $onyx;
+    }
+
+    ul {
+        list-style-type: disc;
+        display: flex;
+        flex-direction: column;
+        
+
+        .tittle-span {
+            font-size: 16px;
+            font-family: $hindFont;
+            font-weight: 600;
+            color: $eerieBlack;
+        }
+
+        span {
+            color: $successColor;
+            font-weight: 500;
+        }
+
+        li {
+            margin-left: 25px;
+            font-size: 14px;
+            font-family: $hindFont;
+            font-weight: 300;
+            color: $eerieBlack;
+            line-height: 150%;
+        }
+    }
+
+    .imageMessage-box {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 10px;
+
+        .text-div {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-family: $hindFont;
+            font-size: 14px;
+            line-height: 20px;
+        }
+        img {
+            height: 120px;
+            width: 120px;
+        }
+    }
+}
+
 .askAquestion-container {
     .askAquestion-wrapper {
         width: 100%;
         display: flex;
         gap: 20px;
-
+        
         .left-side {
             padding: 30px 0px 60px 60px;
             display: flex;
             flex-direction: column;
             gap: 30px;
-            width: 69.30%;
+            width: 69.30%;  
+
+            .message-box {
+                display: none;
+            }
 
             .hide-on-larger-screens {
                 display: none;
@@ -166,76 +241,7 @@
             flex-direction: column;
             gap: 34px;
 
-            .message-box {
-                padding: 20px;
-                border: 1px solid $successColor;
-                background-color: #E2F9ED;
-                border-radius: 8px;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-
-                h1 {
-                    font-family: $loraItalicFont;
-                    font-style: italic;
-                    font-size: 20px;
-                }
-
-                p {
-                    font-family: $hindFont;
-                    font-size: 14px;
-                    line-height: 130%;
-                    color: $onyx;
-                }
-
-                ul {
-                    list-style-type: disc;
-                    display: flex;
-                    flex-direction: column;
-                    
-
-                    .tittle-span {
-                        font-size: 16px;
-                        font-family: $hindFont;
-                        font-weight: 600;
-                        color: $eerieBlack;
-                    }
-
-                    span {
-                        color: $successColor;
-                        font-weight: 500;
-                    }
-
-                    li {
-                        margin-left: 25px;
-                        font-size: 14px;
-                        font-family: $hindFont;
-                        font-weight: 300;
-                        color: $eerieBlack;
-                        line-height: 150%;
-                    }
-                }
-
-                .imageMessage-box {
-                    display: flex;
-                    gap: 10px;
-                    align-items: center;
-                    padding: 10px 10px;
-
-                    .text-div {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 10px;
-                        font-family: $hindFont;
-                        font-size: 14px;
-                        line-height: 20px;
-                    }
-                    img {
-                        height: 120px;
-                        width: 120px;
-                    }
-                }
-            }
+            
 
             .second-box {
                 padding: 0px;
@@ -250,60 +256,7 @@
     }
 }
 
-.postWriter-container.alt .ql-toolbar {
-    --scale-factor: clamp(0.5, calc((100vw - 320px) / 1600), 1);
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    flex-wrap: nowrap;
-    gap: calc(10px * var(--scale-factor));
-}
 
-.postWriter-container.alt .ql-toolbar .ql-formats {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: calc(10px * var(--scale-factor));
-}
-
-.postWriter-container.alt .ql-toolbar .ql-formats button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    background: none;
-    border: none;
-    font-family: $montserratFont;
-    font-size: calc(20px * var(--scale-factor));
-    height: calc(64px * var(--scale-factor));
-    padding: 0 calc(10px * var(--scale-factor));
-}
-
-.postWriter-container.alt .ql-toolbar .ql-formats .ql-bold,
-.postWriter-container.alt .ql-toolbar .ql-formats .ql-italic {
-    width: calc(100px * var(--scale-factor));
-}
-
-.postWriter-container.alt .ql-toolbar .ql-formats .ql-underline,
-.postWriter-container.alt .ql-toolbar .ql-formats .ql-strike {
-    width: calc(128px * var(--scale-factor));
-}
-
-.postWriter-container.alt .ql-toolbar .ql-image,
-.postWriter-container.alt .ql-toolbar .ql-video,
-.postWriter-container.alt .ql-toolbar .ql-link {
-    width: calc(75px * var(--scale-factor));
-}
-
-.postWriter-container.alt .ql-toolbar .ql-code-block,
-.postWriter-container.alt .ql-toolbar .ql-list[value="bullet"],
-.postWriter-container.alt .ql-toolbar .ql-list[value="ordered"] {
-    width: calc(102px * var(--scale-factor));
-}
-
-.postWriter-container.alt .separator {
-    margin-left: calc(20px * var(--scale-factor));
-    margin-right: calc(20px * var(--scale-factor));
-}
 
 
 
@@ -314,6 +267,46 @@
             .left-side {
                 padding: 30px;
                 width: 100%;
+
+                .message-box {  
+                    display: flex;
+                    
+                    h1 {
+                        font-size: 20px;
+                        font-family: $loraItalicFont;
+                        font-style: italic;
+                    }
+                }
+
+                .second-box {
+                    padding: 0px;
+
+                    h1 {
+                        padding: 10px 20px;
+                        color: $eerieBlack;
+                        font-size: 16px;
+                        font-weight: 500;
+                    }
+
+                    .imageMessage-box {
+                        padding: 0px 10px 10px 10px;
+                        .text-div {
+                            p {
+                                font-size: 14px;
+                                font-family: $hindFont;
+                                line-height: 20px;
+                                color: $eerieBlack;
+                            }
+                        }
+                        
+                        img {
+                            width: 86px;
+                            height: 98px;
+                        }
+                    }
+                    
+
+                }
 
                 .hide-on-larger-screens {
                     display: block;
@@ -328,3 +321,46 @@
     }
 }
 
+
+
+@media (max-width: 700px) {
+    .askAquestion-container .askAquestion-wrapper .left-side .question-details .postWriter-container .ql-toolbar .ql-formats {
+        justify-content: center;
+    }
+
+
+}
+
+
+
+
+@media (max-width: 500px) {
+    .askAquestion-container {
+        .askAquestion-wrapper {
+            width: 100%;
+            display: flex;
+            gap: 20px;
+            
+            .left-side {
+            
+                > h1  {
+                    text-align: center; 
+                }
+                
+                .submit-question {
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 20px;
+
+                    #posteButton {
+                        padding: 6px 26px!important;
+                        font-size: 16px!important;
+                        font-family: $hindFont!important;
+                    }
+                }
+
+            }
+        }
+    }
+}
