@@ -7,6 +7,7 @@ import { Tag } from "../../components/Tag";
 import filterSettings from "../../assets/images/svg/filterSettings.svg";
 import { QuestionsFilterModal } from "../../components/QuestionsFilterModal";
 import { Pagination } from "../../components/QuestionsPagination";
+import { useNavigate } from "react-router-dom";
 
 const tags = ["Design", "Programação", "Arte", "Ciência de Dados", "Tecnologia"];
 
@@ -120,6 +121,18 @@ const questions = [
 ];
 
 export const Questions: React.FC = () => {
+
+
+    const navigate = useNavigate()
+
+
+    function navigateTo(path: string) {
+        window.scrollTo(0, 0); 
+        navigate(path);
+    }
+
+
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -155,6 +168,9 @@ export const Questions: React.FC = () => {
                                 fontSize="18px"
                                 text="Perguntar"
                                 padding="8px 41px"
+                                customId="askButton"
+                                onClick={() => {navigateTo("/ask-a-question")}}
+                                
                             />
                         </div>
                         <div className="category-selection">

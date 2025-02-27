@@ -47,6 +47,14 @@
                         font-weight: 600;
                         color: $eerieBlack;
                     }
+
+                    #askButton {
+                        transition: 0.1s ease-in-out;
+                    }
+
+                    #askButton:hover {
+                        transform: scale(1.05);
+                    }
                 }
 
                 .category-selection {
