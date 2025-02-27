@@ -1,7 +1,5 @@
 import React from "react";
-import  xIcon  from "../../assets/images/svg/xIcon.svg";
-
-
+import xIcon from "../../assets/images/svg/xIcon.svg";
 
 interface ITag {
     tags: string[];
@@ -10,7 +8,7 @@ interface ITag {
     icon?: boolean;
 }
 
-export const Tag: React.FC<ITag> = ({ tags, onTagRemove, disabled, icon,  }) => {
+export const Tag: React.FC<ITag> = ({ tags, onTagRemove, disabled, icon }) => {
     return (
         <div className="tag-list">
             {tags.map((tag, index) => (
@@ -18,12 +16,17 @@ export const Tag: React.FC<ITag> = ({ tags, onTagRemove, disabled, icon,  }) => 
                     disabled={disabled}
                     key={index}
                     className="tag-item"
-                    onClick={() => onTagRemove && onTagRemove(tag)}
+                    onClick={(e) => {
+                        e.stopPropagation(); 
+                        onTagRemove && onTagRemove(tag);
+                    }}
                 >
-                    {tag} {onTagRemove && ''}
+                    {tag} {onTagRemove && ""}
                     {icon ? <img src={xIcon} alt="X icon" /> : null}
                 </button>
             ))}
         </div>
     );
 };
+
+
