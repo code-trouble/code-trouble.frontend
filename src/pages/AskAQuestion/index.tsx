@@ -3,6 +3,7 @@ import CustomButton from "../../components/CustomButton";
 import { Header } from "../../components/Header";
 import correa from "../../assets/images/svg/mascote sp 1.svg"
 import { TagSelector } from "../../components/TagSelector";
+import { Footer } from "../../components/Footer";
 
 
 export const AskAQuestion: React.FC = () => {
@@ -138,6 +139,7 @@ export const AskAQuestion: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
 
     );
