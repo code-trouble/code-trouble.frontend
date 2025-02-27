@@ -1,7 +1,8 @@
 .tag-list {
     display: flex;
     gap: 10px;
-    width: 395px;
+    width: 100%;
+    flex-wrap: wrap;
 
     .tag-item {
       height: 32px;
