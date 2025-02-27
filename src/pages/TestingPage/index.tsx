@@ -1,6 +1,7 @@
 import React from "react";
 import { Header } from "../../components/Header";
-import { AltPostWriter } from "../../components/AltPostWriter";
+import { PostWriter } from "../../components/PostWriter";
+
 
 
 
@@ -9,7 +10,7 @@ export const TestingPage: React.FC = () => {
   return (
     <div className="main-wrapper">
       <Header theme="base" loggedIn={false}/>
-      <AltPostWriter/>
+      <PostWriter layout="blog"/>
     </div>
   );
 };

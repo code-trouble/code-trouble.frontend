@@ -2,6 +2,8 @@ import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
 import { Header } from "../../components/Header";
 import correa from "../../assets/images/svg/mascote sp 1.svg"
+import { TagSelector } from "../../components/TagSelector";
+import { Footer } from "../../components/Footer";
 
 
 export const AskAQuestion: React.FC = () => {
@@ -62,7 +64,7 @@ export const AskAQuestion: React.FC = () => {
                     <div className="tag-area">
                         <h6>Tags</h6>
                         <p>Adicione até 5 tags para descrever sobre o que sua pergunta é.</p>
-                        <input className="input-area" type="text" placeholder="Ex: javascript, array, front-end, etc" />
+                        <TagSelector/>
                     </div>
                     <div className="message-box second-box">
                         <h1>Adicionando tags</h1>
@@ -137,6 +139,7 @@ export const AskAQuestion: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
 
     );

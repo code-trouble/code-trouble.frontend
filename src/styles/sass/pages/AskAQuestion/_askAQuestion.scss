@@ -123,6 +123,7 @@
                     border: 1px solid #C7C7C7;
                     border-radius: 8px;
                     padding: 10px 14px;
+
                 }
             }
 
@@ -213,6 +214,15 @@
                     border: 1px solid #C7C7C7;
                     border-radius: 8px;
                     padding: 10px 14px;
+
+                    span {
+                        font-family: $hindFont;
+                        font-size: 14px;
+                        line-height: 24px;
+                        font-weight: 600;
+                        color: $frenchGray;
+                        user-select: none;
+                    }
                 }
 
             }

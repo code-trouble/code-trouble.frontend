@@ -200,31 +200,6 @@
         outline: none;
     }
 
-    .editor-tags {
-        .tags-button-wrapper {
-            position: relative;
-        }
-        .tags-button {
-            position: relative;
-            width: fit-content;
-            font-size: 16px;
-            font-family: $montserratFont;
-            padding: 5px 0;
-            border: none;
-            background: white;
-            color: gray;
-            text-align: left;
-            margin-left: 5px;
-            cursor: pointer;
-            &:hover {
-                color: black;
-            }
-            &:focus {
-                outline: none;
-            }
-        }
-    }
-
     .editor-area {
         min-height: 300px;
         height: auto;
@@ -268,40 +243,30 @@
         overflow: visible;
         white-space: nowrap;
         z-index: 1;
-    }
 
-    .tags-dropdown {
-        position: absolute;
-        top: calc(100% + 20px);
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        padding: 10px;
-        z-index: 9999;
-        min-width: 150px;
-        max-height: 200px;
-        overflow-y: auto;
-        transform-origin: top right;
-    }
+        .tags-button-wrapper {
+            position: relative;
+        }
 
-    .dropdown-tag-item {
-        display: block;
-        padding: 8px 12px;
-        background: #f9f9f9;
-        border: none;
-        text-align: left;
-        width: 100%;
-        cursor: pointer;
-        font-family: "Montserrat", sans-serif;
-        font-size: 14px;
-        color: #333;
-        border-radius: 4px;
-        transition: background-color 0.2s ease;
-        margin-bottom: 5px;
-    }
-    .dropdown-tag-item:hover {
-        background-color: #eaeaea;
+        .tags-button {
+            position: relative;
+            width: fit-content;
+            font-size: 16px;
+            font-family: $montserratFont;
+            padding: 5px 0;
+            border: none;
+            background: white;
+            color: gray;
+            text-align: left;
+            margin-left: 5px;
+            cursor: pointer;
+            &:hover {
+                color: black;
+            }
+            &:focus {
+                outline: none;
+            }
+        }
     }
 
     .tags-container {
@@ -446,7 +411,6 @@
                 justify-content: center;
                 gap: 10px;
             }
-
         }
     }
 }
