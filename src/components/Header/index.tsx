@@ -142,15 +142,15 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
                 <img src={closeX} alt="" onClick={toggleMenu} />
               </div>
               <div className="nav-links-column">
-                <a className="icon-with-a" onClick={() => {navigateTo("/")}} href="">
+                <span className="icon-with-a" onClick={() => {navigateTo("/")}}>
                   <img src={home} alt="" /> Home
-                </a>
-                <a className="icon-with-a" onClick={() => {navigateTo("/questions")}} href="">
+                </span>
+                <span className="icon-with-a" onClick={() => {navigateTo("/questions")}}>
                   <img src={questions} alt="" /> Perguntas
-                </a>
-                <a className="icon-with-a" onClick={() => {navigateTo("/blog")}} href="">
+                </span>
+                <span className="icon-with-a" onClick={() => {navigateTo("/blog")}}>
                   <img src={blog} alt="" /> Blog
-                </a>
+                </span>
                 {loggedIn ? (
                   <a className="icon-with-a sair" onClick={handleModalOpen} href="#">
                     <img src={sair} alt="" /> Sair
