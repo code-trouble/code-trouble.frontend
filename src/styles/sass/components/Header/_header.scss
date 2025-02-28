@@ -402,10 +402,11 @@
         }
     
     
-        .nav-links-column a {
+        .nav-links-column span {
             font-family: $montserratFont;
             color: black;
             font-weight: 600;
+            text-decoration: underline;
         }
     
         .icon-with-a {
