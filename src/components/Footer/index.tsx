@@ -34,9 +34,9 @@ export const Footer: React.FC<IFooter> = ({customStyle}) => {
       <main>
         <nav className="exploreNav">
           <h1>Explore</h1>
-          <a onClick={() => {navigateTo("/")}} href="">Home</a>
-          <a onClick={() => {navigateTo("/blog")}} href="">Blog</a>
-          <a onClick={() => {navigateTo("/questions")}} href="">Questões</a>
+          <span onClick={() => {navigateTo("/")}} >Home</span>
+          <span onClick={() => {navigateTo("/blog")}}>Blog</span>
+          <span onClick={() => {navigateTo("/questions")}}>Questões</span>
         </nav>
         <section className="contactSection">
           <nav className="contactNav">
