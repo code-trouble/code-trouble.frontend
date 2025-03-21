@@ -1,4 +1,4 @@
-.outer-post-wrpaper {
+.outer-post-wrapper {
     .blog-post-mobile-footer {
         display: none;
     }
@@ -69,7 +69,7 @@
 
 
 @media (max-width: 1100px) {
-    .outer-post-wrpaper {
+    .outer-post-wrapper {
         .post-wrapper {
             align-items: center;
             .post-content {
@@ -108,7 +108,7 @@
 
 
 @media (max-width: 600px) {
-    .outer-post-wrpaper {
+    .outer-post-wrapper {
         .post-wrapper {
             display: flex;
             align-items: center;
@@ -145,6 +145,10 @@
             display: flex;
             justify-content: space-between;
             margin-top: 10px;
+
+            align-items: center;
+            gap: 20px;
+
             .main-footer {
                 display: flex;
                 align-items: center;
@@ -166,4 +170,12 @@
         }
     }
     
+}
+
+@media (max-width: 300px ) {
+    .outer-post-wrapper {
+        padding: 0px 0px 20px 0px;
+    
+
+    }
 }
