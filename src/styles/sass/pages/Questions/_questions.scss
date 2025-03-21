@@ -258,7 +258,31 @@
 @media (max-width: 430px) {
     .questions-container {
         .questions-title {
-            justify-content: unset!important;
+            justify-content: space-between;
+            
+
+            h1 {
+                margin-right: 0px!important;
+
+            }
+
+
+            #askButton {
+                padding: 4px 24px!important;
+            }
+        }
+    }
+}
+
+
+
+@media (max-width: 360px) {
+    .questions-container {
+        .questions-title {
+
+
+
+
         }
     }
 }
