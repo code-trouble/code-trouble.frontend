@@ -3,7 +3,6 @@ import code from "../../assets/images/svg/codeLogo.svg"
 import codeBlue from "../../assets/images/svg/codeLogoBlue.svg"
 import smallCode from "../../assets/images/svg/smCodeLogo.svg"
 import smallCodeBlue from "../../assets/images/svg/smCodeLogoBlue.svg"
-import lupa from "../../assets/images/svg/lupaGlass.svg"
 import burger from "../../assets/images/svg/burgerMenu.svg"
 import closeX from "../../assets/images/svg/closeMenu.svg"
 import home from "../../assets/images/svg/home.svg"
@@ -14,6 +13,7 @@ import sair from "../../assets/images/svg/sair.svg"
 import { Avatar } from "../Avatar";
 import { AuthModal } from "../AuthModal";
 import { useNavigate } from "react-router-dom";
+import { SearchBar } from "./searchbar";
 
 
 interface IHeader {
@@ -67,8 +67,7 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
       </div>
 
       <div className="searchBar">
-        <img  src={lupa} alt="lupa"/>
-        <input type="text" placeholder="Pesquisar"/>
+        <SearchBar />
       </div>
     
       <div>

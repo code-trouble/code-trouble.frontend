@@ -13,7 +13,7 @@ interface IBlogPostPreview {
 
 export const BlogPostPreview: React.FC<IBlogPostPreview> = ({ blogPostTitle, blogPostDescription, image }) => {
     return (
-        <div className="outer-post-wrpaper">
+        <div className="outer-post-wrapper">
             <div className="post-wrapper">
                 <div className="post-content">
                     <Avatar name="Joana Lima" sizes="medium"/>
