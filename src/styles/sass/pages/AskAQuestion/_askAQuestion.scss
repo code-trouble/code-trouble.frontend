@@ -1,3 +1,6 @@
+@use '../../base/variables' as *;
+
+
 .message-box {
     padding: 20px;
     border: 1px solid $successColor;
