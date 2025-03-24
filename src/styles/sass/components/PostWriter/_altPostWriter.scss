@@ -1,3 +1,6 @@
+@use '../../base/variables' as *;
+
+
 .postWriter-container.alt .ql-toolbar {
     --scale-factor: clamp(0.5, calc((100vw - 320px) / 1600), 1);
     display: flex;
