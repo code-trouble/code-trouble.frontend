@@ -1,32 +1,34 @@
-@import './base/variables';
-@import './base/reset';
+@use './pages/Blog/blog';
 
-@import './components/OldLanding/oldNavBar';
-@import './components/OldLanding/pageStyles';
-@import './components/OldLanding/textButton';
-@import './components/Header/header';
-@import './components/Header/searchBar';
-@import './components/Avatar/avatar';
-@import './components/StackedCards/stackedCard';
-@import './components/StackedCards/stackedCards';
-@import './components/Tag/tagStyles';
-@import './components/AuthModal/authModal';
-@import './components/AuthModal/authForm';
-@import './components/ToggleButton/toggleButton';
-@import './components/CustomButton/customButton';
-@import './components/PostWriter/postWriter';
-@import './components/PostWriter/altPostWriter';
-@import './pages/LandingPage/landingPage';
-@import './pages/Questions/questions';
-@import './pages/AskAQuestion/askAQuestion';
-@import './pages/Blog/blog';
-@import './components/BlogPostPreview/blogPostPreview';
-@import './components/QuestionPreview/questionPreview';
-@import './components/QuestionsFilterModal/questionsFIlterModal';
-@import './components/QuestionsPagination/questionsPagination';
-@import './components/Footer/footer';
-@import './components/TooltipDescription/tooltipDescription';
-@import './components/TagSelector/tagSelector';
+@use './base/variables';
+@use './base/reset';
+
+@use './components/OldLanding/oldNavBar';
+@use './components/OldLanding/pageStyles';
+@use './components/OldLanding/textButton';
+@use './components/Header/header';
+@use './components/Header/searchBar';
+@use './components/Avatar/avatar';
+@use './components/StackedCards/stackedCard';
+@use './components/StackedCards/stackedCards';
+@use './components/Tag/tagStyles';
+@use './components/AuthModal/authModal';
+@use './components/AuthModal/authForm';
+@use './components/ToggleButton/toggleButton';
+@use './components/CustomButton/customButton';
+@use './components/PostWriter/postWriter';
+@use './components/PostWriter/altPostWriter';
+@use './pages/LandingPage/landingPage';
+@use './pages/Questions/questions';
+@use './pages/AskAQuestion/askAQuestion';
+
+@use './components/BlogPostPreview/blogPostPreview';
+@use './components/QuestionPreview/questionPreview';
+@use './components/QuestionsFilterModal/questionsFIlterModal';
+@use './components/QuestionsPagination/questionsPagination';
+@use './components/Footer/footer';
+@use './components/TooltipDescription/tooltipDescription';
+@use './components/TagSelector/tagSelector';
 
 
 @font-face {
