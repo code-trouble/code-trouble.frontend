@@ -80,7 +80,7 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
             <img
               className="logo"
               src={logoCodePrimary}
-              alt="logo code trouble na cor verde, primary"
+              alt="logo code trouble na cor verde"
             />
             <img
               className="mascote"
