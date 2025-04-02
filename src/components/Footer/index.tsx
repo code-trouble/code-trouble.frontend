@@ -42,11 +42,11 @@ export const Footer: React.FC<IFooter> = ({customStyle}) => {
           <nav className="contactNav">
             <h1>Entre em Contato</h1>
             <a href="">
-              <img src={whatsApp} alt="" />
+              <img src={whatsApp} alt="logo do whatsapp" />
               <p>(11) 9 4996-3686</p>
             </a>
             <a href="">
-              <img src={email} alt="" />
+              <img src={email} alt="icone de mensagem email" />
               <p>suportededomingo@outlook.com</p>
             </a>
           </nav>
