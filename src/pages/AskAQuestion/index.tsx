@@ -34,7 +34,7 @@ export const AskAQuestion: React.FC = () => {
                     <div className="message-box second-box">
                         <h1>Escrevendo um bom título</h1>
                         <div className="imageMessage-box">
-                            <img src={correa} alt="" />
+                            <img src={correa} alt="profile image for the information area" />
                             <div className="text-div">
                                 <p>O título da sua pergunta deve resumir bem o seu problema.</p>
                                 <p>Lembre-se sempre de usar palavras chave, para a sua pergunta ter mais chance de aperecer em pesquisas dos usuários.</p>
@@ -54,7 +54,7 @@ export const AskAQuestion: React.FC = () => {
                     <div className="message-box second-box">
                         <h1>Revise antes de postar</h1>
                         <div className="imageMessage-box">
-                            <img src={correa} alt="" />
+                            <img src={correa} alt="profile image for the information area" />
                             <div className="text-div">
                                 <p>Agora que está pronto para postar sua pergunta, releia do começo ao fim. Ela faz sentido?</p>
                                 <p>Adicione quaisquer detalhes que possa ter esquecido e releia novamente. Agora é um bom momento para ter certeza de que o título ainda descreve bem o seu problema.</p>
@@ -69,7 +69,7 @@ export const AskAQuestion: React.FC = () => {
                     <div className="message-box second-box">
                         <h1>Adicionando tags</h1>
                         <div className="imageMessage-box">
-                            <img src={correa} alt="" />
+                            <img src={correa} alt="profile image for the information area" />
                             <div className="text-div">
                                 <p>As tags garantem que sua pergunta terá atenção das pessoas certas.</p>
                                 <p>Adicione tags de linguagens ou tecnologias usadas.</p>
@@ -110,7 +110,7 @@ export const AskAQuestion: React.FC = () => {
                     <div className="message-box second-box">
                         <h1>Escrevendo um bom título</h1>
                         <div className="imageMessage-box">
-                            <img src={correa} alt="" />
+                            <img src={correa} alt="profile image for the information area" />
                             <div className="text-div">
                                 <p>O título da sua pergunta deve resumir bem o seu problema.</p>
                                 <p>Lembre-se sempre de usar palavras chave, para a sua pergunta ter mais chance de aperecer em pesquisas dos usuários.</p>
@@ -120,7 +120,7 @@ export const AskAQuestion: React.FC = () => {
                     <div className="message-box second-box">
                         <h1>Revise antes de postar</h1>
                         <div className="imageMessage-box">
-                            <img src={correa} alt="" />
+                            <img src={correa} alt="profile image for the information area" />
                             <div className="text-div">
                                 <p>Agora que está pronto para postar sua pergunta, releia do começo ao fim. Ela faz sentido?</p>
                                 <p>Adicione quaisquer detalhes que possa ter esquecido e releia novamente. Agora é um bom momento para ter certeza de que o título ainda descreve bem o seu problema.</p>
@@ -130,7 +130,7 @@ export const AskAQuestion: React.FC = () => {
                     <div className="message-box second-box">
                         <h1>Adicionando tags</h1>
                         <div className="imageMessage-box">
-                            <img src={correa} alt="" />
+                            <img src={correa} alt="profile image for the information area" />
                             <div className="text-div">
                                 <p>As tags garantem que sua pergunta terá atenção das pessoas certas.</p>
                                 <p>Adicione tags de linguagens ou tecnologias usadas.</p>
