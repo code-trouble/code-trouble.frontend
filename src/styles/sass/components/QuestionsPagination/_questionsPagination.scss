@@ -22,7 +22,10 @@
     .pagination-button {
         display: flex;
         align-items: center;
+        justify-content: center;
         font-family: $montserratFont;
+        width: 20px;
+        height: 20px;
 
         .pagination-control {
             font-family: $mainFont;
