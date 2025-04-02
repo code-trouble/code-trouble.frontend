@@ -62,7 +62,7 @@ export const LandingPage: React.FC = () => {
               </div>
             </div>
             <div className="messageBox">
-              <img src={messageBox} alt=""/>
+              <img src={messageBox} alt="chatting bubble image"/>
             </div>
           </div>
 
