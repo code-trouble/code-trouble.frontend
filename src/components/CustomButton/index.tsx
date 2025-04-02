@@ -41,7 +41,7 @@ export const CustomButton: React.FC<ICustomButton> = ({
             onClick={onClick}
             >
             {text}
-            {icon && <img src={icon}/>}
+            {icon && <img src={icon}  alt="icon for a button"/>}
         </button>
     );
 };
