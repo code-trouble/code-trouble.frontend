@@ -16,6 +16,7 @@ interface IStackedCard {
   isDisabled: boolean;
 }
 
+
 export const StackedCard: React.FC<IStackedCard> = ({
   username,
   headingTitle,
@@ -26,7 +27,7 @@ export const StackedCard: React.FC<IStackedCard> = ({
   isDisabled,
 }) => {
   return (
-    <div className="card">
+    <div  aria-hidden="true" className="card">
       <div className="card-header">
         <h1 className="card-title">Escolhas da comunidade</h1>
       </div>
