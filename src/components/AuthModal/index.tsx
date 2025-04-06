@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import FocusLock from "react-focus-lock";
 import { SignIn, SignUp, ForgotPassword, RecoveryPassword } from "./Form";
 import { logoCodePrimary } from "../../assets/images/svg/icons";
 import { ProfessorCorrea } from "../../assets/images/svg/illustration";
@@ -17,7 +18,6 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
     };
 
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -50,10 +50,9 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
           textDecoration: "Login",
         };
       default:
-        return null; // Retorne `null` ou um objeto vazio, se necessário
+        return null;
     }
   };
-  
 
   const renderForm = () => {
     switch (type) {
@@ -74,38 +73,40 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
 
   return (
     <div className="overlay" onClick={onClose}>
-      <dialog onClick={(e) => e.stopPropagation()}>
-        {windowWidth > 1070 && (
-          <figure>
-            <img
-              className="logo"
-              src={logoCodePrimary}
-              alt="logo code trouble na cor verde, primary"
-            />
-            <img
-              className="mascote"
-              src={ProfessorCorrea}
-              alt="avatar do professor Corrêa"
-            />
-          </figure>
-        )}
-        <aside>
-          <h1 className="modal-title">{names?.title}</h1>
-          <main className="form-container">{renderForm()}</main>
-          <section>
-            <div className="option-container">
-              <div className="option-wrapper">
-                <div className="line"></div>
-                <p className="option-text">ou</p>
-                <div className="line"></div>
+      <FocusLock>
+        <dialog onClick={(e) => e.stopPropagation()}>
+          {windowWidth > 1070 && (
+            <figure>
+              <img
+                className="logo"
+                src={logoCodePrimary}
+                alt="logo code trouble na cor verde"
+              />
+              <img
+                className="mascote"
+                src={ProfessorCorrea}
+                alt="avatar do professor Corrêa"
+              />
+            </figure>
+          )}
+          <aside>
+            <h1 className="modal-title">{names?.title}</h1>
+            <main className="form-container">{renderForm()}</main>
+            <section>
+              <div className="option-container">
+                <div className="option-wrapper">
+                  <div className="line"></div>
+                  <p className="option-text">ou</p>
+                  <div className="line"></div>
+                </div>
+                <p>
+                  {names?.text} <button>{names?.textDecoration}</button>
+                </p>
               </div>
-              <p>
-                {names?.text} <button>{names?.textDecoration}</button>
-              </p>
-            </div>
-          </section>
-        </aside>
-      </dialog>
+            </section>
+          </aside>
+        </dialog>
+      </FocusLock>
     </div>
   );
 };

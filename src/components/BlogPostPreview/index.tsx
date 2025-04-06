@@ -22,11 +22,11 @@ export const BlogPostPreview: React.FC<IBlogPostPreview> = ({ blogPostTitle, blo
                     <div className="blog-post-footer">
                         <div className="main-footer">
                             <span>10 Nov, 2024</span>
-                            <p><img src={heart}/> 120k</p>
-                            <p><img src={comments}/> 302</p>
+                            <p><img src={heart} alt="like icon"/> 120k</p>
+                            <p><img src={comments} alt="comments icon"/> 302</p>
                         </div>
                         <div className="sub-footer">
-                            <img src={favorite} alt="" />
+                            <img src={favorite} alt="favorite icon" />
                         </div>
                     </div>
                 </div>
@@ -41,11 +41,11 @@ export const BlogPostPreview: React.FC<IBlogPostPreview> = ({ blogPostTitle, blo
             <div className="blog-post-mobile-footer">
                 <div className="main-footer">
                     <span>10 Nov, 2024</span>
-                    <p><img src={heart}/> 120k</p>
-                    <p><img src={comments}/> 302</p>
+                    <p><img src={heart} alt="like icon"/> 120k</p>
+                    <p><img src={comments} alt="comments icon"/> 302</p>
                 </div>
                 <div className="sub-footer">
-                    <img src={favorite} alt="" />
+                    <img src={favorite} alt="mobile favorite icon" />
                 </div>
             </div>
         </div>               

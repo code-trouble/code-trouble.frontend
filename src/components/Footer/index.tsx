@@ -9,23 +9,22 @@ import {
   whatsApp,
 } from "../../assets/images/svg/icons";
 import { useNavigate } from "react-router-dom";
+import { makeElementAccessible } from "../../utils/makeElementAccessible";
 
 interface IFooter {
   customStyle?: React.CSSProperties;
 }
 
-export const Footer: React.FC<IFooter> = ({customStyle}) => {
+export const Footer: React.FC<IFooter> = ({ customStyle }) => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-
-
-    function navigateTo(path: string) {
-      window.scrollTo(0, 0); 
-      navigate(path);
-    }
+  function navigateTo(path: string) {
+    window.scrollTo(0, 0);
+    navigate(path);
+  }
 
   return (
-  <footer className="footer-container" style={customStyle}>
+    <footer className="footer-container" style={customStyle}>
       <img
         className="footer-logo"
         src={logoCodePrimaryFull}
@@ -34,22 +33,24 @@ export const Footer: React.FC<IFooter> = ({customStyle}) => {
       <main>
         <nav className="exploreNav">
           <h1>Explore</h1>
-          <span onClick={() => {navigateTo("/")}} >Home</span>
-          <span onClick={() => {navigateTo("/blog")}}>Blog</span>
-          <span onClick={() => {navigateTo("/questions")}}>Questões</span>
+          <span {...makeElementAccessible(() => navigateTo("/"))}>Home</span>
+          <span {...makeElementAccessible(() => navigateTo("/blog"))}>Blog</span>
+          <span {...makeElementAccessible(() => navigateTo("/questions"))}>Questões</span>
         </nav>
+
         <section className="contactSection">
           <nav className="contactNav">
             <h1>Entre em Contato</h1>
             <a href="">
-              <img src={whatsApp} alt="" />
+              <img src={whatsApp} alt="logo do whatsapp" />
               <p>(11) 9 4996-3686</p>
             </a>
             <a href="">
-              <img src={email} alt="" />
+              <img src={email} alt="icone de mensagem email" />
               <p>suportededomingo@outlook.com</p>
             </a>
           </nav>
+
           <nav className="lowerContactNav">
             <h1>Nossas Redes & Comunidades</h1>
             <div className="social-medias">
@@ -68,17 +69,23 @@ export const Footer: React.FC<IFooter> = ({customStyle}) => {
             </div>
           </nav>
         </section>
+
         <div className="footer-contact">
           <div className="updatesText">
             <h1>Receba Atualizações</h1>
             <p>Se Inscreva na nossa NewsLetter.</p>
           </div>
           <form className="footer-messageForm">
-            <input className="footerInput" placeholder="Digite seu email" type="email" name="" id="" />
+            <input
+              className="footerInput"
+              placeholder="Digite seu email"
+              type="email"
+            />
             <button type="submit">Registrar-se</button>
           </form>
         </div>
       </main>
+
       <div className="footer-bottom">
         <p>
           <span>© 2024.</span> All Rights Reserved.
