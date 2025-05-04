@@ -137,5 +137,20 @@
     aside {
       margin-left: 0.5px;
     }
+
+  }
+}
+
+
+@media (max-width: 360px) {
+  .overlay {
+    aside {
+      margin-left: 0.5px;
+    }
+
+    dialog {
+      width: 320px;
+      height: 614px;
+    }
   }
 }
