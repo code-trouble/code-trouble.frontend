@@ -10,7 +10,11 @@ const signInSchema = z.object({
 
 type SignInFormData = z.infer<typeof signInSchema>;
 
-export const SignIn: React.FC = () => {
+interface SignInProps {
+  onForgot: () => void;
+}
+
+export const SignIn: React.FC<SignInProps> = ({ onForgot }) => {
   const {
     register,
     handleSubmit,
@@ -50,7 +54,7 @@ export const SignIn: React.FC = () => {
             <p className="error-message">{errors.password.message}</p>
           )}
         </section>
-        <button className="btn-link" type="button">
+        <button className="btn-link" onClick={onForgot} type="button">
           Esqueceu a senha?
         </button>
       </div>
