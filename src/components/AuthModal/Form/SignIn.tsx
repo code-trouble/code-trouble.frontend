@@ -10,11 +10,11 @@ const signInSchema = z.object({
 
 type SignInFormData = z.infer<typeof signInSchema>;
 
-interface SignInProps {
+interface ISignIn {
   onForgot: () => void;
 }
 
-export const SignIn: React.FC<SignInProps> = ({ onForgot }) => {
+export const SignIn: React.FC<ISignIn> = ({ onForgot }) => {
   const {
     register,
     handleSubmit,
