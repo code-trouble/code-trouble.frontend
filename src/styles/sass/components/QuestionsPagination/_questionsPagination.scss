@@ -22,7 +22,7 @@
     .pagination-button {
         display: flex;
         align-items: center;
-        justify-content: centerBOm o;
+        justify-content: center;
         font-family: $montserratFont;
         width: 20px;
         height: 20px;
@@ -52,8 +52,9 @@
 @media (max-width: 600px) {
     .pagination {
         width: 100%;
-        padding: 50px 107px;
-
+        display: flex;
+        justify-content: center;
+        padding: 20px 0px;
     }
 }
 
@@ -62,7 +63,6 @@
 @media (max-width: 400px) {
     .pagination {
         width: 100%;
-        padding: 40px 0px 40px 80px;
 
     }
 }

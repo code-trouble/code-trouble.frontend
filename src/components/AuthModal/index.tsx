@@ -11,6 +11,8 @@ interface IAuthModal {
 
 export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [currentType, setCurrentType] = useState<IAuthModal['type']>(type);
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -24,7 +26,7 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
   }, []);
 
   const renderNames = () => {
-    switch (type) {
+    switch (currentType) {
       case "signIn":
         return {
           title: "Login",
@@ -55,9 +57,9 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
   };
 
   const renderForm = () => {
-    switch (type) {
+    switch (currentType) {
       case "signIn":
-        return <SignIn />;
+        return <SignIn onForgot={() => setCurrentType("forgot")} />;
       case "signUp":
         return <SignUp />;
       case "forgot":
@@ -70,6 +72,8 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
   };
 
   const names = renderNames();
+  const nextType = currentType === "signIn" ? "signUp" : "signIn";
+
 
   return (
     <div className="overlay" onClick={onClose}>
@@ -100,7 +104,7 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
                   <div className="line"></div>
                 </div>
                 <p>
-                  {names?.text} <button>{names?.textDecoration}</button>
+                  {names?.text} <button onClick={() => setCurrentType(nextType)}>{names?.textDecoration}</button>
                 </p>
               </div>
             </section>
