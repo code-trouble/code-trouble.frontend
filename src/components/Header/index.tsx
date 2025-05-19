@@ -47,13 +47,13 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
         <img 
           className="normal-logo" 
           src={theme === 'base' ? code : codeBlue} 
-          alt="code-logo"
+          alt="navbar Code Trouble logo"
         />
 
         <img 
           className="small-logo" 
           src={theme === 'base' ? smallCode : smallCodeBlue} 
-          alt="code-logo"
+          alt="navbar Code Trouble logo"
         />
       </div>
       
@@ -96,7 +96,7 @@ export const Header: React.FC<IHeader> = ({theme, loggedIn}) => {
 
       {/* HAMBURGUER MENU */}
       <div className="burguer-div"  {...makeElementAccessible(toggleMenu, 'button')}>
-        <img className="hamburger" src={burger} alt="burger menu"/>
+        <img className="hamburger" src={burger} alt="hamburger menu"/>
       
         {menuOpen && (
           <>
