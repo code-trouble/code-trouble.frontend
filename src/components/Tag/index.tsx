@@ -22,7 +22,7 @@ export const Tag: React.FC<ITag> = ({ tags, onTagRemove, disabled, icon }) => {
                     }}
                 >
                     {tag} {onTagRemove && ""}
-                    {icon ? <img src={xIcon} alt="X icon" /> : null}
+                    {icon ? <img src={xIcon} alt="remove tag icon" /> : null}
                 </button>
             ))}
         </div>
