@@ -69,7 +69,7 @@ export const Pagination: React.FC<IPaginationProps> = ({
                 </button>
             ) : (
                 <span className="pagination-dots">
-                    <img src={pagination3Dots} alt="3 dots" />
+                    <img src={pagination3Dots} alt="próximas páginas da paginação" />
                 </span>
             )}
 
@@ -86,7 +86,7 @@ export const Pagination: React.FC<IPaginationProps> = ({
 
             {currentPage + 4 < totalPages && (
                 <span className="pagination-dots">
-                    <img src={pagination3Dots} alt="3 dots" />
+                    <img src={pagination3Dots} alt="próximas páginas da páginação" />
                 </span>
             )}
 
