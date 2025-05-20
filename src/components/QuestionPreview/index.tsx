@@ -24,7 +24,7 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({questionTitle, qu
                     <Avatar sizes="small" name="Joana Lima" role="8 minutos atrás"/>
                     <div className="previewQuestion-comments">
                         <p>4</p>
-                        <img src={comments} alt="comments img"/>
+                        <img src={comments} alt="icone de comentário"/>
                     </div>
                 </div>
                 <div>

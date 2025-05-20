@@ -71,7 +71,7 @@ export const SearchBar: React.FC = () => {
     return (
         <>
             <div className="search-input-wrapper">
-                <img src={lupa} alt="lupa" />
+                <img src={lupa} alt="icone de lupa para pesquisa" />
                 <input
                     type="text"
                     placeholder="Pesquisar"

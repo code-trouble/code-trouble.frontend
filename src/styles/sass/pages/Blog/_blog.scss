@@ -32,6 +32,13 @@
                 gap: 60px;
             }
                 
+                @media (max-width: 400px) {
+                        
+                    &::-webkit-scrollbar {
+                        width: 3px; 
+                    }
+                }
+
                 &::-webkit-scrollbar {
                     width: 12px; 
                 }

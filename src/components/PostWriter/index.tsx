@@ -164,12 +164,12 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                 replaceIcon('.ql-italic', 'Italic')
                 replaceIcon('.ql-underline', 'Underline')
                 replaceIcon('.ql-strike', 'Strike')
-                replaceIcon('.ql-list[value="bullet"]', `<img src="${toolbarList}" alt="Bullet List" />`)
-                replaceIcon('.ql-list[value="ordered"]', `<img src="${toolbarOrdered}" alt="Ordered List" />`)
-                replaceIcon('.ql-code-block', `<img src="${codespace}" alt="Code Block" />`)
-                replaceIcon('.ql-link', `<img src="${toolbarLink}" alt="Link" />`)
-                replaceIcon('.ql-image', `<img src="${toolbarImg}" alt="Image" />`)
-                replaceIcon('.ql-video', `<img src="${toolbarVideo}" alt="Video" />`)
+                replaceIcon('.ql-list[value="bullet"]', `<img src="${toolbarList}" alt="Bullet List tool" />`)
+                replaceIcon('.ql-list[value="ordered"]', `<img src="${toolbarOrdered}" alt="Ordered List tool" />`)
+                replaceIcon('.ql-code-block', `<img src="${codespace}" alt="Code Block tool" />`)
+                replaceIcon('.ql-link', `<img src="${toolbarLink}" alt="Link tool" />`)
+                replaceIcon('.ql-image', `<img src="${toolbarImg}" alt="Image tool" />`)
+                replaceIcon('.ql-video', `<img src="${toolbarVideo}" alt="Video tool" />`)
             }, 100)
         }
     }, []);
@@ -232,7 +232,7 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                     <>
                         <div className='submitButtons'>
                             <button>
-                                <img src={favoriteBadge} alt="favoritar"/>
+                                <img src={favoriteBadge} alt="botão para favoritar"/>
                             </button>
                             <CustomButton
                                 text='Postar'
