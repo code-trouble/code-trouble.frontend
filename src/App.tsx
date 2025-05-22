@@ -6,6 +6,7 @@ import { LandingPage } from "./pages/Landing";
 import { Questions } from "./pages/Questions";
 import { Blog } from "./pages/Blog";
 import { AskAQuestion } from "./pages/AskAQuestion";
+import { WriteAPost } from "./pages/WriteAPost";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="test" element={<TestingPage />} />              {/* Pagina de testes */}
         <Route path="questions" element={<Questions />} />              {/* Veja as perguntas */}
         <Route path="ask-a-question" element={<AskAQuestion />} />              {/* Faça uma pergunta */}
+        <Route path="write-a-post" element={<WriteAPost />} />              {/* Faça uma pergunta */}
         <Route path="blog" element={<Blog />} />              {/* BlogPage */}
       </Routes>
     </>
