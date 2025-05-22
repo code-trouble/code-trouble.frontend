@@ -12,15 +12,12 @@ import { Tag } from '../Tag';
 import CustomButton from '../CustomButton';
 import { TooltipDescription } from './TooltipDescription';
 
-
 interface IPostWriter {
-    layout:  "q&a" | "blog";
+    layout: "q&a" | "blog";
 }
 
 export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
-
     const toolbarId = useRef('custom-toolbar-' + Math.random().toString(36).substring(2, 9));
-
 
     useEffect(() => {
         const updateToolbarPosition = () => {
@@ -107,31 +104,48 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                                     this.quill.format('code-block', !format['code-block']);
                                 }
                             },
-                            'image': function (this: { quill: Quill }) {
+                            // === aqui somente foi ajustado o handler de "image" ===
+                            'image': function(this: { quill: Quill }) {
                                 const range = this.quill.getSelection();
                                 const input = document.createElement('input');
                                 input.setAttribute('type', 'file');
                                 input.setAttribute('accept', 'image/*');
-                                input.click();
-                                input.onchange = () => {
-                                    const file = input.files ? input.files[0] : null;
+                                input.style.display = 'none';
+                                document.body.appendChild(input);
+
+                                input.addEventListener('change', () => {
+                                    const file = input.files?.[0];
                                     if (!file) return;
-                        
+
                                     const reader = new FileReader();
                                     reader.onload = () => {
-                                        const rangeToInsert = range || { index: this.quill.getLength(), length: 0 }; 
-                                        this.quill.insertEmbed(rangeToInsert.index, 'image', reader.result);
-                                        this.quill.setSelection(rangeToInsert.index + 1);
+                                        // garante que o editor está em foco
+                                        this.quill.focus();
+                                        const rangeToInsert = range || { index: this.quill.getLength(), length: 0 };
+                                        // insere a imagem com fonte "user"
+                                        this.quill.insertEmbed(
+                                            rangeToInsert.index,
+                                            'image',
+                                            reader.result,
+                                            'user'
+                                        );
+                                        // posiciona o cursor logo após
+                                        this.quill.setSelection(rangeToInsert.index + 1, 0, 'user');
                                     };
                                     reader.readAsDataURL(file);
-                                };
+
+                                    // remove o input do DOM após uso
+                                    document.body.removeChild(input);
+                                });
+
+                                input.click();
                             }
                         }
                     }
                 },
                 placeholder: '',
-            });  
-                        
+            });
+
             const updatePlaceholder = () => {
                 const editor = quillRef.current?.querySelector('.ql-editor');
                 const textLength = editorRef.current?.getText().trim().length;
@@ -141,7 +155,7 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                     editor?.removeAttribute('data-placeholder');
                 }
             };
-    
+
             editorRef.current.on('text-change', updatePlaceholder);
             editorRef.current.on('selection-change', (range) => {
                 if (range == null) {
@@ -149,31 +163,30 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                 }
             });
             updatePlaceholder();
-    
+
             // Customize toolbar icons
             setTimeout(() => {
-                const toolbarContainer = document.getElementById(toolbarId.current)!
+                const toolbarContainer = document.getElementById(toolbarId.current)!;
                 const replaceIcon = (selector: string, newIcon: string) => {
-                const button = toolbarContainer.querySelector(selector)
-                if (button) {
-                    button.innerHTML = newIcon
-                }
-                }
-            
-                replaceIcon('.ql-bold', 'Bold')
-                replaceIcon('.ql-italic', 'Italic')
-                replaceIcon('.ql-underline', 'Underline')
-                replaceIcon('.ql-strike', 'Strike')
-                replaceIcon('.ql-list[value="bullet"]', `<img src="${toolbarList}" alt="Bullet List tool" />`)
-                replaceIcon('.ql-list[value="ordered"]', `<img src="${toolbarOrdered}" alt="Ordered List tool" />`)
-                replaceIcon('.ql-code-block', `<img src="${codespace}" alt="Code Block tool" />`)
-                replaceIcon('.ql-link', `<img src="${toolbarLink}" alt="Link tool" />`)
-                replaceIcon('.ql-image', `<img src="${toolbarImg}" alt="Image tool" />`)
-                replaceIcon('.ql-video', `<img src="${toolbarVideo}" alt="Video tool" />`)
-            }, 100)
+                    const button = toolbarContainer.querySelector(selector);
+                    if (button) {
+                        button.innerHTML = newIcon;
+                    }
+                };
+
+                replaceIcon('.ql-bold', 'Bold');
+                replaceIcon('.ql-italic', 'Italic');
+                replaceIcon('.ql-underline', 'Underline');
+                replaceIcon('.ql-strike', 'Strike');
+                replaceIcon('.ql-list[value="bullet"]', `<img src="${toolbarList}" alt="Bullet List tool" />`);
+                replaceIcon('.ql-list[value="ordered"]', `<img src="${toolbarOrdered}" alt="Ordered List tool" />`);
+                replaceIcon('.ql-code-block', `<img src="${codespace}" alt="Code Block tool" />`);
+                replaceIcon('.ql-link', `<img src="${toolbarLink}" alt="Link tool" />`);
+                replaceIcon('.ql-image', `<img src="${toolbarImg}" alt="Image tool" />`);
+                replaceIcon('.ql-video', `<img src="${toolbarVideo}" alt="Video tool" />`);
+            }, 100);
         }
     }, []);
-    
 
     const handleAddTag = (tag: string) => {
         if (!selectedTags.includes(tag)) {
@@ -187,7 +200,6 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
     };
 
     const toggleDropdown = () => setDropdownOpen((prev) => !prev);
-
 
     useEffect(() => {
         const adjustDropdownPosition = () => {
@@ -218,6 +230,46 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
         };
     }, [dropdownOpen]);
 
+    useEffect(() => {
+        const btn = document.querySelector(
+            `#${toolbarId.current} .ql-image`
+        ) as HTMLElement | null;
+        if (!btn) return;
+
+        const onCaptureClick = (e: MouseEvent) => {
+            e.preventDefault();           // impede o handler padrão
+            // cria input e abre o picker dentro do evento de usuário
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.style.display = 'none';
+            document.body.appendChild(input);
+
+            input.addEventListener('change', () => {
+            const file = input.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                const quill = editorRef.current!;
+                const range = quill.getSelection(true) || { index: quill.getLength(), length: 0 };
+                quill.focus();
+                quill.insertEmbed(range.index, 'image', reader.result, 'user');
+                quill.setSelection(range.index + 1, 0, 'user');
+            };
+            reader.readAsDataURL(file);
+            document.body.removeChild(input);
+            });
+
+            input.click();
+        };
+
+        // listener em captura, antes do Quill
+        btn.addEventListener('click', onCaptureClick, { capture: true });
+        return () => btn.removeEventListener('click', onCaptureClick, { capture: true });
+        }, []);
+
+
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const editorContent = editorRef.current?.root.innerHTML || "";
@@ -229,21 +281,19 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
         <div className="postWriter-container">
             <div className="submitArea">
                 {layout === "blog" && (
-                    <>
-                        <div className='submitButtons'>
-                            <button>
-                                <img src={favoriteBadge} alt="botão para favoritar"/>
-                            </button>
-                            <CustomButton
-                                text='Postar'
-                                padding='10px 100px'
-                                color='white'
-                                backgroundColor='#3348A4'
-                                fontSize='18px'
-                                fontWeight='500'
-                            />
-                        </div>
-                    </>
+                    <div className='submitButtons'>
+                        <button>
+                            <img src={favoriteBadge} alt="botão para favoritar" />
+                        </button>
+                        <CustomButton
+                            text='Postar'
+                            padding='10px 100px'
+                            color='white'
+                            backgroundColor='#3348A4'
+                            fontSize='18px'
+                            fontWeight='500'
+                        />
+                    </div>
                 )}
             </div>
             <div id={toolbarId.current} className="custom-toolbar">
@@ -311,7 +361,7 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                         <button className="ql-image"></button>
                     )}
                     {window.innerWidth > 1200 ? (
-                        <TooltipDescription text="Adicionar bídeo">
+                        <TooltipDescription text="Adicionar vídeo">
                             <button className="ql-video"></button>
                         </TooltipDescription>
                     ) : (
@@ -360,21 +410,22 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                                     </button>
                                     {dropdownOpen && (
                                         <div className="tags-dropdown">
-                                            {allTags
-                                                .filter((tag) => !selectedTags.includes(tag)).length === 0 ? (
-                                                    <span>There are no tags left.</span>
-                                                ) : 
+                                            {allTags.filter((tag) => !selectedTags.includes(tag))
+                                                .length === 0 ? (
+                                                <span>There are no tags left.</span>
+                                            ) : (
                                                 allTags
                                                     .filter((tag) => !selectedTags.includes(tag))
                                                     .map((tag, index) => (
-                                                    <button
-                                                        key={index}
-                                                        className="dropdown-tag-item"
-                                                        onClick={() => handleAddTag(tag)}
-                                                    >
-                                                        {tag}
-                                                    </button>
-                                                ))}
+                                                        <button
+                                                            key={index}
+                                                            className="dropdown-tag-item"
+                                                            onClick={() => handleAddTag(tag)}
+                                                        >
+                                                            {tag}
+                                                        </button>
+                                                    ))
+                                            )}
                                         </div>
                                     )}
                                 </div>
