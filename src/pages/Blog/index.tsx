@@ -6,6 +6,7 @@ import { Tag } from "../../components/Tag";
 import { Avatar } from "../../components/Avatar";
 import { BlogPostPreview } from "../../components/BlogPostPreview";
 import { Pagination } from "../../components/QuestionsPagination";
+import { useNavigate } from "react-router-dom";
 
 interface IBlogPost {
     title: string;
@@ -151,6 +152,16 @@ export const Blog: React.FC = () => {
         setCurrentPage(page);
     };
 
+
+    const navigate = useNavigate()
+
+
+    function navigateTo(path: string) {
+        window.scrollTo(0, 0); 
+        navigate(path);
+    }
+
+
     return (
         <div className="blog-container">
             <Header theme="blue" loggedIn={false} />
@@ -166,6 +177,8 @@ export const Blog: React.FC = () => {
                                 fontSize="18px"
                                 text="Perguntar"
                                 padding="8px 41px"
+                                customId="writeAPostButton"
+                                onClick={() => {navigateTo("/write-a-post")}}
                             />
                         </div>
                         <div className="category-selection-blue">
