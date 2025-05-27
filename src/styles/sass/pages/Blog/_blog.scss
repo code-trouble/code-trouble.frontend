@@ -23,6 +23,14 @@
                     font-weight: 600;
                     font-family: $montserratFont;
                 }
+
+                    #writeAPostButton {
+                        transition: 0.1s ease-in-out;
+                    }
+
+                    #writeAPostButton:hover {
+                        transform: scale(1.05);
+                    }
             }
 
             .blog-list {

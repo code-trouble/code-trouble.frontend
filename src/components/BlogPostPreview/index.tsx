@@ -32,7 +32,7 @@ export const BlogPostPreview: React.FC<IBlogPostPreview> = ({ blogPostTitle, blo
                 </div>
                 {image && ( // Conditionally render the image container
                     <div className="post-image">
-                        <img src={dogImage} alt="Blog Post" />
+                        <img src={dogImage} alt="Blog Post placeholder image" />
                     </div>
                 )}
 
