@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "../../components/Header";
 import { Footer } from "../../components/Footer";
 import CustomButton from "../../components/CustomButton";
@@ -8,147 +8,52 @@ import filterSettings from "../../assets/images/svg/filterSettings.svg";
 import { QuestionsFilterModal } from "../../components/QuestionsFilterModal";
 import { Pagination } from "../../components/QuestionsPagination";
 import { useNavigate } from "react-router-dom";
+import { useQuestions, Question } from "../../hooks/useQuestions";
+import { initialQuestions } from "../../utils/initialQuestions";
 
 const tags = ["Design", "Programação", "Arte", "Ciência de Dados", "Tecnologia"];
 
-const questions = [
-    {
-        title: "Sphinx PDF build failing on reathedocs for Russian translation",
-        description:
-            "PDF build of Sphinx’s own documentation are failing for Russian translation (example build). .readthedocs.yml is set to build HTML and then PDF, and it's in the second step the failure arises lorem ipsum dolor sit amet lorem ipsum dolor adsasdasd.",
-    },
-    {
-        title: "Inconsistent results between custom function using terra and a simplified version to calculate global statistic of a raster",
-        description:
-            "I am running an access poverty analysis on a raster of travel times. Using a slightly altered version of the Foster-Greer-Thorbecke index with exponent Alpha = 0, the following equality holds: lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-    {
-        title: "How to intercept outgoing SQL statements using Quarkus + Hibernate Reactive (StatementInspector)",
-        description:
-            "How can I intercept (and modify) outgoing SQL statements using Quarkus and Hibernate Reactive? I tried to do so by implementing a custom StatementInspector, but somehow the inspector is not lorem ipsum dolor sit amet lorem ipsum dolor sit amet.",
-    },
-
-];
-
 export const Questions: React.FC = () => {
-
-
-    const navigate = useNavigate()
-
+    const navigate = useNavigate();
 
     function navigateTo(path: string) {
-        window.scrollTo(0, 0); 
+        window.scrollTo(0, 0);
         navigate(path);
     }
 
-
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { getAll, add } = useQuestions();
+    const [questions, setQuestions] = useState<Question[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const itemsPerPage = 10;
+//  const totalPages = Math.ceil(questions.length / itemsPerPage);
     const totalPages = 10;
 
-    // Math.ceil(questions.length / itemsPerPage);
-
-    const toggleModal = () => setIsModalOpen((prev) => !prev);
-    const closeModal = () => setIsModalOpen(false);
+    // Seed initial questions on first load
+    useEffect(() => {
+        const stored = getAll();
+        if (stored.length === 0) {
+            const seeded = initialQuestions.map(q => ({
+                id: q.id.toString(),
+                title: q.title,
+                description: q.description,
+                createdAt: new Date().toISOString()
+            }));
+            seeded.forEach(question => add(question));
+            setQuestions(seeded);
+        } else {
+            setQuestions(stored);
+        }
+    }, [getAll, add]);
 
     const displayedQuestions = questions.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
 
+    const toggleModal = () => setIsModalOpen(prev => !prev);
+    const closeModal  = () => setIsModalOpen(false);
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
@@ -169,8 +74,7 @@ export const Questions: React.FC = () => {
                                 text="Perguntar"
                                 padding="8px 41px"
                                 customId="askButton"
-                                onClick={() => {navigateTo("/ask-a-question")}}
-                                
+                                onClick={() => navigateTo("/ask-a-question")}
                             />
                         </div>
                         <div className="category-selection">
@@ -181,11 +85,12 @@ export const Questions: React.FC = () => {
                             <a href="#">Mês</a>
                         </div>
                         <div className="questions-list">
-                            {displayedQuestions.map((q, index) => (
+                            {displayedQuestions.map(q => (
                                 <QuestionsPreview
-                                    key={index}
+                                    key={q.id}
                                     questionTitle={q.title}
                                     questionDescription={q.description}
+                                    onClick={() => navigateTo(`/questions/${q.id}`)}
                                 />
                             ))}
                         </div>
