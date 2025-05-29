@@ -12,6 +12,7 @@ interface ICustomButton {
     icon?: string; 
     onClick?: () => void;
     customId?: string;
+    type?: "button" | "submit" | "reset";
 }
 
 
@@ -26,10 +27,11 @@ export const CustomButton: React.FC<ICustomButton> = ({
     fontWeight,
     icon,
     onClick,
-    customId
+    customId,
+    type
 }) => {
     return (  
-        <button className="custom-button" id={customId} style={{ 
+        <button  type={type} className="custom-button" id={customId} style={{ 
             padding,
             color,
             backgroundColor,
