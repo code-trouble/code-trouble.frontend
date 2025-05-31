@@ -12,6 +12,7 @@ import { useQuestions, Question } from "../../hooks/useQuestions";
 import { Header } from "../../components/Header";
 import { Footer } from "../../components/Footer";
 import { Tag } from "../../components/Tag";
+import { formatDate } from "../../utils/formatDate";
 
 export const OpenQuestion: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -50,7 +51,7 @@ export const OpenQuestion: React.FC = () => {
       <div className="open-question-inner-container">
         <div className="title-wrapper">
           <h1>{question.title}</h1>
-          Criado em: {new Date(question.createdAt).toLocaleString()}
+          <p><span className="mutedCriado">Criado</span> {formatDate(question.createdAt)}</p>
         </div>
 
         {tags.length > 0 && (
