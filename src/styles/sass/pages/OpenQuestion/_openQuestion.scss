@@ -18,6 +18,17 @@
             font-family: $montserratFont;
             margin-bottom: 38px;
         }
+
+        p {
+            font-family: $hindFont;
+            font-size: 16px;
+            line-height: 20%;
+
+            .mutedCriado {
+                color: $dimGray;
+            }
+        
+        }
     }
 
     .tagList-area {
@@ -36,6 +47,12 @@
 
         .ql-editor{
                     padding: 0px!important;
+        }
+    }
+
+    .question-description {
+        p {
+            margin-bottom: 30px;
         }
     }
 
