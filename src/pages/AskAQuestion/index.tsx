@@ -7,6 +7,7 @@ import { Header } from "../../components/Header";
 import correa from "../../assets/images/svg/mascote sp 1.svg";
 import { TagSelector } from "../../components/TagSelector";
 import { Footer } from "../../components/Footer";
+import { removeEmptyParagraphs } from "../../utils/removeEmptyP";
 
 export const AskAQuestion: React.FC = () => {
     const navigate = useNavigate();
@@ -23,6 +24,8 @@ export const AskAQuestion: React.FC = () => {
     }
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        const cleanedDesc = removeEmptyParagraphs(description)
+        //const cleanedDetails = details ? removeEmptyParagraphs(details) : undefined
         e.preventDefault();
         const all = getAll();
         const maxId = all.reduce((acc, q) => Math.max(acc, Number(q.id)), 0);
@@ -31,7 +34,7 @@ export const AskAQuestion: React.FC = () => {
         const newQuestion = {
             id: nextId,
             title,
-            description,
+            description: cleanedDesc,
             details,
             tags,
             createdAt: new Date().toISOString(),
