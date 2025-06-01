@@ -1,0 +1,66 @@
+@use '../../base/variables' as *;
+
+
+.open-question-inner-container {
+    display: flex;
+    flex-direction: column;
+
+    padding: 60px;
+    margin: 0px 194px;
+
+    .title-wrapper  {
+        h1 {
+            line-height: 120%;
+            font-weight: bold;
+            font-size: 48px;
+            text-align: left;
+            color: $eerieBlack;
+            font-family: $montserratFont;
+            margin-bottom: 38px;
+        }
+
+        p {
+            font-family: $hindFont;
+            font-size: 16px;
+            line-height: 20%;
+
+            .mutedCriado {
+                color: $dimGray;
+            }
+        
+        }
+    }
+
+    .tagList-area {
+        margin: 20px 0px;
+        padding: 20px 0px;
+        border-top: 1px solid $dimGray;
+        border-bottom: 1px solid $dimGray;
+    }
+
+    .question-description, .question-details {
+        font-family: $hindFont;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 140%;
+        border: none!important;
+
+        .ql-editor{
+                    padding: 0px!important;
+        }
+    }
+
+    .question-description {
+        p {
+            margin-bottom: 30px;
+        }
+    }
+
+    .question-details {
+        .ql-editor {
+            overflow-y: visible
+            ;
+        }
+        margin-top: 30px!important;
+    }
+}
