@@ -14,6 +14,12 @@ import { Footer } from "../../components/Footer";
 import { Tag } from "../../components/Tag";
 import { formatDate } from "../../utils/formatDate";
 
+
+import comments from '../../assets/images/svg/greenComments.svg'
+import upvotes from '../../assets/images/svg/greenUpvote.svg'
+import addToFavorite from '../../assets/images/svg/addToFavorite.svg'
+import threeDotMenu from '../../assets/images/svg/3dotsMenu.svg'
+
 export const OpenQuestion: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -72,8 +78,17 @@ export const OpenQuestion: React.FC = () => {
             </div>
           </section>
         )}
-
-        <button
+        <div className="bottomGroupDiv">
+          <div className="commentsNlikes">
+            <p><img src={upvotes} alt="upvotes" />120k </p>
+            <p><img src={comments} alt="comments" />302 </p>
+          </div>
+          <div className="favoritesNoptions">
+            <img src={addToFavorite} alt="add to favorites" />
+            <img src={threeDotMenu} alt="menu with 3 dots" />
+          </div>
+        </div>
+        {/* <button
           onClick={() => {
             remove(question.id);
             navigate("/questions");
@@ -81,7 +96,7 @@ export const OpenQuestion: React.FC = () => {
           style={{ marginLeft: 16 }}
         >
           Excluir pergunta
-        </button>
+        </button> */} 
       </div>
 
       <Footer />
