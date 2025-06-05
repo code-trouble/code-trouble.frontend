@@ -20,12 +20,19 @@ import upvotes from '../../assets/images/svg/greenUpvote.svg'
 import addToFavorite from '../../assets/images/svg/addToFavorite.svg'
 import threeDotMenu from '../../assets/images/svg/3dotsMenu.svg'
 import { Avatar } from "../../components/Avatar";
+import { AltPostWriter } from "../../components/AltPostWriter";
+
+
 
 export const OpenQuestion: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { getById, remove } = useQuestions();
   const [question, setQuestion] = useState<Question>();
+  const [answer, setAnswer] = useState("");
+
+
+
 
   useEffect(() => {
     if (!id) return navigate("/questions");
@@ -54,7 +61,6 @@ export const OpenQuestion: React.FC = () => {
   return (
     <div className="open-question-container">
       <Header loggedIn theme="base" />
-
       <div className="open-question-inner-container">
         <div className="title-wrapper">
           <h1>{question.title}</h1>
@@ -74,7 +80,7 @@ export const OpenQuestion: React.FC = () => {
 
         {question.details && (
           <section>
-            <div className="question-details ql-container ql-snow">
+            <div className="open-question-details ql-container ql-snow">
               <div className="ql-editor">{parse(cleanDetails)}</div>
             </div>
           </section>
@@ -117,10 +123,20 @@ export const OpenQuestion: React.FC = () => {
           <div className="answerDisplayBlock">
               <div className="answerUserArea">
                 <Avatar sizes="large" name="Olivia Ryes"/>
+                {/* tenho que mudar isso depois, esse createdAt é referente a data em que a PERGUNTA foi criada, isso vai ser substituido pela data em que a RESPOSTA foi criada. */}
+                <p><span className="mutedCriado">Criado<br/> {formatDate(question.createdAt)}</span></p>
+                {/* tenho que mudar isso depois, esse createdAt é referente a data em que a PERGUNTA foi criada, isso vai ser substituido pela data em que a RESPOSTA foi criada. */}
               </div>
               <div className="answerText">
-
+                 <p>Settings for Find are sticky, so if you perform a search using VBA then the settings you use become the default.</p>
+                 <p>https://learn.microsoft.com/en-us/office/vba/api/excel.range.find#:%7E:text=The%20settings%20for%20LookIn%2C%20LookAt%2C,explicitly%20each%20time%20you%20use%20this%20method</p>
+              
               </div>
+          </div>
+
+          <div className="answerForm">
+            <h1>Responder</h1>
+            <AltPostWriter onChange={setAnswer} value={answer}/>
           </div>
         </div>
 
