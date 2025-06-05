@@ -167,19 +167,37 @@
 
         .answerDisplayBlock {
             margin-top: 40px;
+            min-height: 540px;
+            display: flex;
+            gap: 20px;
 
-            .avatar-container {
+            
+            .answerUserArea {
                 display: flex;
                 flex-direction: column;
+                text-align: center;
+                gap: 20px;
                 width: 112px;
                 height: 185px; 
-                
-                .avatar-name-large {
-                    font-size: 16px;
-                    color: $eerieBlack;
-                    line-height: 120%;
+
+                .mutedCriado {
+                    font-family: $hindFont;
+                    color: $dimGray;
+                }
+
+                .avatar-container {
+                    display: flex;
+                    flex-direction: column;
+
+                    
+                    .avatar-name-large {
+                        font-size: 16px;
+                        color: $eerieBlack;
+                        line-height: 120%;
+                    }
                 }
             }
+
         }
     }
 
