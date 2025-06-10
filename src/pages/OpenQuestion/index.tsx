@@ -149,7 +149,7 @@ export const OpenQuestion: React.FC = () => {
                     ) : (
                         answers.map((ans) => (
                             <div key={ans.id} className="answerDisplayBlock" style={{ position: "relative" }}>
-                              <button
+                              {/* <button
                                 onClick={() => handleDeleteAnswer(ans.id)}
                                 style={{
                                   position: "absolute",
@@ -164,7 +164,7 @@ export const OpenQuestion: React.FC = () => {
                                 }}
                               >
                                 ×
-                              </button>
+                              </button> */}
 
                                 <div className="answerUserArea">
                                     <Avatar sizes="large" name="Olivia Ryes" />
@@ -201,7 +201,7 @@ export const OpenQuestion: React.FC = () => {
                     </form>
                 </div>
             </div>
-
+{/* 
         <button
           onClick={() => {
             remove(question.id);
@@ -210,7 +210,7 @@ export const OpenQuestion: React.FC = () => {
           style={{ marginLeft: 16 }}
         >
           Excluir pergunta
-        </button> 
+        </button>  */}
             <Footer />
         </div>
     );
