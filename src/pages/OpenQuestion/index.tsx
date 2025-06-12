@@ -19,7 +19,7 @@ import CustomButton from "../../components/CustomButton";
 export const OpenQuestion: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { getById, remove, deleteAnswer } = useQuestions();
+    const { getById } = useQuestions(); //  remove, deleteAnswer
     const [question, setQuestion] = useState<Question>();
     const [answer, setAnswer] = useState("");
     const [answers, setAnswers] = useState<Answer[]>([]);
@@ -64,10 +64,10 @@ export const OpenQuestion: React.FC = () => {
         }
     };
 
-    const handleDeleteAnswer = (answerId: string) => {
-        deleteAnswer(question.id, answerId);
-        setAnswers(answers.filter(a => a.id !== answerId));
-    };
+    // const handleDeleteAnswer = (answerId: string) => {
+    //     deleteAnswer(question.id, answerId);
+    //     setAnswers(answers.filter(a => a.id !== answerId));
+    // };
 
     return (
         <div className="open-question-container">
