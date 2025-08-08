@@ -11,8 +11,7 @@ interface IAuthModal {
 
 export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [currentType, setCurrentType] = useState<IAuthModal['type']>(type);
-  
+  const [currentType, setCurrentType] = useState<IAuthModal["type"]>(type);
 
   useEffect(() => {
     const handleResize = () => {
@@ -74,23 +73,14 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
   const names = renderNames();
   const nextType = currentType === "signIn" ? "signUp" : "signIn";
 
-
   return (
     <div className="overlay" onClick={onClose}>
       <FocusLock>
         <dialog onClick={(e) => e.stopPropagation()}>
           {windowWidth > 1070 && (
             <figure>
-              <img
-                className="logo"
-                src={logoCodePrimary}
-                alt="logo code trouble na cor verde"
-              />
-              <img
-                className="mascote"
-                src={ProfessorCorrea}
-                alt="avatar do professor Corrêa"
-              />
+              <img className="logo" src={logoCodePrimary} alt="logo code trouble na cor verde" />
+              <img className="mascote" src={ProfessorCorrea} alt="avatar do professor Corrêa" />
             </figure>
           )}
           <aside>
@@ -104,7 +94,8 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
                   <div className="line"></div>
                 </div>
                 <p>
-                  {names?.text} <button onClick={() => setCurrentType(nextType)}>{names?.textDecoration}</button>
+                  {names?.text}{" "}
+                  <button onClick={() => setCurrentType(nextType)}>{names?.textDecoration}</button>
                 </p>
               </div>
             </section>

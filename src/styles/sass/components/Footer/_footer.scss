@@ -1,4 +1,4 @@
-@use '../../base/variables' as *;
+@use "../../base/variables" as *;
 
 .footer-container {
   display: flex;
@@ -10,9 +10,8 @@
   justify-content: space-between;
   background-color: $footer;
 
-
   font-family: $montserratFont;
-  color: #F8F9FA;
+  color: #f8f9fa;
   font-weight: 600;
   font-size: 16px;
 
@@ -46,18 +45,14 @@
     flex-direction: column;
     gap: 17px;
 
-
-
     span {
-      color: #DADADA;
+      color: #dadada;
       font-size: 15px;
       font-weight: 300;
       font-family: $hindFont;
       text-decoration: underline;
     }
   }
-
-
 
   .social-medias {
     display: flex;
@@ -70,7 +65,6 @@
     flex-direction: column;
     gap: 18px;
 
-
     .contactNav {
       display: flex;
       flex-direction: column;
@@ -81,7 +75,7 @@
         align-items: center;
         gap: 5px;
         font-family: $hindFont;
-        color: #DADADA;
+        color: #dadada;
         font-weight: 300;
       }
     }
@@ -93,18 +87,12 @@
     }
   }
 
-
-
-
-
-
   .footer-contact {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 26px;
 
-    
     .footerInput {
       padding: 10px 14px;
       background-color: white;
@@ -112,7 +100,7 @@
       width: 382px;
       height: 44px;
     }
-    
+
     .updatesText {
       display: flex;
       flex-direction: column;
@@ -122,64 +110,58 @@
         font-family: $hindFont;
         font-weight: 300;
         font-size: 15px;
-        color: #DADADA;
+        color: #dadada;
       }
     }
-    
-  .footer-messageForm {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 26.5px;
 
-    button {
-      padding: 6px 29px;
-      color: white;
-      background-color: #3348A4;
-      border-radius: 8px;
-      height: 38px;
-      transition: ease-in-out 0.2s;
-      &:hover {
+    .footer-messageForm {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 26.5px;
+
+      button {
+        padding: 6px 29px;
+        color: white;
+        background-color: #3348a4;
+        border-radius: 8px;
+        height: 38px;
+        transition: ease-in-out 0.2s;
+        &:hover {
           scale: 1.05;
+        }
       }
     }
   }
-}
-
 }
 
 .footer-bottom {
   font-size: 15px;
-  font-weight: 300; 
-  color: #DADADA;
+  font-weight: 300;
+  color: #dadada;
   span {
     font-weight: 500;
-    color: #F8F9FA;
+    color: #f8f9fa;
   }
 }
 
-
-
 @media (max-width: 1180px) {
-
-  .footer-container { 
+  .footer-container {
     padding: 60px 30px;
 
     .footer-contact {
       display: none;
     }
-    
+
     .footer-logo {
-      align-self: center;    
+      align-self: center;
     }
 
     main {
       gap: 239px;
     }
-  } 
+  }
 }
-
-
 
 @media (max-width: 620px) {
   .footer-container {
@@ -193,7 +175,7 @@
       gap: 107px;
 
       .contactNav {
-        display: none!important;
+        display: none !important;
       }
 
       .lowerContactNav {
@@ -205,11 +187,9 @@
       align-items: center;
     }
 
-
     .footer-bottom {
       flex-direction: column-reverse;
       gap: 21px;
     }
-
   }
 }

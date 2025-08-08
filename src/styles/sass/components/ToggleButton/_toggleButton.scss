@@ -1,32 +1,29 @@
-@use '../../base/variables' as *;
-
+@use "../../base/variables" as *;
 
 .button-wrapper {
-    width: 64px;
-    padding: 4;
-    height: 34px;
-    border-radius: 21.33px;
-    background-color: #C9C9C9;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    position: relative; 
+  width: 64px;
+  padding: 4;
+  height: 34px;
+  border-radius: 21.33px;
+  background-color: #c9c9c9;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease;
+  border: none;
+
+  .toggler {
+    height: 25px;
+    width: 25px;
+    background-color: white;
+    border-radius: 100%;
+    position: absolute;
+    left: 4px;
     transition: transform 0.3s ease;
-    border: none;
-
-    .toggler {
-        height: 25px;
-        width: 25px;
-        background-color: white;
-        border-radius: 100%;
-        position: absolute; 
-        left: 4px; 
-        transition: transform 0.3s ease; 
-    }
-
+  }
 }
 
-
 .button-wrapper.on .toggler {
-    transform: translateX(31px);
+  transform: translateX(31px);
 }

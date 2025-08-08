@@ -1,69 +1,62 @@
-@use '../../base/variables' as *;
-
+@use "../../base/variables" as *;
 
 .pagination {
-    position: relative;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 11px;
+  padding: 20px 0px 20px 60px;
+  width: 600px;
+  overflow: hidden;
+  user-select: none;
+
+  .pagination-dots {
+    img {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .pagination-button {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
-    gap: 11px;
-    padding: 20px 0px 20px 60px;
-    width: 600px;
-    overflow: hidden;
-    user-select: none;
+    justify-content: center;
+    font-family: $montserratFont;
+    width: 20px;
+    height: 20px;
 
-    .pagination-dots {
-        img {
-            display: flex;
-            justify-content: center;
-        }
+    .pagination-control {
+      font-family: $mainFont;
+      margin-right: 11px;
+      font-size: 20px;
     }
 
-    .pagination-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: $montserratFont;
-        width: 20px;
-        height: 20px;
-
-        .pagination-control {
-            font-family: $mainFont;
-            margin-right: 11px;
-            font-size: 20px;
-        }
-
-        &.active {
-            padding: 2px 4px;
-            border-radius: 2px;
-        }
+    &.active {
+      padding: 2px 4px;
+      border-radius: 2px;
     }
+  }
 }
 
 @media (max-width: 1000px) {
-    .pagination {
-        width: 100%;
-        padding: 20px 0px 20px 20px;
-    }
+  .pagination {
+    width: 100%;
+    padding: 20px 0px 20px 20px;
+  }
 }
-
-
 
 @media (max-width: 600px) {
-    .pagination {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        padding: 20px 0px;
-    }
+  .pagination {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0px;
+  }
 }
-
-
 
 @media (max-width: 400px) {
-    .pagination {
-        width: 100%;
-
-    }
+  .pagination {
+    width: 100%;
+  }
 }
-

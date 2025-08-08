@@ -1,5 +1,4 @@
-@use '../../base/variables' as *;
-
+@use "../../base/variables" as *;
 
 .card {
   width: 435px;
@@ -17,7 +16,6 @@
       font-size: 20px;
       font-weight: 600;
       font-family: $montserratFont;
-    
     }
   }
 
@@ -66,8 +64,6 @@
         margin-bottom: 50px;
       }
 
-
-
       .card-details {
         display: flex;
         align-items: flex-end;
@@ -80,7 +76,6 @@
         .details-left {
           display: flex;
           align-items: center;
-
 
           .upvote-count {
             margin-left: 30px;
@@ -117,7 +112,6 @@
             transform: scale(1.1);
           }
         }
-
       }
     }
   }

@@ -28,19 +28,12 @@ export const SignIn: React.FC<ISignIn> = ({ onForgot }) => {
   };
 
   return (
-    <form className="auth-form"  onSubmit={handleSubmit(onSubmit)}>
+    <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
         <section>
           <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            {...register("email")}
-            placeholder="Digite seu email"
-          />
-          {errors.email && (
-            <p className="error-message">{errors.email.message}</p>
-          )}
+          <input type="email" id="email" {...register("email")} placeholder="Digite seu email" />
+          {errors.email && <p className="error-message">{errors.email.message}</p>}
         </section>
         <section>
           <label htmlFor="password">Senha</label>
@@ -50,9 +43,7 @@ export const SignIn: React.FC<ISignIn> = ({ onForgot }) => {
             {...register("password")}
             placeholder="***********"
           />
-          {errors.password && (
-            <p className="error-message">{errors.password.message}</p>
-          )}
+          {errors.password && <p className="error-message">{errors.password.message}</p>}
         </section>
         <button className="btn-link" onClick={onForgot} type="button">
           Esqueceu a senha?

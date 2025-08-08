@@ -1,492 +1,491 @@
-@use '../../base/variables' as *;
-
+@use "../../base/variables" as *;
 
 .postWriter-container {
-    width: 67em;
-    margin: 16px auto 0 auto;
-    position: relative;
-    transition: transform 0.2s ease-out;
+  width: 67em;
+  margin: 16px auto 0 auto;
+  position: relative;
+  transition: transform 0.2s ease-out;
 
-    .submitArea {
-        display: flex;
-        justify-content: flex-end !important;
+  .submitArea {
+    display: flex;
+    justify-content: flex-end !important;
 
-        .submitButtons {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 13px;
-        }
+    .submitButtons {
+      display: flex;
+      gap: 25px;
+      margin-bottom: 13px;
     }
+  }
 
-    .ql-toolbar.ql-snow {
-        border: none !important;
-    }
+  .ql-toolbar.ql-snow {
+    border: none !important;
+  }
 
-    .ql-toolbar.ql-snow .ql-formats {
-        margin-right: 0;
-    }
-    .ql-formats button::after {
-        content: none !important;
-    }
+  .ql-toolbar.ql-snow .ql-formats {
+    margin-right: 0;
+  }
+  .ql-formats button::after {
+    content: none !important;
+  }
 
-    .separator {
-        display: inline-block;
-        height: 26px;
-        width: 1px;
-        background-color: #808080;
-        margin-left: 20px;
-        margin-right: 20px;
-        border-left: 1px solid transparent;
-    }
+  .separator {
+    display: inline-block;
+    height: 26px;
+    width: 1px;
+    background-color: #808080;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-left: 1px solid transparent;
+  }
 
-    .ql-toolbar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        background-color: $onyx;
-        padding: 0 !important;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-        display: flex;
-        align-items: center;
+  .ql-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: $onyx;
+    padding: 0 !important;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    align-items: center;
 
-        .ql-formats {
-            display: flex;
-            justify-content: center;
+    .ql-formats {
+      display: flex;
+      justify-content: center;
 
-            button {
-                display: flex;
-                align-items: center;
-                color: white;
-                font-size: 20px;
-                cursor: pointer;
-                background: none;
-                border: none;
-                position: relative;
-                font-family: $montserratFont;
-                height: 64px;
-            }
-            button:hover {
-                background-color: rgba(217, 217, 217, 0.1);
-            }
-            button::after {
-                content: attr(data-tooltip);
-                position: absolute;
-                bottom: 120%;
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: black;
-                color: white;
-                padding: 5px 10px;
-                border-radius: 6px;
-                opacity: 1; // Force visible for testing
-            }
-            button.active {
-                background-color: rgba(217, 217, 217, 0.1);
-                color: white;
-            }
-
-            .ql-bold {
-                display: flex;
-                justify-content: center;
-                width: 100px;
-                font-weight: bold;
-            }
-            .ql-italic {
-                display: flex;
-                justify-content: center;
-                width: 100px;
-                font-family: $loraItalicFont;
-                font-style: italic;
-                font-weight: 600;
-            }
-            .ql-underline {
-                display: flex;
-                justify-content: center;
-                width: 128px;
-                text-decoration: underline;
-                font-weight: 600;
-            }
-            .ql-strike {
-                display: flex;
-                justify-content: center;
-                width: 128px;
-                text-decoration: line-through;
-                font-weight: 600;
-            }
-        }
-
-        .ql-image,
-        .ql-video,
-        .ql-link {
-            display: flex;
-            justify-content: center;
-            width: 75px;
-
-            img {
-                width: 20px;
-                height: 20px;
-            }
-        }
-
-        .ql-code-block {
-            display: flex;
-            justify-content: center;
-            width: 102px;
-
-            img {
-                width: 32px;
-                height: 24px;
-            }
-        }
-
-        .ql-list[value="bullet"],
-        .ql-list[value="ordered"] {
-            display: flex;
-            justify-content: center;
-            width: 102px;
-
-            img {
-                width: 30px;
-                height: 20px;
-            }
-        }
-    }
-
-    .editor-container {
-        border: 1px solid #ccc;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
-        padding: 50px 35px;
-        background-color: white;
-        margin-bottom: 80px;
-        max-height: 1200px;
-        overflow-y: auto;
-
-        &::-webkit-scrollbar {
-            width: 8px;
-        }
-        &::-webkit-scrollbar-track {
-            background: #C9C9C9;
-        }
-        &::-webkit-scrollbar-thumb {
-            background: $onyx;
-            border-radius: 10px;
-        }
-        &::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-        &::-webkit-scrollbar-button {
-            display: none;
-        }
-    }
-
-    .editor-form {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-    }
-
-    .editor-title {
-        width: 100%;
-        height: 59px;
-        font-size: 40px;
-        font-family: $montserratFont;
-        color: $onyx;
-        font-weight: 600;
-        border: none;
-        line-height: 1.5;
-        overflow: hidden;
-        resize: none;
-    }
-    .editor-title:focus {
-        outline: none;
-    }
-
-    .editor-area {
-        min-height: 300px;
-        height: auto;
-        background-color: white;
-        border: none !important;
-        border-radius: 5px;
-        font-size: 18px;
-        font-family: $hindFont;
-        overflow: auto;
-    }
-
-    .ql-editor {
-        padding: 0;
-        overflow: hidden;
-    }
-
-    .editor-area .ql-editor::before {
-        content: attr(data-placeholder);
-        color: gray;
-        font-family: $montserratFont;
-        position: absolute;
-        font-style: normal;
-        pointer-events: none;
-        font-size: 24px;
-        top: 0;
-        left: 1px;
-    }
-    .editor-area .ql-editor:focus::before {
-        content: '';
-    }
-
-    .editor-tags {
-        position: relative;
+      button {
         display: flex;
         align-items: center;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
-        padding: 5px 0;
-        margin-bottom: 15px;
-        background-color: white;
-        overflow: visible;
-        white-space: nowrap;
-        z-index: 1;
-
-        .tags-button-wrapper {
-            position: relative;
-        }
-
-        .tags-button {
-            position: relative;
-            width: fit-content;
-            font-size: 16px;
-            font-family: $montserratFont;
-            padding: 5px 0;
-            border: none;
-            background: white;
-            color: gray;
-            text-align: left;
-            margin-left: 5px;
-            cursor: pointer;
-            &:hover {
-                color: black;
-            }
-            &:focus {
-                outline: none;
-            }
-        }
-    }
-
-    .tags-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 0;
-    }
-    .tag-list {
-        width: 100%;
-        flex-wrap: wrap;
-    }
-    .tag-item {
-        display: flex;
-        align-items: center;
-        padding: 6px 14px;
-    }
-    .tag-item button {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
         background: none;
         border: none;
-        color: red;
-        font-size: 16px;
-        cursor: pointer;
+        position: relative;
+        font-family: $montserratFont;
+        height: 64px;
+      }
+      button:hover {
+        background-color: rgba(217, 217, 217, 0.1);
+      }
+      button::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 6px;
+        opacity: 1; // Force visible for testing
+      }
+      button.active {
+        background-color: rgba(217, 217, 217, 0.1);
+        color: white;
+      }
+
+      .ql-bold {
+        display: flex;
+        justify-content: center;
+        width: 100px;
+        font-weight: bold;
+      }
+      .ql-italic {
+        display: flex;
+        justify-content: center;
+        width: 100px;
+        font-family: $loraItalicFont;
+        font-style: italic;
+        font-weight: 600;
+      }
+      .ql-underline {
+        display: flex;
+        justify-content: center;
+        width: 128px;
+        text-decoration: underline;
+        font-weight: 600;
+      }
+      .ql-strike {
+        display: flex;
+        justify-content: center;
+        width: 128px;
+        text-decoration: line-through;
+        font-weight: 600;
+      }
     }
+
+    .ql-image,
+    .ql-video,
+    .ql-link {
+      display: flex;
+      justify-content: center;
+      width: 75px;
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .ql-code-block {
+      display: flex;
+      justify-content: center;
+      width: 102px;
+
+      img {
+        width: 32px;
+        height: 24px;
+      }
+    }
+
+    .ql-list[value="bullet"],
+    .ql-list[value="ordered"] {
+      display: flex;
+      justify-content: center;
+      width: 102px;
+
+      img {
+        width: 30px;
+        height: 20px;
+      }
+    }
+  }
+
+  .editor-container {
+    border: 1px solid #ccc;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 50px 35px;
+    background-color: white;
+    margin-bottom: 80px;
+    max-height: 1200px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #c9c9c9;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $onyx;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+    &::-webkit-scrollbar-button {
+      display: none;
+    }
+  }
+
+  .editor-form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .editor-title {
+    width: 100%;
+    height: 59px;
+    font-size: 40px;
+    font-family: $montserratFont;
+    color: $onyx;
+    font-weight: 600;
+    border: none;
+    line-height: 1.5;
+    overflow: hidden;
+    resize: none;
+  }
+  .editor-title:focus {
+    outline: none;
+  }
+
+  .editor-area {
+    min-height: 300px;
+    height: auto;
+    background-color: white;
+    border: none !important;
+    border-radius: 5px;
+    font-size: 18px;
+    font-family: $hindFont;
+    overflow: auto;
+  }
+
+  .ql-editor {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .editor-area .ql-editor::before {
+    content: attr(data-placeholder);
+    color: gray;
+    font-family: $montserratFont;
+    position: absolute;
+    font-style: normal;
+    pointer-events: none;
+    font-size: 24px;
+    top: 0;
+    left: 1px;
+  }
+  .editor-area .ql-editor:focus::before {
+    content: "";
+  }
+
+  .editor-tags {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0;
+    margin-bottom: 15px;
+    background-color: white;
+    overflow: visible;
+    white-space: nowrap;
+    z-index: 1;
+
+    .tags-button-wrapper {
+      position: relative;
+    }
+
+    .tags-button {
+      position: relative;
+      width: fit-content;
+      font-size: 16px;
+      font-family: $montserratFont;
+      padding: 5px 0;
+      border: none;
+      background: white;
+      color: gray;
+      text-align: left;
+      margin-left: 5px;
+      cursor: pointer;
+      &:hover {
+        color: black;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .tags-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+  }
+  .tag-list {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .tag-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 14px;
+  }
+  .tag-item button {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 16px;
+    cursor: pointer;
+  }
 }
 
 /* === Mobile Styles for MAIN (non-alt) PostWriter remain unchanged === */
 @media (max-width: 1000px) {
-    .postWriter-container:not(.alt) {
-        display: flex;
-        flex-direction: column;
+  .postWriter-container:not(.alt) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .submitArea {
+      order: -1;
+      padding: 0 20px;
+      width: 100%;
+      display: flex;
+      .submitButtons {
         width: 100%;
-
-        .submitArea {
-            order: -1;
-            padding: 0 20px;
-            width: 100%;
-            display: flex;
-            .submitButtons {
-                width: 100%;
-                justify-content: space-between;
-                gap: 0;
-            }
-        }
-        .editor-container {
-            order: -1;
-            border: none;
-            padding: 30px 20px;
-        }
-        .ql-toolbar {
-            position: fixed;
-            top: unset;
-            bottom: var(--toolbar-bottom, 0);
-            z-index: 10;
-            background-color: $onyx;
-            padding: 0 !important;
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-            width: 100%;
-            height: auto;
-            justify-content: space-between;
-            display: flex;
-            align-items: center;
-
-            button {
-                pointer-events: auto;
-                touch-action: manipulation;
-            }
-            .ql-formats {
-                display: flex;
-                justify-content: space-around;
-                gap: 10px;
-                padding: 0 10px;
-                button {
-                    height: 58px;
-                }
-                .ql-bold,
-                .ql-italic,
-                .ql-underline,
-                .ql-strike {
-                    width: fit-content;
-                }
-            }
-            .ql-image,
-            .ql-video,
-            .ql-link,
-            .ql-code-block,
-            .ql-list[value="bullet"],
-            .ql-list[value="ordered"] {
-                width: fit-content;
-            }
-        }
+        justify-content: space-between;
+        gap: 0;
+      }
     }
+    .editor-container {
+      order: -1;
+      border: none;
+      padding: 30px 20px;
+    }
+    .ql-toolbar {
+      position: fixed;
+      top: unset;
+      bottom: var(--toolbar-bottom, 0);
+      z-index: 10;
+      background-color: $onyx;
+      padding: 0 !important;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      width: 100%;
+      height: auto;
+      justify-content: space-between;
+      display: flex;
+      align-items: center;
+
+      button {
+        pointer-events: auto;
+        touch-action: manipulation;
+      }
+      .ql-formats {
+        display: flex;
+        justify-content: space-around;
+        gap: 10px;
+        padding: 0 10px;
+        button {
+          height: 58px;
+        }
+        .ql-bold,
+        .ql-italic,
+        .ql-underline,
+        .ql-strike {
+          width: fit-content;
+        }
+      }
+      .ql-image,
+      .ql-video,
+      .ql-link,
+      .ql-code-block,
+      .ql-list[value="bullet"],
+      .ql-list[value="ordered"] {
+        width: fit-content;
+      }
+    }
+  }
 }
 
 /* === Mobile Styles for ALT PostWriter === */
 @media (max-width: 1400px) {
-    .postWriter-container.alt {
-        display: flex;
-        flex-direction: column;
+  .postWriter-container.alt {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 20px auto;
+
+    .submitArea {
+      order: -1;
+      padding: 0 10px;
+      width: 100%;
+      display: flex;
+      .submitButtons {
         width: 100%;
-        margin: 20px auto;
-
-        .submitArea {
-            order: -1;
-            padding: 0 10px;
-            width: 100%;
-            display: flex;
-            .submitButtons {
-                width: 100%;
-                justify-content: space-between;
-                gap: 0;
-            }
-        }
-        .editor-container {
-            order: -1;
-            /* Removed border override so base border remains */
-            padding: 20px 10px;
-        }
-        .ql-toolbar {
-            position: relative;
-            top: 0;
-            z-index: 10;
-            background-color: $onyx;
-            padding: 10px;
-            border-radius: 4px;
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-
-            button {
-                font-size: 16px;
-                padding: 5px 8px;
-                height: auto;
-            }
-            .ql-formats {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 10px;
-            }
-        }
+        justify-content: space-between;
+        gap: 0;
+      }
     }
+    .editor-container {
+      order: -1;
+      /* Removed border override so base border remains */
+      padding: 20px 10px;
+    }
+    .ql-toolbar {
+      position: relative;
+      top: 0;
+      z-index: 10;
+      background-color: $onyx;
+      padding: 10px;
+      border-radius: 4px;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      button {
+        font-size: 16px;
+        padding: 5px 8px;
+        height: auto;
+      }
+      .ql-formats {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+    }
+  }
 }
 
 @media (max-width: 800px) {
-    .postWriter-container.alt {
-        margin: 15px auto;
-        .ql-toolbar {
-            padding: 8px;
-            button {
-                font-size: 14px;
-            }
-            .ql-formats {
-                gap: 8px;
-            }
-        }
-        .editor-container {
-            padding: 15px 8px;
-        }
+  .postWriter-container.alt {
+    margin: 15px auto;
+    .ql-toolbar {
+      padding: 8px;
+      button {
+        font-size: 14px;
+      }
+      .ql-formats {
+        gap: 8px;
+      }
     }
+    .editor-container {
+      padding: 15px 8px;
+    }
+  }
 }
 
 @media (max-width: 600px) {
-    .postWriter-container.alt {
-        margin: 10px auto;
-        .ql-toolbar {
-            padding: 6px;
-            button {
-                font-size: 12px;
-            }
-            .ql-formats {
-                gap: 6px;
-            }
-        }
-        .editor-container {
-            padding: 10px;
-        }
+  .postWriter-container.alt {
+    margin: 10px auto;
+    .ql-toolbar {
+      padding: 6px;
+      button {
+        font-size: 12px;
+      }
+      .ql-formats {
+        gap: 6px;
+      }
     }
+    .editor-container {
+      padding: 10px;
+    }
+  }
 }
 
 @media (max-width: 430px) {
-    .postWriter-container.alt {
-        margin: 8px auto;
-        .ql-toolbar {
-            padding: 4px;
-            button {
-                font-size: 10px;
-            }
-            .ql-formats {
-                gap: 4px;
-            }
-        }
-        .editor-container {
-            padding: 8px;
-        }
+  .postWriter-container.alt {
+    margin: 8px auto;
+    .ql-toolbar {
+      padding: 4px;
+      button {
+        font-size: 10px;
+      }
+      .ql-formats {
+        gap: 4px;
+      }
     }
+    .editor-container {
+      padding: 8px;
+    }
+  }
 }
 
 @media (max-width: 360px) {
-    .postWriter-container.alt {
-        margin: 5px auto;
-        .ql-toolbar {
-            padding: 4px;
-            button {
-                font-size: 10px;
-                height: 35px;
-            }
-            .ql-formats {
-                gap: 4px;
-            }
-        }
-        .editor-container {
-            padding: 6px;
-        }
+  .postWriter-container.alt {
+    margin: 5px auto;
+    .ql-toolbar {
+      padding: 4px;
+      button {
+        font-size: 10px;
+        height: 35px;
+      }
+      .ql-formats {
+        gap: 4px;
+      }
     }
+    .editor-container {
+      padding: 6px;
+    }
+  }
 }

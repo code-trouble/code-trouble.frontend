@@ -16,7 +16,6 @@ interface IStackedCard {
   isDisabled: boolean;
 }
 
-
 export const StackedCard: React.FC<IStackedCard> = ({
   username,
   headingTitle,
@@ -27,7 +26,7 @@ export const StackedCard: React.FC<IStackedCard> = ({
   isDisabled,
 }) => {
   return (
-    <div  aria-hidden="true" className="card">
+    <div aria-hidden="true" className="card">
       <div className="card-header">
         <h1 className="card-title">Escolhas da comunidade</h1>
       </div>
@@ -37,7 +36,7 @@ export const StackedCard: React.FC<IStackedCard> = ({
             <Avatar sizes="medium" name={username} src={imageSrc} />
           </div>
           <div className="favorite-icon">
-            <img src={vectorStar} alt="estrela de favorito" /> 
+            <img src={vectorStar} alt="estrela de favorito" />
           </div>
         </div>
 
@@ -51,23 +50,21 @@ export const StackedCard: React.FC<IStackedCard> = ({
             <div className="details-left">
               <p className="post-date">10 Nov, 2024</p>
               <p className="upvote-count">
-                <img src={upvote} alt="likes icon" /> 
+                <img src={upvote} alt="likes icon" />
                 120k
               </p>
               <p className="comment-count">
-                <img src={comments} alt="comments icon" /> 
+                <img src={comments} alt="comments icon" />
                 302
               </p>
             </div>
-            <div
-              className={`details-right ${!isDisabled ? "active-arrow" : ""}`}
-            >
-              <button
-                onClick={onArrowClick}
-                className="arrow-button"
-                disabled={isDisabled}
-              >
-                <img className="arrow-button-img" src={arrowButton} alt="button inner arrow image" />
+            <div className={`details-right ${!isDisabled ? "active-arrow" : ""}`}>
+              <button onClick={onArrowClick} className="arrow-button" disabled={isDisabled}>
+                <img
+                  className="arrow-button-img"
+                  src={arrowButton}
+                  alt="button inner arrow image"
+                />
               </button>
             </div>
           </div>
