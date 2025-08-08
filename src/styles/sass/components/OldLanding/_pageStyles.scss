@@ -1,5 +1,4 @@
-@use '../../base/variables' as *;
-
+@use "../../base/variables" as *;
 
 .main-wrapper {
   display: flex;
@@ -28,16 +27,11 @@
     .enable-on-mobile {
       display: none;
     }
-
   }
 }
 
-
 @media (max-width: 650px) {
-
   .main-wrapper {
-    
-
     .navbar {
       flex-direction: column-reverse;
       align-items: center;
@@ -46,10 +40,8 @@
       padding: 40px 0px 0px 0px;
     }
 
-
     .hero {
       padding: 0px 20px;
-      
 
       .hide-on-mobile {
         display: none;
@@ -59,9 +51,7 @@
         display: inline;
       }
 
-
-
-        /* criei essas classes para evitar
+      /* criei essas classes para evitar
       adicionar estilos a uma tag inteira.*/
       main-wrapper-h1 {
         width: 251px;
@@ -69,9 +59,7 @@
         font-size: 64px;
       }
 
-
       main-wrapper-p {
-        
         width: 300px;
         text-align: center;
       }
@@ -80,13 +68,10 @@
 }
 
 @media only screen and (min-width: 650px) and (max-width: 1440px) {
-
   .main-wrapper {
-
     .navbar {
       padding: 37px 30px;
     }
-
 
     .hero {
       .hide-on-mobile {
@@ -96,7 +81,6 @@
       .enable-on-mobile {
         display: inline;
       }
-
 
       main-wrapper-h1 {
         width: 664px;

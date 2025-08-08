@@ -6,7 +6,7 @@ import { ReactTyped } from "react-typed";
 export const ComingSoonPage: React.FC = () => {
   return (
     <div className="main-wrapper">
-      <OldNavbar/>
+      <OldNavbar />
 
       <div className="hero">
         <ReactTyped

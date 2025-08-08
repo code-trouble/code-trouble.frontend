@@ -1,628 +1,594 @@
-@use '../../base/variables' as *;
-
+@use "../../base/variables" as *;
 
 .open-question-inner-container {
+  display: flex;
+  flex-direction: column;
+
+  padding: 60px;
+  margin: 0px 194px;
+  @media (max-width: 1200px) {
+    margin: 0px 30px;
+  }
+
+  @media (max-width: 600px) {
+    margin: 0px 20px;
+  }
+  .title-wrapper {
+    h1 {
+      line-height: 120%;
+      font-weight: bold;
+      font-size: 48px;
+      text-align: left;
+      color: $eerieBlack;
+      font-family: $montserratFont;
+      margin-bottom: 38px;
+    }
+
+    p {
+      font-family: $hindFont;
+      font-size: 16px;
+      line-height: 20%;
+
+      .mutedCriado {
+        color: $dimGray;
+      }
+    }
+  }
+
+  .tagList-area {
+    margin: 20px 0px;
+    padding: 20px 0px;
+    border-top: 1px solid $dimGray;
+    border-bottom: 1px solid $dimGray;
+  }
+
+  .question-description,
+  .open-question-details {
+    font-family: $hindFont;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 140%;
+    border: none !important;
+
+    .ql-editor {
+      padding: 0px !important;
+    }
+  }
+
+  .question-description {
+    p {
+      margin-bottom: 30px;
+    }
+  }
+
+  .open-question-details {
+    .ql-editor {
+      overflow-y: visible;
+    }
+    margin-top: 30px !important;
+  }
+
+  .bottomGroupDiv {
+    margin: 40px 0px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    .commentsNlikes {
+      display: flex;
+      gap: 15px;
 
-    padding: 60px;
-    margin: 0px 194px;
-    @media (max-width: 1200px) {
-        margin: 0px 30px;
-    }
-
-    @media (max-width: 600px) {
-        margin: 0px 20px;
-
-    }
-    .title-wrapper  {
-        h1 {
-            line-height: 120%;
-            font-weight: bold;
-            font-size: 48px;
-            text-align: left;
-            color: $eerieBlack;
-            font-family: $montserratFont;
-            margin-bottom: 38px;
-        }
-
-        p {
-            font-family: $hindFont;
-            font-size: 16px;
-            line-height: 20%;
-
-            .mutedCriado {
-                color: $dimGray;
-            }
-        
-        }
-    }
-
-    .tagList-area {
-        margin: 20px 0px;
-        padding: 20px 0px;
-        border-top: 1px solid $dimGray;
-        border-bottom: 1px solid $dimGray;
-    }
-
-    .question-description, .open-question-details {
+      p {
         font-family: $hindFont;
         font-size: 20px;
-        font-weight: 400;
-        line-height: 140%;
-        border: none!important;
-
-        .ql-editor{
-                    padding: 0px!important;
-        }
-    }
-
-    .question-description {
-        p {
-            margin-bottom: 30px;
-        }
-    }
-
-    .open-question-details {
-        .ql-editor {
-            overflow-y: visible
-            ;
-        }
-        margin-top: 30px!important;
-    }
-
-    .bottomGroupDiv {
-        margin: 40px 0px;
+        line-height: 20%;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        .commentsNlikes {
- 
-            display: flex;
-            gap: 15px;
-
-            p {
-                font-family: $hindFont;
-                font-size: 20px;
-                line-height: 20%;
-                display: flex;
-                align-items: center;
-                gap: 3px;
-            }
-        }
-        .favoritesNoptions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        gap: 3px;
+      }
     }
-    .questionCreator {
-        padding-bottom: 40px;
-        border-bottom: 1px solid $dimGray;
+    .favoritesNoptions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+  }
+  .questionCreator {
+    padding-bottom: 40px;
+    border-bottom: 1px solid $dimGray;
+    p {
+      font-size: 16px;
+      font-family: $hindFont;
+      color: $dimGray;
+      line-height: 20%;
+      font-weight: 400;
+    }
+    .followUser {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      .followButton {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        .dot {
+          display: inline-block;
+          width: 3px;
+          height: 3px;
+          background-color: $dimGray;
+          border-radius: 50%;
+        }
+
         p {
+          font-family: $montserratFont;
+          font-size: 20px;
+          color: $primaryColor;
+          font-weight: 400;
+
+          letter-spacing: -0.3px;
+        }
+      }
+    }
+  }
+
+  .answersArea {
+    margin-top: 40px;
+    .upperAnswers {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      > p {
+        font-family: $montserratFont;
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 120%;
+      }
+      .filterAnswers {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        line-height: 20%;
+        font-family: $hindFont;
+        color: $onyx;
+
+        .filterAnswersDropdown {
+          padding: 10px 14px;
+          border: 1px solid #c7c7c7;
+        }
+      }
+    }
+
+    .answerDisplayBlock {
+      margin-top: 40px;
+      margin-bottom: 55px;
+      display: flex;
+      gap: 20px;
+      padding: 25px;
+      border: 1px solid $frenchGray;
+      border-radius: 8px;
+
+      .answerUserArea {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        width: 112px;
+        height: 185px;
+
+        .mutedCriado {
+          font-family: $hindFont;
+          color: $dimGray;
+        }
+
+        .avatar-container {
+          display: flex;
+          flex-direction: column;
+
+          .avatar-name-large {
             font-size: 16px;
-            font-family: $hindFont;
-            color: $dimGray;
-            line-height: 20%;
-            font-weight: 400;
+            color: $eerieBlack;
+            line-height: 120%;
+          }
         }
-        .followUser {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            
-            .followButton {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                .dot {
-                    display: inline-block;
-                    width: 3px;
-                    height: 3px;
-                    background-color: $dimGray;
-                    border-radius: 50%;
-                }
+      }
 
-                p {
-                    font-family: $montserratFont;
-                    font-size: 20px;
-                    color: $primaryColor;
-                    font-weight: 400;
-                    
-                    letter-spacing: -0.3px;
-                }
+      .answerText {
+        width: 870px;
+        overflow: hidden;
+
+        .ql-container {
+          border: none;
+
+          .ql-editor {
+            p {
+              font-family: $hindFont;
+              line-height: 120%;
+              font-size: 20px;
+              color: $eerieBlack;
             }
-    
+          }
         }
+      }
     }
 
-    .answersArea {
-        margin-top: 40px;
-        .upperAnswers {
+    .answerForm {
+      border-top: 1px solid $dimGray;
+
+      h1 {
+        margin-top: 54px;
+        color: $eerieBlack;
+        font-family: $montserratFont;
+        font-size: 32px;
+        font-weight: 600;
+      }
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      .postWriter-container {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+
+        .editor-container {
+          padding: 25px;
+          height: 320px;
+          order: 0 !important;
+        }
+
+        .ql-toolbar {
+          display: flex;
+          justify-content: space-between;
+          border-bottom-right-radius: 0px;
+          border-bottom-left-radius: 0px;
+
+          .ql-formats {
             display: flex;
+            flex: 1;
             justify-content: space-between;
-            align-items: center;
-            > p {
-                font-family: $montserratFont;
-                font-size: 32px;
-                font-weight: 600;
-                line-height: 120%;
-            }
-            .filterAnswers {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-size: 16px;
-                line-height: 20%;
-                font-family: $hindFont;
-                color: $onyx;
-
-                .filterAnswersDropdown {
-                    padding: 10px 14px;
-                    border: 1px solid #C7C7C7;
-                }
-            }
+            width: 100%;
+          }
         }
 
-        .answerDisplayBlock {
-            margin-top: 40px;
-            margin-bottom: 55px;
-            display: flex;
-            gap: 20px;
-            padding: 25px;
-            border: 1px solid $frenchGray;
-            border-radius: 8px;
-
-
-            .answerUserArea {
-                display: flex;
-                flex-direction: column;
-                text-align: center;
-                gap: 20px;
-                width: 112px;
-                height: 185px; 
-
-
-
-                .mutedCriado {
-                    font-family: $hindFont;
-                    color: $dimGray;
-                }
-
-                .avatar-container {
-                    display: flex;
-                    flex-direction: column;
-
-                    
-                    .avatar-name-large {
-                        font-size: 16px;
-                        color: $eerieBlack;
-                        line-height: 120%;
-                    }
-                }
-            }
-
-            .answerText {
-                width: 870px;
-                overflow: hidden;
-
-                .ql-container {
-                    border: none;
-
-                    .ql-editor {
-                        p {
-                            font-family: $hindFont;
-                            line-height: 120%;
-                            font-size: 20px;
-                            color: $eerieBlack;
-                        }
-                    }
-                }
-            }
-
-            
-
+        .editor-area {
+          min-height: 0;
+          .ql-editor::before {
+            font-size: 16px;
+          }
         }
 
-        .answerForm {
-            border-top: 1px solid $dimGray;
-            
-            h1 {
-                margin-top: 54px;
-                color: $eerieBlack;
-                font-family: $montserratFont;
-                font-size: 32px;
-                font-weight: 600;
-            }
-            display: flex;
-            flex-direction: column;
-            gap: 50px;
-                .postWriter-container {
-                    margin: 0;
-                    width: 100%;
-                    height: 100%;
-                    
-
-                    .editor-container {
-                        padding: 25px;
-                        height: 320px;
-                        order: 0!important;
-                    }
-
-                    .ql-toolbar {
-                        display: flex;
-                        justify-content: space-between;
-                        border-bottom-right-radius: 0px;
-                        border-bottom-left-radius: 0px;
-
-                        .ql-formats {
-                            display: flex;
-                            flex: 1;
-                            justify-content: space-between;
-                            width: 100%;
-                        }
-                    }
-
-                    .editor-area {
-                        min-height: 0;
-                        .ql-editor::before {
-                            font-size: 16px;
-                        }
-                    }
-
-                    button {
-                        font-size: 14px;
-                    }
-
-                    img {
-                        width: 20px;
-                        height: 15px;
-                    }
-
-                    .ql-formats {
-                        .ql-bold, .ql-italic, .ql-strike {
-                            width: 70px;
-                        }
-
-                        .ql-underline {
-                            width: 100px;
-                        }
-                        
-
-                        button {
-                            width: 50px;
-                            height: 38px;
-                        }
-
-                    }
-
-                    .editor-container {
-                        margin: 0;
-                    }
-                }
-
-
-            .custom-button {
-                width: 199px;
-            }
+        button {
+          font-size: 14px;
         }
+
+        img {
+          width: 20px;
+          height: 15px;
+        }
+
+        .ql-formats {
+          .ql-bold,
+          .ql-italic,
+          .ql-strike {
+            width: 70px;
+          }
+
+          .ql-underline {
+            width: 100px;
+          }
+
+          button {
+            width: 50px;
+            height: 38px;
+          }
+        }
+
+        .editor-container {
+          margin: 0;
+        }
+      }
+
+      .custom-button {
+        width: 199px;
+      }
     }
-
+  }
 }
 
-
 @media (max-width: 740px) {
-    .open-question-inner-container {
+  .open-question-inner-container {
     display: flex;
     flex-direction: column;
 
     padding: 8px 20px;
     margin: 0px 0px;
 
-    .title-wrapper  {
-        h1 {
-            line-height: 120%;
-            font-weight: bold;
-            font-size: 32px;
-            text-align: center;
-            color: $eerieBlack;
-            font-family: $montserratFont;
-            margin-top: 60px;
-            margin-bottom: 38px;
-        }
+    .title-wrapper {
+      h1 {
+        line-height: 120%;
+        font-weight: bold;
+        font-size: 32px;
+        text-align: center;
+        color: $eerieBlack;
+        font-family: $montserratFont;
+        margin-top: 60px;
+        margin-bottom: 38px;
+      }
 
-        p {
-            font-family: $hindFont;
-            font-size: 16px;
-            line-height: 20%;
+      p {
+        font-family: $hindFont;
+        font-size: 16px;
+        line-height: 20%;
 
-            .mutedCriado {
-                color: $dimGray;
-            }
-        
+        .mutedCriado {
+          color: $dimGray;
         }
+      }
     }
 
     .tagList-area {
-        margin: 20px 0px;
-        padding: 20px 0px;
-        border-top: 1px solid $dimGray;
-        border-bottom: 1px solid $dimGray;
+      margin: 20px 0px;
+      padding: 20px 0px;
+      border-top: 1px solid $dimGray;
+      border-bottom: 1px solid $dimGray;
     }
 
-    .question-description, .open-question-details {
-        font-family: $hindFont;
-        font-size: 20px;
-        font-weight: 400;
-        line-height: 140%;
-        border: none!important;
+    .question-description,
+    .open-question-details {
+      font-family: $hindFont;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 140%;
+      border: none !important;
 
-        .ql-editor{
-                    padding: 0px!important;
-        }
+      .ql-editor {
+        padding: 0px !important;
+      }
     }
 
     .question-description {
-        p {
-            margin-bottom: 30px;
-        }
+      p {
+        margin-bottom: 30px;
+      }
     }
 
     .open-question-details {
-        .ql-editor {
-            overflow-y: visible
-            ;
-        }
-        margin-top: 30px!important;
+      .ql-editor {
+        overflow-y: visible;
+      }
+      margin-top: 30px !important;
     }
 
     .bottomGroupDiv {
-        margin: 40px 0px;
+      margin: 40px 0px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .commentsNlikes {
+        display: flex;
+        gap: 15px;
+
+        p {
+          font-family: $hindFont;
+          font-size: 20px;
+          line-height: 20%;
+          display: flex;
+          align-items: center;
+          gap: 3px;
+        }
+      }
+      .favoritesNoptions {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        .commentsNlikes {
- 
-            display: flex;
-            gap: 15px;
-
-            p {
-                font-family: $hindFont;
-                font-size: 20px;
-                line-height: 20%;
-                display: flex;
-                align-items: center;
-                gap: 3px;
-            }
-        }
-        .favoritesNoptions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        gap: 15px;
+      }
     }
     .questionCreator {
-        padding-bottom: 40px;
-        border-bottom: 1px solid $dimGray;
-        p {
-            font-size: 16px;
-            font-family: $hindFont;
-            color: $dimGray;
-            line-height: 20%;
-            font-weight: 400;
-        }
-        .followUser {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            
-            .followButton {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                .dot {
-                    display: inline-block;
-                    width: 3px;
-                    height: 3px;
-                    background-color: $dimGray;
-                    border-radius: 50%;
-                }
+      padding-bottom: 40px;
+      border-bottom: 1px solid $dimGray;
+      p {
+        font-size: 16px;
+        font-family: $hindFont;
+        color: $dimGray;
+        line-height: 20%;
+        font-weight: 400;
+      }
+      .followUser {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
 
-                p {
-                    font-family: $montserratFont;
-                    font-size: 20px;
-                    color: $primaryColor;
-                    font-weight: 400;
-                    
-                    letter-spacing: -0.3px;
-                }
-            }
-    
+        .followButton {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          .dot {
+            display: inline-block;
+            width: 3px;
+            height: 3px;
+            background-color: $dimGray;
+            border-radius: 50%;
+          }
+
+          p {
+            font-family: $montserratFont;
+            font-size: 20px;
+            color: $primaryColor;
+            font-weight: 400;
+
+            letter-spacing: -0.3px;
+          }
         }
+      }
     }
 
     .answersArea {
+      margin-top: 40px;
+      .upperAnswers {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: unset;
+        > p {
+          font-family: $montserratFont;
+          font-size: 32px;
+          font-weight: 600;
+          line-height: 120%;
+        }
+        .filterAnswers {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 16px;
+          line-height: 20%;
+          font-family: $hindFont;
+          color: $onyx;
+
+          .filterAnswersDropdown {
+            padding: 10px 14px;
+            border: 1px solid #c7c7c7;
+          }
+        }
+      }
+
+      .answerDisplayBlock {
         margin-top: 40px;
-        .upperAnswers {
+        margin-bottom: 55px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 25px;
+        border: 1px solid $frenchGray;
+        border-radius: 8px;
+
+        .answerUserArea {
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+          gap: 20px;
+          width: 112px;
+          height: 185px;
+
+          .mutedCriado {
+            font-family: $hindFont;
+            color: $dimGray;
+          }
+
+          .avatar-container {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            gap: 10px;
-            align-items: unset;
-            > p {
-                font-family: $montserratFont;
-                font-size: 32px;
-                font-weight: 600;
-                line-height: 120%;
+
+            .avatar-name-large {
+              font-size: 16px;
+              color: $eerieBlack;
+              line-height: 120%;
             }
-            .filterAnswers {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-size: 16px;
-                line-height: 20%;
+          }
+        }
+
+        .answerText {
+          width: 100%;
+          overflow: hidden;
+
+          .ql-container {
+            border: none;
+
+            .ql-editor {
+              p {
                 font-family: $hindFont;
-                color: $onyx;
-
-                .filterAnswersDropdown {
-                    padding: 10px 14px;
-                    border: 1px solid #C7C7C7;
-                }
-            }
-        }
-
-        .answerDisplayBlock {
-            margin-top: 40px;
-            margin-bottom: 55px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 25px;
-            border: 1px solid $frenchGray;
-            border-radius: 8px;
-
-
-            .answerUserArea {
-                display: flex;
-                flex-direction: column;
-                text-align: center;
-                gap: 20px;
-                width: 112px;
-                height: 185px; 
-
-
-
-                .mutedCriado {
-                    font-family: $hindFont;
-                    color: $dimGray;
-                }
-
-                .avatar-container {
-                    display: flex;
-                    flex-direction: column;
-
-                    
-                    .avatar-name-large {
-                        font-size: 16px;
-                        color: $eerieBlack;
-                        line-height: 120%;
-                    }
-                }
-            }
-
-            .answerText {
-                width: 100%;
-                overflow: hidden;
-
-      
-
-                .ql-container {
-                    border: none;
-
-                    .ql-editor {
-                        p {
-                            font-family: $hindFont;
-                            line-height: 120%;
-                            font-size: 20px;
-                            color: $eerieBlack;
-                        }
-                    }
-                }
-            }
-
-            
-
-        }
-
-        .answerForm {
-            border-top: 1px solid $dimGray;
-            margin-bottom: 88px;
-
-            
-            h1 {
-                margin-top: 54px;
+                line-height: 120%;
+                font-size: 20px;
                 color: $eerieBlack;
-                font-family: $montserratFont;
-                font-size: 32px;
-                font-weight: 600;
+              }
             }
-            display: flex;
-            flex-direction: column;
-            gap: 50px;
-                .postWriter-container {
-                    margin: 0;
-                    width: 100%;
-                    height: 100%;
-                    
-
-                    .editor-container {
-                        padding: 25px;
-                        height: 320px;
-                        order: 0!important;
-                    }
-
-                    .ql-toolbar {
-                        display: flex;
-                        justify-content: space-between;
-                        border-bottom-right-radius: 0px;
-                        border-bottom-left-radius: 0px;
-
-                        .ql-formats {
-                            display: flex;
-                            flex: 1;
-                            justify-content: space-between;
-                            width: 100%;
-                        }
-                    }
-
-                    .editor-area {
-                        min-height: 0;
-                        .ql-editor::before {
-                            font-size: 16px;
-                        }
-                    }
-
-                    button {
-                        font-size: 14px;
-                    }
-
-                    img {
-                        width: 20px;
-                        height: 15px;
-                    }
-
-                    .ql-formats {
-                        .ql-bold, .ql-italic, .ql-strike {
-                            width: 70px;
-                        }
-
-                        .ql-underline {
-                            width: 100px;
-                        }
-                        
-
-                        button {
-                            width: 50px;
-                            height: 38px;
-                        }
-
-                    }
-
-                    .editor-container {
-                        margin: 0;
-                    }
-                }
-
-
-            .custom-button {
-                width: 199px;
-                
-            }
+          }
         }
+      }
+
+      .answerForm {
+        border-top: 1px solid $dimGray;
+        margin-bottom: 88px;
+
+        h1 {
+          margin-top: 54px;
+          color: $eerieBlack;
+          font-family: $montserratFont;
+          font-size: 32px;
+          font-weight: 600;
+        }
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        .postWriter-container {
+          margin: 0;
+          width: 100%;
+          height: 100%;
+
+          .editor-container {
+            padding: 25px;
+            height: 320px;
+            order: 0 !important;
+          }
+
+          .ql-toolbar {
+            display: flex;
+            justify-content: space-between;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+
+            .ql-formats {
+              display: flex;
+              flex: 1;
+              justify-content: space-between;
+              width: 100%;
+            }
+          }
+
+          .editor-area {
+            min-height: 0;
+            .ql-editor::before {
+              font-size: 16px;
+            }
+          }
+
+          button {
+            font-size: 14px;
+          }
+
+          img {
+            width: 20px;
+            height: 15px;
+          }
+
+          .ql-formats {
+            .ql-bold,
+            .ql-italic,
+            .ql-strike {
+              width: 70px;
+            }
+
+            .ql-underline {
+              width: 100px;
+            }
+
+            button {
+              width: 50px;
+              height: 38px;
+            }
+          }
+
+          .editor-container {
+            margin: 0;
+          }
+        }
+
+        .custom-button {
+          width: 199px;
+        }
+      }
     }
-
-}
-
+  }
 }

@@ -25,11 +25,7 @@ export const Footer: React.FC<IFooter> = ({ customStyle }) => {
 
   return (
     <footer className="footer-container" style={customStyle}>
-      <img
-        className="footer-logo"
-        src={logoCodePrimaryFull}
-        alt="logo da code trouble completo"
-      />
+      <img className="footer-logo" src={logoCodePrimaryFull} alt="logo da code trouble completo" />
       <main>
         <nav className="exploreNav">
           <h1>Explore</h1>
@@ -76,11 +72,7 @@ export const Footer: React.FC<IFooter> = ({ customStyle }) => {
             <p>Se Inscreva na nossa NewsLetter.</p>
           </div>
           <form className="footer-messageForm">
-            <input
-              className="footerInput"
-              placeholder="Digite seu email"
-              type="email"
-            />
+            <input className="footerInput" placeholder="Digite seu email" type="email" />
             <button type="submit">Registrar-se</button>
           </form>
         </div>

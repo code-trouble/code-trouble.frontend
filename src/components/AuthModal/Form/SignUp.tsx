@@ -34,21 +34,12 @@ export const SignUp: React.FC = () => {
             {...register("email")}
             placeholder="Digite seu nome"
           />
-          {errors.socialName && (
-            <p className="error-message">{errors.socialName?.message}</p>
-          )}
+          {errors.socialName && <p className="error-message">{errors.socialName?.message}</p>}
         </section>
         <section>
           <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            {...register("email")}
-            placeholder="Digite seu email"
-          />
-          {errors.email && (
-            <p className="error-message">{errors.email.message}</p>
-          )}
+          <input type="email" id="email" {...register("email")} placeholder="Digite seu email" />
+          {errors.email && <p className="error-message">{errors.email.message}</p>}
         </section>
         <section>
           <label htmlFor="password">Senha</label>
@@ -58,9 +49,7 @@ export const SignUp: React.FC = () => {
             {...register("password")}
             placeholder="***********"
           />
-          {errors.password && (
-            <p className="error-message">{errors.password.message}</p>
-          )}
+          {errors.password && <p className="error-message">{errors.password.message}</p>}
         </section>
       </div>
       <button type="submit" className="btn-submit">

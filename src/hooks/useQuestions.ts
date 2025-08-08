@@ -53,22 +53,19 @@ export function useQuestions() {
     saveQuestions(all.filter((q) => q.id !== id));
   }, []);
 
-  const deleteAnswer = useCallback(
-    (questionId: string, answerId: string): void => {
-      const all = getStoredQuestions();
-      const idx = all.findIndex((q) => q.id === questionId);
-      if (idx !== -1) {
-        const q = all[idx];
-        const updated = {
-          ...q,
-          answers: (q.answers || []).filter((a) => a.id !== answerId),
-        };
-        all[idx] = updated;
-        saveQuestions(all);
-      }
-    },
-    []
-  );
+  const deleteAnswer = useCallback((questionId: string, answerId: string): void => {
+    const all = getStoredQuestions();
+    const idx = all.findIndex((q) => q.id === questionId);
+    if (idx !== -1) {
+      const q = all[idx];
+      const updated = {
+        ...q,
+        answers: (q.answers || []).filter((a) => a.id !== answerId),
+      };
+      all[idx] = updated;
+      saveQuestions(all);
+    }
+  }, []);
 
   return { getAll, getById, add, remove, deleteAnswer };
 }

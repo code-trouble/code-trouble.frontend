@@ -14,10 +14,7 @@ export function formatDate(input: string | Date): string {
   const monthRaw = parts[2];
   const year = parts[4];
   const monthClean =
-    monthRaw.charAt(monthRaw.length - 1) === "."
-      ? monthRaw.slice(0, -1)
-      : monthRaw;
-  const month =
-    monthClean.charAt(0).toUpperCase() + monthClean.slice(1);
+    monthRaw.charAt(monthRaw.length - 1) === "." ? monthRaw.slice(0, -1) : monthRaw;
+  const month = monthClean.charAt(0).toUpperCase() + monthClean.slice(1);
   return `${day} ${month}, ${year}`;
 }

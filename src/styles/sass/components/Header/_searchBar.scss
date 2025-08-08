@@ -1,62 +1,61 @@
-@use '../../base/variables' as *;
-
+@use "../../base/variables" as *;
 
 .searchBar {
-    position: relative;
+  position: relative;
 }
 
 .search-input-wrapper {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    background-color: #fff;
+  background-color: #fff;
 
-    img {
-        margin-right: 0.5rem;
-    }
+  img {
+    margin-right: 0.5rem;
+  }
 
-    input {
-        flex: 1;
-        border: none;
-        font-size: 1rem;
-        outline: none;
-    }
+  input {
+    flex: 1;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+  }
 }
 
 .live-search-results {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-top: none; 
-    border-radius: 0 0 8px 8px; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    z-index: 1001;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 1001;
 
-    p {
-        margin: 0 0 0.5rem 0;
-        color: #212121; 
-    }
+  p {
+    margin: 0 0 0.5rem 0;
+    color: #212121;
+  }
 
-    .no-results {
-        color: #212121;
-    }
+  .no-results {
+    color: #212121;
+  }
 }
 
 .search-result-item {
-    padding: 0.75rem;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
 
-    &:last-child {
-        border-bottom: none;
-    }
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 .search-result-item.suggestion {
-    color: #535353;
-    font-style: italic;
+  color: #535353;
+  font-style: italic;
 }

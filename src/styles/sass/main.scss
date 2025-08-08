@@ -1,41 +1,39 @@
-@use './pages/Blog/blog';
+@use "./pages/Blog/blog";
 
-@use './base/variables';
-@use './base/reset';
+@use "./base/variables";
+@use "./base/reset";
 
-@use './components/OldLanding/oldNavBar';
-@use './components/OldLanding/pageStyles';
-@use './components/OldLanding/textButton';
-@use './components/Header/header';
-@use './components/Header/searchBar';
-@use './components/Avatar/avatar';
-@use './components/StackedCards/stackedCard';
-@use './components/StackedCards/stackedCards';
-@use './components/Tag/tagStyles';
-@use './components/AuthModal/authModal';
-@use './components/AuthModal/authForm';
-@use './components/ToggleButton/toggleButton';
-@use './components/CustomButton/customButton';
-@use './components/PostWriter/postWriter';
-@use './components/PostWriter/altPostWriter';
-@use './pages/LandingPage/landingPage';
-@use './pages/Questions/questions';
-@use './pages/OpenQuestion/openQuestion';
-@use './pages/AskAQuestion/askAQuestion';
+@use "./components/OldLanding/oldNavBar";
+@use "./components/OldLanding/pageStyles";
+@use "./components/OldLanding/textButton";
+@use "./components/Header/header";
+@use "./components/Header/searchBar";
+@use "./components/Avatar/avatar";
+@use "./components/StackedCards/stackedCard";
+@use "./components/StackedCards/stackedCards";
+@use "./components/Tag/tagStyles";
+@use "./components/AuthModal/authModal";
+@use "./components/AuthModal/authForm";
+@use "./components/ToggleButton/toggleButton";
+@use "./components/CustomButton/customButton";
+@use "./components/PostWriter/postWriter";
+@use "./components/PostWriter/altPostWriter";
+@use "./pages/LandingPage/landingPage";
+@use "./pages/Questions/questions";
+@use "./pages/OpenQuestion/openQuestion";
+@use "./pages/AskAQuestion/askAQuestion";
 
-@use './components/BlogPostPreview/blogPostPreview';
-@use './components/QuestionPreview/questionPreview';
-@use './components/QuestionsFilterModal/questionsFIlterModal';
-@use './components/QuestionsPagination/questionsPagination';
-@use './components/Footer/footer';
-@use './components/TooltipDescription/tooltipDescription';
-@use './components/TagSelector/tagSelector';
-
+@use "./components/BlogPostPreview/blogPostPreview";
+@use "./components/QuestionPreview/questionPreview";
+@use "./components/QuestionsFilterModal/questionsFIlterModal";
+@use "./components/QuestionsPagination/questionsPagination";
+@use "./components/Footer/footer";
+@use "./components/TooltipDescription/tooltipDescription";
+@use "./components/TagSelector/tagSelector";
 
 @font-face {
-    font-family: 'MS Sans Serif';
-    src: url('../../assets/fonts/ms_sans_serif.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "MS Sans Serif";
+  src: url("../../assets/fonts/ms_sans_serif.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
-

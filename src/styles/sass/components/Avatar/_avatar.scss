@@ -1,11 +1,10 @@
-@use '../../base/variables' as *;
-
+@use "../../base/variables" as *;
 
 .avatar-container {
   display: flex;
   gap: 10px;
   align-items: center;
-  
+
   .avatar-text {
     display: flex;
     flex-direction: column;

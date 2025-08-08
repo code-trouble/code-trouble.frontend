@@ -18,10 +18,7 @@ function generateButtonColor(activeColor: string) {
   }
 }
 
-export const ToggleButton: React.FC<IToggleButton> = ({
-  activeColor,
-  isDisabled,
-}) => {
+export const ToggleButton: React.FC<IToggleButton> = ({ activeColor, isDisabled }) => {
   const [isOn, setIsOn] = useState(false);
 
   const handleToggle = () => {

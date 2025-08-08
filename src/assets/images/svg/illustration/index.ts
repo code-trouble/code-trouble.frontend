@@ -1,1 +1,1 @@
-export { default as ProfessorCorrea } from './professor-correa.svg'
+export { default as ProfessorCorrea } from "./professor-correa.svg";

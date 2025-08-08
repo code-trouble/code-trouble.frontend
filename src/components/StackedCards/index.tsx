@@ -1,18 +1,14 @@
 import React, { useRef, useState } from "react";
 import { StackedCard } from "../StackedCard";
 import profileAvatar from "../../assets/images/png/profileAvatar.png";
-import profileAvatar2 from "../../assets/images/png/profileAvatar2.png"
+import profileAvatar2 from "../../assets/images/png/profileAvatar2.png";
 import { useDisableTabInside } from "../../hooks/useDisableTabInside";
 
 const CardTags = ["Chat GPT", "Design", "Auto-Ajuda", "Pix"];
 const CardTags2 = ["123", "Código", "Web", "Pix"];
 
-
-
 export const StackedCards: React.FC = () => {
-
   const containerRef = useRef<HTMLDivElement>(null);
-
 
   useDisableTabInside(containerRef);
 
@@ -23,7 +19,7 @@ export const StackedCards: React.FC = () => {
   };
 
   return (
-    <div  ref={containerRef} className="cards-wrapper">
+    <div ref={containerRef} className="cards-wrapper">
       <div className={`individual-card ${cardOrder[0]}`}>
         <StackedCard
           username="Joana Lima"
