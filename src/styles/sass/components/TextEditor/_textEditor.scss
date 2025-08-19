@@ -1,0 +1,13 @@
+@use "../../base/variables" as *;
+
+
+
+.editor-container {
+  border: 1px solid $frenchGray;
+  border-radius: 8px;
+  
+  min-height: 391px;
+  .ql-container {
+    border: none!important;
+  }
+}

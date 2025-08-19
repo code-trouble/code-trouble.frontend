@@ -18,6 +18,8 @@
 @use "./components/CustomButton/customButton";
 @use "./components/PostWriter/postWriter";
 @use "./components/PostWriter/altPostWriter";
+@use "./components/TextEditor/textEditor";
+@use "./components/TextEditor/toolbar";
 @use "./pages/LandingPage/landingPage";
 @use "./pages/Questions/questions";
 @use "./pages/OpenQuestion/openQuestion";

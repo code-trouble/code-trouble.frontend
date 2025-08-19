@@ -13,8 +13,9 @@ import upvotes from "../../assets/images/svg/greenUpvote.svg";
 import addToFavorite from "../../assets/images/svg/addToFavorite.svg";
 import threeDotMenu from "../../assets/images/svg/3dotsMenu.svg";
 import { Avatar } from "../../components/Avatar";
-import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
+import { TextEditor } from "../../components/Editor";
+
 
 export const OpenQuestion: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -198,7 +199,7 @@ export const OpenQuestion: React.FC = () => {
           )}
           <form className="answerForm" onSubmit={handlePostAnswer}>
             <h1>Responder</h1>
-            <AltPostWriter onChange={setAnswer} value={answer} />
+            <TextEditor  />
             <CustomButton
               type="submit"
               text="Poste sua resposta"

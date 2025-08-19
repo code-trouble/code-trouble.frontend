@@ -1,0 +1,70 @@
+@use "../../base/variables" as *;
+
+
+.custom-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 16px 25px;
+  border: 1px solid #e5e7eb;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background: $onyx;
+
+  .sep {
+    width: 1px;
+    height: 20px;
+    background: #e5e7eb;
+    margin: 0 4px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 100%;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    font-family: $montserratFont;
+    line-height: 1;
+
+
+    &:hover {
+      background-color: $frenchGray;
+    }
+
+
+    &.is-active {
+      color: $tertiaryColor;
+      border: 1px dotted white;
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(59,130,246,0.35);
+    }
+
+
+    &.btn-bold {
+      font-weight: bold;
+    }
+
+
+    &.btn-italic {
+      font-style: italic;
+    }
+
+    &.btn-underline {
+      text-decoration: underline;
+    }
+
+    &.btn-strike {
+      text-decoration: line-through;
+    }
+  }
+}
