@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Header } from "../../components/Header";
-import { Footer } from "../../components/Footer";
 import CustomButton from "../../components/CustomButton";
 import { QuestionsPreview } from "../../components/QuestionPreview";
 import { Tag } from "../../components/Tag";
@@ -11,7 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { useQuestions, Question } from "../../hooks/useQuestions";
 import { initialQuestions } from "../../utils/initialQuestions";
 
-const tags = ["Design", "Programação", "Arte", "Ciência de Dados", "Tecnologia"];
+const tags = [
+  "Design",
+  "Programação",
+  "Arte",
+  "Ciência de Dados",
+  "Tecnologia",
+];
 
 export const Questions: React.FC = () => {
   const navigate = useNavigate();
@@ -60,7 +64,6 @@ export const Questions: React.FC = () => {
 
   return (
     <div className="questions-container">
-      <Header theme="base" loggedIn={false} />
       <div className="questions-inner-container">
         <div className="left-side">
           <div className="questions-area">
@@ -120,8 +123,9 @@ export const Questions: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer customStyle={{ bottom: 0 }} />
-      {isModalOpen && <QuestionsFilterModal onClick={toggleModal} closeModal={closeModal} />}
+      {isModalOpen && (
+        <QuestionsFilterModal onClick={toggleModal} closeModal={closeModal} />
+      )}
     </div>
   );
 };

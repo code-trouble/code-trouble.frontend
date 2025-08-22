@@ -4,8 +4,6 @@ import parse from "html-react-parser";
 import DOMPurify, { Config as PurifyConfig } from "dompurify";
 import "quill/dist/quill.snow.css";
 import { useQuestions, Question, Answer } from "../../hooks/useQuestions";
-import { Header } from "../../components/Header";
-import { Footer } from "../../components/Footer";
 import { Tag } from "../../components/Tag";
 import { formatDate } from "../../utils/formatDate";
 import comments from "../../assets/images/svg/greenComments.svg";
@@ -38,7 +36,10 @@ export const OpenQuestion: React.FC = () => {
   if (!question) return null;
   const tags = question.tags ?? [];
 
-  const cleanDesc = DOMPurify.sanitize(question.description, purifyConfig) as string;
+  const cleanDesc = DOMPurify.sanitize(
+    question.description,
+    purifyConfig,
+  ) as string;
   const cleanDetails = question.details
     ? (DOMPurify.sanitize(question.details, purifyConfig) as string)
     : "";
@@ -77,12 +78,12 @@ export const OpenQuestion: React.FC = () => {
 
   return (
     <div className="open-question-container">
-      <Header loggedIn theme="base" />
       <div className="open-question-inner-container">
         <div className="title-wrapper">
           <h1>{question.title}</h1>
           <p>
-            <span className="mutedCriado">Criado</span> {formatDate(question.createdAt)}
+            <span className="mutedCriado">Criado</span>{" "}
+            {formatDate(question.createdAt)}
           </p>
         </div>
         {tags.length > 0 && (
@@ -159,7 +160,11 @@ export const OpenQuestion: React.FC = () => {
             </div>
           ) : (
             answers.map((ans) => (
-              <div key={ans.id} className="answerDisplayBlock" style={{ position: "relative" }}>
+              <div
+                key={ans.id}
+                className="answerDisplayBlock"
+                style={{ position: "relative" }}
+              >
                 {/* <button
                                 onClick={() => handleDeleteAnswer(ans.id)}
                                 style={{
@@ -189,7 +194,9 @@ export const OpenQuestion: React.FC = () => {
                 <div className="answerText">
                   <div className="ql-container ql-snow">
                     <div className="ql-editor">
-                      {parse(DOMPurify.sanitize(ans.text, purifyConfig) as string)}
+                      {parse(
+                        DOMPurify.sanitize(ans.text, purifyConfig) as string,
+                      )}
                     </div>
                   </div>
                 </div>
@@ -221,7 +228,6 @@ export const OpenQuestion: React.FC = () => {
         >
           Excluir pergunta
         </button>  */}
-      <Footer />
     </div>
   );
 };
