@@ -3,6 +3,7 @@ import FocusLock from "react-focus-lock";
 import { SignIn, SignUp, ForgotPassword, RecoveryPassword } from "./Form";
 import { logoCodePrimary } from "../../assets/images/svg/icons";
 import { ProfessorCorrea } from "../../assets/images/svg/illustration";
+import { useNavigate } from "react-router-dom";
 
 interface IAuthModal {
   type: "signIn" | "signUp" | "recovery" | "forgot";
@@ -23,6 +24,13 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const navigate = useNavigate();
+
+  function navigateTo(path: string) {
+    window.scrollTo(0, 0);
+    navigate(path);
+  }
 
   const renderNames = () => {
     switch (currentType) {
@@ -58,9 +66,24 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
   const renderForm = () => {
     switch (currentType) {
       case "signIn":
-        return <SignIn onForgot={() => setCurrentType("forgot")} />;
+        return (
+          <SignIn
+            onForgot={() => setCurrentType("forgot")}
+            onSignInSuccess={() => {
+              navigateTo("/questions");
+              onClose();
+            }}
+          />
+        );
       case "signUp":
-        return <SignUp />;
+        return (
+          <SignUp
+            onSignUpSuccess={() => {
+              setCurrentType("signIn");
+              onClose();
+            }}
+          />
+        );
       case "forgot":
         return <ForgotPassword />;
       case "recovery":
@@ -79,8 +102,16 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
         <dialog onClick={(e) => e.stopPropagation()}>
           {windowWidth > 1070 && (
             <figure>
-              <img className="logo" src={logoCodePrimary} alt="logo code trouble na cor verde" />
-              <img className="mascote" src={ProfessorCorrea} alt="avatar do professor Corrêa" />
+              <img
+                className="logo"
+                src={logoCodePrimary}
+                alt="logo code trouble na cor verde"
+              />
+              <img
+                className="mascote"
+                src={ProfessorCorrea}
+                alt="avatar do professor Corrêa"
+              />
             </figure>
           )}
           <aside>
@@ -95,7 +126,9 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
                 </div>
                 <p>
                   {names?.text}{" "}
-                  <button onClick={() => setCurrentType(nextType)}>{names?.textDecoration}</button>
+                  <button onClick={() => setCurrentType(nextType)}>
+                    {names?.textDecoration}
+                  </button>
                 </p>
               </div>
             </section>
