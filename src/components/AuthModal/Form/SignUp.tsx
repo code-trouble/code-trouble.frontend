@@ -1,17 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { SignUpFormData, signUpSchema } from "../../../schema/authSchema";
+import { useAuthStore } from "../../../stores/authStore";
+import { toast } from "sonner";
+import { SingUpProps } from "../../../interfaces/authProps";
 
-const signUpSchema = z.object({
-  socialName: z.string(),
-  email: z.string().email("Email inválido"),
-  password: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
-});
+export const SignUp: React.FC<SingUpProps> = ({ onSignUpSuccess }) => {
+  const { signUp, isLoading, error, success, reset } = useAuthStore();
 
-type SignUpFormData = z.infer<typeof signUpSchema>;
-
-export const SignUp: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -20,26 +17,51 @@ export const SignUp: React.FC = () => {
     resolver: zodResolver(signUpSchema),
   });
 
+  useEffect(() => {
+    if (success) {
+      toast.success("Cadastro realizado com sucesso!");
+      onSignUpSuccess();
+
+      reset();
+    }
+    if (error) {
+      toast.error(error);
+      reset();
+    }
+  }, [success, error, reset, onSignUpSuccess]);
+
   const onSubmit = (data: SignUpFormData) => {
-    console.log(data);
+    signUp(data);
   };
+
   return (
     <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
         <section>
-          <label htmlFor="social-name">Nome Social</label>
+          <label htmlFor="social-name">Nome Social/Username</label>
           <input
             type="text"
             id="social-name"
-            {...register("email")}
+            {...register("username")}
             placeholder="Digite seu nome"
+            disabled={isLoading}
           />
-          {errors.socialName && <p className="error-message">{errors.socialName?.message}</p>}
+          {errors.username && (
+            <p className="error-message">{errors.username?.message}</p>
+          )}
         </section>
         <section>
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" {...register("email")} placeholder="Digite seu email" />
-          {errors.email && <p className="error-message">{errors.email.message}</p>}
+          <input
+            type="email"
+            id="email"
+            {...register("email")}
+            placeholder="Digite seu email"
+            disabled={isLoading}
+          />
+          {errors.email && (
+            <p className="error-message">{errors.email.message}</p>
+          )}
         </section>
         <section>
           <label htmlFor="password">Senha</label>
@@ -48,12 +70,15 @@ export const SignUp: React.FC = () => {
             id="password"
             {...register("password")}
             placeholder="***********"
+            disabled={isLoading}
           />
-          {errors.password && <p className="error-message">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="error-message">{errors.password.message}</p>
+          )}
         </section>
       </div>
-      <button type="submit" className="btn-submit">
-        Cadastrar
+      <button type="submit" className="btn-submit" disabled={isLoading}>
+        {isLoading ? "Cadastrando..." : "Cadastrar"}
       </button>
     </form>
   );

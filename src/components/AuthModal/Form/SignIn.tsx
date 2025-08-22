@@ -1,20 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SignInFormData, signInSchema } from "../../../schema/authSchema";
+import { SignInProps } from "../../../interfaces/authProps";
+import { useAuthStore } from "../../../stores/authStore";
+import { toast } from "sonner";
 
-const signInSchema = z.object({
-  email: z.string().email("Email inválido"),
-  password: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
-});
-
-type SignInFormData = z.infer<typeof signInSchema>;
-
-interface ISignIn {
-  onForgot: () => void;
-}
-
-export const SignIn: React.FC<ISignIn> = ({ onForgot }) => {
+export const SignIn: React.FC<SignInProps> = ({
+  onForgot,
+  onSignInSuccess,
+}) => {
+  const { signIn, isLoading, error, success, reset } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -23,8 +19,22 @@ export const SignIn: React.FC<ISignIn> = ({ onForgot }) => {
     resolver: zodResolver(signInSchema),
   });
 
+  useEffect(() => {
+    if (success) {
+      toast.success("Login realizado com sucesso!");
+      onSignInSuccess();
+
+      reset();
+    }
+    if (error) {
+      toast.error(error);
+      reset();
+    }
+  }, [success, error, reset, onSignInSuccess]);
+
   const onSubmit = (data: SignInFormData) => {
     console.log(data);
+    signIn(data);
   };
 
   return (
@@ -32,8 +42,16 @@ export const SignIn: React.FC<ISignIn> = ({ onForgot }) => {
       <div className="input-wrapper">
         <section>
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" {...register("email")} placeholder="Digite seu email" />
-          {errors.email && <p className="error-message">{errors.email.message}</p>}
+          <input
+            type="email"
+            id="email"
+            {...register("email")}
+            placeholder="Digite seu email"
+            disabled={isLoading}
+          />
+          {errors.email && (
+            <p className="error-message">{errors.email.message}</p>
+          )}
         </section>
         <section>
           <label htmlFor="password">Senha</label>
@@ -42,15 +60,18 @@ export const SignIn: React.FC<ISignIn> = ({ onForgot }) => {
             id="password"
             {...register("password")}
             placeholder="***********"
+            disabled={isLoading}
           />
-          {errors.password && <p className="error-message">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="error-message">{errors.password.message}</p>
+          )}
         </section>
         <button className="btn-link" onClick={onForgot} type="button">
           Esqueceu a senha?
         </button>
       </div>
-      <button type="submit" className="btn-submit">
-        Entrar
+      <button type="submit" className="btn-submit" disabled={isLoading}>
+        {isLoading ? "Entrando. . ." : "Entrar"}
       </button>
     </form>
   );

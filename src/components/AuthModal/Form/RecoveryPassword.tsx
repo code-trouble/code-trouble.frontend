@@ -1,20 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const recoveryPasswordSchema = z
-  .object({
-    email: z.string().email("Email inválido"),
-    newPassword: z.string().min(8, "A nova senha deve ter pelo menos 8 caracteres"),
-    confirmPassword: z.string().min(8, "A confirmação da senha deve ter pelo menos 8 caracteres"),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "As senhas não correspondem",
-    path: ["confirmPassword"], // Aponta o erro para o campo `confirmPassword`
-  });
-
-type RecoveryPasswordFormData = z.infer<typeof recoveryPasswordSchema>;
+import {
+  RecoveryPasswordFormData,
+  recoveryPasswordSchema,
+} from "../../../schema/authSchema";
 
 export const RecoveryPassword: React.FC = () => {
   const {
@@ -33,8 +23,15 @@ export const RecoveryPassword: React.FC = () => {
       <div className="input-wrapper">
         <section>
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" {...register("email")} placeholder="Digite seu email" />
-          {errors.email && <p className="error-message">{errors.email.message}</p>}
+          <input
+            type="email"
+            id="email"
+            {...register("email")}
+            placeholder="Digite seu email"
+          />
+          {errors.email && (
+            <p className="error-message">{errors.email.message}</p>
+          )}
         </section>
         <section>
           <label htmlFor="new-password">Nova Senha</label>
@@ -44,7 +41,9 @@ export const RecoveryPassword: React.FC = () => {
             {...register("newPassword")}
             placeholder="***********"
           />
-          {errors.newPassword && <p className="error-message">{errors.newPassword.message}</p>}
+          {errors.newPassword && (
+            <p className="error-message">{errors.newPassword.message}</p>
+          )}
         </section>
         <section>
           <label htmlFor="confirm-password">Confirme a Senha</label>
