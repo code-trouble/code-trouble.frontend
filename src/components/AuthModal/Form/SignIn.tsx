@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormData, signInSchema } from "../../../schema/authSchema";
-import { SignInProps } from "../../../interfaces/authProps";
 import { useAuthStore } from "../../../stores/authStore";
 import { toast } from "sonner";
+import { SignInProps } from "../../../types/authTypes";
 
 export const SignIn: React.FC<SignInProps> = ({
   onForgot,
@@ -27,13 +27,12 @@ export const SignIn: React.FC<SignInProps> = ({
       reset();
     }
     if (error) {
-      toast.error(error);
+      toast.error(`${error}: Credenciais invalidas.`);
       reset();
     }
   }, [success, error, reset, onSignInSuccess]);
 
   const onSubmit = (data: SignInFormData) => {
-    console.log(data);
     signIn(data);
   };
 
