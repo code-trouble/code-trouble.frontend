@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { AuthState } from "../interfaces/authProps";
 import { api } from "../services/api";
+import { useUserStore } from "./userStore";
+import { AuthState } from "../types/authTypes";
 
 export const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: false,
@@ -22,6 +23,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   logout: () => {
     localStorage.removeItem("authToken");
     set({ token: null, isLoading: false, error: null, success: false });
+    useUserStore.getState().clearUser();
   },
 
   signUp: async (data) => {
