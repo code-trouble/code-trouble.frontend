@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Header } from "../../components/Header";
-import { Footer } from "../../components/Footer";
 import CustomButton from "../../components/CustomButton";
 import { Tag } from "../../components/Tag";
 import { Avatar } from "../../components/Avatar";
@@ -14,127 +12,157 @@ interface IBlogPost {
   image?: boolean;
 }
 
-const tags = ["Design", "Programação", "Arte", "Ciência de Dados", "Tecnologia"];
+const tags = [
+  "Design",
+  "Programação",
+  "Arte",
+  "Ciência de Dados",
+  "Tecnologia",
+];
 
 const blogPosts: IBlogPost[] = [
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: true,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
   {
     title: "Como faz array no javascript?",
-    description: "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
+    description:
+      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
     image: false,
   },
 ];
@@ -161,7 +189,6 @@ export const Blog: React.FC = () => {
 
   return (
     <div className="blog-container">
-      <Header theme="blue" loggedIn={false} />
       <div className="blog-inner-container">
         <div className="paginationWrapper">
           <div className="blog-area">
@@ -283,8 +310,6 @@ export const Blog: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

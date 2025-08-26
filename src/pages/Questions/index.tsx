@@ -1,56 +1,44 @@
 import React, { useState, useEffect } from "react";
-import { Header } from "../../components/Header";
-import { Footer } from "../../components/Footer";
+import { useNavigate } from "react-router-dom";
 import CustomButton from "../../components/CustomButton";
 import { QuestionsPreview } from "../../components/QuestionPreview";
 import { Tag } from "../../components/Tag";
 import filterSettings from "../../assets/images/svg/filterSettings.svg";
 import { QuestionsFilterModal } from "../../components/QuestionsFilterModal";
 import { Pagination } from "../../components/QuestionsPagination";
-import { useNavigate } from "react-router-dom";
-import { useQuestions, Question } from "../../hooks/useQuestions";
-import { initialQuestions } from "../../utils/initialQuestions";
+import { useQuestionStore } from "../../stores/questionStore";
 
-const tags = ["Design", "Programação", "Arte", "Ciência de Dados", "Tecnologia"];
+const tags = [
+  "Design",
+  "Programação",
+  "Arte",
+  "Ciência de Dados",
+  "Tecnologia",
+];
 
 export const Questions: React.FC = () => {
   const navigate = useNavigate();
-
-  function navigateTo(path: string) {
-    window.scrollTo(0, 0);
-    navigate(path);
-  }
-
-  const { getAll, add } = useQuestions();
-  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const itemsPerPage = 10;
-  //  const totalPages = Math.ceil(questions.length / itemsPerPage);
-  const totalPages = 10;
+  const { questions, isLoading, error, fetchAllQuestions } = useQuestionStore();
 
-  // Seed initial questions on first load
   useEffect(() => {
-    const stored = getAll();
-    if (stored.length === 0) {
-      const seeded = initialQuestions.map((q) => ({
-        id: q.id.toString(),
-        title: q.title,
-        description: q.description,
-        createdAt: new Date().toISOString(),
-      }));
-      seeded.forEach((question) => add(question));
-      setQuestions(seeded);
-    } else {
-      setQuestions(stored);
-    }
-  }, [getAll, add]);
+    fetchAllQuestions();
+  }, [fetchAllQuestions]);
+
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(questions.length / itemsPerPage);
 
   const displayedQuestions = questions.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   );
+
+  const navigateTo = (path: string) => {
+    window.scrollTo(0, 0);
+    navigate(path);
+  };
 
   const toggleModal = () => setIsModalOpen((prev) => !prev);
   const closeModal = () => setIsModalOpen(false);
@@ -58,9 +46,34 @@ export const Questions: React.FC = () => {
     setCurrentPage(page);
   };
 
+  if (isLoading) {
+    return (
+      <div className="questions-container">
+        <div
+          className="questions-inner-container"
+          style={{ textAlign: "center", padding: "2rem" }}
+        >
+          Carregando perguntas...
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="questions-container">
+        <div
+          className="questions-inner-container"
+          style={{ textAlign: "center", padding: "2rem", color: "red" }}
+        >
+          {error}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="questions-container">
-      <Header theme="base" loggedIn={false} />
       <div className="questions-inner-container">
         <div className="left-side">
           <div className="questions-area">
@@ -85,21 +98,28 @@ export const Questions: React.FC = () => {
               <a href="#">Mês</a>
             </div>
             <div className="questions-list">
-              {displayedQuestions.map((q) => (
-                <QuestionsPreview
-                  key={q.id}
-                  questionTitle={q.title}
-                  questionDescription={q.description}
-                  onClick={() => navigateTo(`/questions/${q.id}`)}
-                />
-              ))}
+              {questions.length === 0 ? (
+                <div style={{ textAlign: "center", padding: "2rem" }}>
+                  Nenhuma pergunta encontrada.
+                </div>
+              ) : (
+                displayedQuestions.map((question) => (
+                  <QuestionsPreview
+                    key={question.id}
+                    question={question}
+                    onClick={() => navigateTo(`/questions/${question.id}`)}
+                  />
+                ))
+              )}
             </div>
           </div>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          {questions.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
         <div className="right-side">
           <div className="topics-area">
@@ -120,8 +140,9 @@ export const Questions: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer customStyle={{ bottom: 0 }} />
-      {isModalOpen && <QuestionsFilterModal onClick={toggleModal} closeModal={closeModal} />}
+      {isModalOpen && (
+        <QuestionsFilterModal onClick={toggleModal} closeModal={closeModal} />
+      )}
     </div>
   );
 };

@@ -9,12 +9,17 @@ import toolbarVideo from "../../assets/images/svg/toolbarVideo.svg";
 import toolbarLink from "../../assets/images/svg/toolbarLink.svg";
 
 interface IAltPostWriter {
-  value: string;
-  onChange: (html: string) => void;
+  value: any; // Delta object
+  onChange: (delta: any) => void;
 }
 
-export const AltPostWriter: React.FC<IAltPostWriter> = ({ value, onChange }) => {
-  const toolbarId = useRef("custom-toolbar-" + Math.random().toString(36).substring(2, 9));
+export const AltPostWriter: React.FC<IAltPostWriter> = ({
+  value,
+  onChange,
+}) => {
+  const toolbarId = useRef(
+    "custom-toolbar-" + Math.random().toString(36).substring(2, 9),
+  );
   const quillRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<Quill | null>(null);
 
@@ -67,9 +72,15 @@ export const AltPostWriter: React.FC<IAltPostWriter> = ({ value, onChange }) => 
                 input.setAttribute("type", "file");
                 input.setAttribute("accept", "image/*");
                 input.click();
-                input.onchange = () => {
-                  const file = input.files ? input.files[0] : null;
+                input.onchange = async () => {
+                  const file = input.files?.[0];
                   if (!file) return;
+
+                  // TODO: Upload to S3 and get URL
+                  // const imageUrl = await uploadToS3(file);
+                  // this.quill.insertEmbed(range?.index ?? this.quill.getLength(), "image", imageUrl);
+
+                  // For now, use base64 (will be replaced with S3 URL later)
                   const reader = new FileReader();
                   reader.onload = () => {
                     const idx = range?.index ?? this.quill.getLength();
@@ -85,8 +96,10 @@ export const AltPostWriter: React.FC<IAltPostWriter> = ({ value, onChange }) => 
         placeholder: "",
       });
 
-      // load initial content
-      editorRef.current.root.innerHTML = value;
+      // Load initial content from Delta
+      if (value && value.ops) {
+        editorRef.current.setContents(value);
+      }
 
       const updatePlaceholder = () => {
         const editor = quillRef.current?.querySelector(".ql-editor");
@@ -100,13 +113,17 @@ export const AltPostWriter: React.FC<IAltPostWriter> = ({ value, onChange }) => 
 
       editorRef.current.on("text-change", () => {
         updatePlaceholder();
-        onChange(editorRef.current!.root.innerHTML);
+        const delta = editorRef.current!.getContents();
+        onChange(delta);
       });
+
       editorRef.current.on("selection-change", (range) => {
         if (range == null) updatePlaceholder();
       });
+
       updatePlaceholder();
 
+      // Custom toolbar styling
       setTimeout(() => {
         const toolbar = document.getElementById(toolbarId.current)!;
         const replace = (sel: string, icon: string) => {
@@ -117,8 +134,14 @@ export const AltPostWriter: React.FC<IAltPostWriter> = ({ value, onChange }) => 
         replace(".ql-italic", "Italic");
         replace(".ql-underline", "Underline");
         replace(".ql-strike", "Strike");
-        replace('.ql-list[value="bullet"]', `<img src="${toolbarList}" alt="Bullet"/>`);
-        replace('.ql-list[value="ordered"]', `<img src="${toolbarOrdered}" alt="Ordered"/>`);
+        replace(
+          '.ql-list[value="bullet"]',
+          `<img src="${toolbarList}" alt="Bullet"/>`,
+        );
+        replace(
+          '.ql-list[value="ordered"]',
+          `<img src="${toolbarOrdered}" alt="Ordered"/>`,
+        );
         replace(".ql-code-block", `<img src="${codespace}" alt="Code"/>`);
         replace(".ql-link", `<img src="${toolbarLink}" alt="Link"/>`);
         replace(".ql-image", `<img src="${toolbarImg}" alt="Image"/>`);

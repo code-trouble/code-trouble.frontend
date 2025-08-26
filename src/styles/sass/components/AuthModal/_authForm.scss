@@ -42,12 +42,14 @@
     justify-content: center;
     align-items: center;
     height: 44px;
-
+    color: black;
     width: 100%;
     border-radius: 8px;
     border: 1px solid $frenchGray;
     padding: 10px 14px;
-    color: $frenchGray;
+    &::placeholder {
+      color: $frenchGray;
+    }
   }
 
   .btn-submit {

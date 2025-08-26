@@ -141,8 +141,69 @@
   }
 
   .loggedInContent {
+    position: relative;
     display: flex;
+    align-items: center;
     gap: 30px;
+
+    .AvatarButton {
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      border-radius: 100%;
+      transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+
+      img {
+        display: block;
+        border-radius: 50%;
+
+        &:hover {
+          transform: scale(1.03);
+        }
+      }
+    }
+
+    .NotificationBell {
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    .UserDropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      min-width: 180px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      padding: 0.5rem 0;
+      z-index: 1000;
+
+      .UserDropdownItem {
+        width: 100%;
+        text-align: left;
+        background: transparent;
+        border: 0;
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        font-size: 0.95rem;
+        color: #111827;
+        border-radius: 8px;
+        transition: background 0.15s ease;
+
+        &:hover {
+          background: #f3f4f6;
+        }
+      }
+    }
   }
 }
 

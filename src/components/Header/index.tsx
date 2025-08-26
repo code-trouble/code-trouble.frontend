@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import code from "../../assets/images/svg/codeLogo.svg";
 import codeBlue from "../../assets/images/svg/codeLogoBlue.svg";
 import smallCode from "../../assets/images/svg/smCodeLogo.svg";
@@ -15,22 +15,55 @@ import { AuthModal } from "../AuthModal";
 import { useNavigate } from "react-router-dom";
 import { SearchBar } from "./searchbar";
 import { makeElementAccessible } from "../../utils/makeElementAccessible"; // 👈 adicionado
+import { useAuthStore } from "../../stores/authStore";
+import { toast } from "sonner";
+import { useUserStore } from "../../stores/userStore";
 
 interface IHeader {
   theme?: "base" | "blue";
-  loggedIn?: boolean;
 }
 
-export const Header: React.FC<IHeader> = ({ theme, loggedIn }) => {
+export const Header: React.FC<IHeader> = ({ theme }) => {
+  const currentUser = useUserStore((state) => state.currentUser);
+  const fetchCurrentUser = useUserStore((state) => state.fetchCurrentUser);
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [fetchCurrentUser]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement | null>(null);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<null | "signIn" | "signUp">(null);
 
+  const { token, hydrateFromStorage, logout } = useAuthStore();
+  const loggedIn = !!token;
+
   const navigate = useNavigate();
 
-  const handleCloseModal = () => {
-    setModalType(null);
-  };
+  useEffect(() => {
+    hydrateFromStorage();
+  }, [hydrateFromStorage]);
+
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (!userMenuRef.current) return;
+      if (!userMenuRef.current.contains(e.target as Node))
+        setUserMenuOpen(false);
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setUserMenuOpen(false);
+    }
+    document.addEventListener("mousedown", onDocClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDocClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  });
+
+  const handleCloseModal = () => setModalType(null);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -43,7 +76,11 @@ export const Header: React.FC<IHeader> = ({ theme, loggedIn }) => {
 
   return (
     <header className="header-container">
-      <div className="logo-container" style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
+      <div
+        className="logo-container"
+        style={{ cursor: "pointer" }}
+        onClick={() => navigate("/")}
+      >
         <img
           className="normal-logo"
           src={theme === "base" ? code : codeBlue}
@@ -88,8 +125,39 @@ export const Header: React.FC<IHeader> = ({ theme, loggedIn }) => {
       <div>
         {loggedIn ? (
           <div className="loggedInContent">
-            <Avatar sizes="medium" />
+            <button
+              className="AvatarButton"
+              aria-haspopup="menu"
+              aria-expanded={userMenuOpen}
+              onClick={() => setUserMenuOpen((v) => !v)}
+            >
+              <Avatar src={currentUser?.avatarUrl as string} sizes="medium" />
+            </button>
             <img className="NotificationBell" src={notifications} />
+            {userMenuOpen && (
+              <div className="UserDropdown" role="menu">
+                <button
+                  className="UserDropdownItem"
+                  onClick={() => {
+                    setUserMenuOpen(false);
+                    navigate("/profile");
+                  }}
+                >
+                  Ver Perfil
+                </button>
+                <button
+                  className="UserDropdownItem"
+                  onClick={() => {
+                    setUserMenuOpen(false);
+                    setIsModalOpen(true);
+                    logout();
+                    toast.message("Logout realizado.");
+                  }}
+                >
+                  Sair
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <div className="authButtons">
@@ -111,7 +179,10 @@ export const Header: React.FC<IHeader> = ({ theme, loggedIn }) => {
       </div>
 
       {/* HAMBURGUER MENU */}
-      <div className="burguer-div" {...makeElementAccessible(toggleMenu, "button")}>
+      <div
+        className="burguer-div"
+        {...makeElementAccessible(toggleMenu, "button")}
+      >
         <img className="hamburger" src={burger} alt="hamburger menu" />
 
         {menuOpen && (
@@ -130,7 +201,13 @@ export const Header: React.FC<IHeader> = ({ theme, loggedIn }) => {
                     <Avatar sizes="medium" />
                     <div className="burgerLoggedText">
                       <h1>Joana Lima</h1>
-                      <p className={theme === "base" ? "verPerfil" : "verPerfilBlue"}>Ver Perfil</p>
+                      <p
+                        className={
+                          theme === "base" ? "verPerfil" : "verPerfilBlue"
+                        }
+                      >
+                        Ver Perfil
+                      </p>
                     </div>
                   </div>
                 ) : (
@@ -143,13 +220,17 @@ export const Header: React.FC<IHeader> = ({ theme, loggedIn }) => {
                         Login
                       </button>
                       <button
-                        className={theme === "base" ? "cadastro" : "cadastroBlue"}
+                        className={
+                          theme === "base" ? "cadastro" : "cadastroBlue"
+                        }
                         onClick={() => setModalType("signUp")}
                       >
                         Cadastro
                       </button>
                     </div>
-                    {modalType && <AuthModal type={modalType} onClose={handleCloseModal} />}
+                    {modalType && (
+                      <AuthModal type={modalType} onClose={handleCloseModal} />
+                    )}
                   </div>
                 )}
                 <img
@@ -173,7 +254,8 @@ export const Header: React.FC<IHeader> = ({ theme, loggedIn }) => {
                     navigateTo("/questions");
                   })}
                 >
-                  <img src={questions} alt="navigate to the questions page" /> Perguntas
+                  <img src={questions} alt="navigate to the questions page" />{" "}
+                  Perguntas
                 </span>
                 <span
                   className="icon-with-a"
@@ -184,7 +266,11 @@ export const Header: React.FC<IHeader> = ({ theme, loggedIn }) => {
                   <img src={blog} alt="navigate to the blog page" /> Blog
                 </span>
                 {loggedIn ? (
-                  <a className="icon-with-a sair" onClick={handleModalOpen} href="#">
+                  <a
+                    className="icon-with-a sair"
+                    onClick={() => handleModalOpen()}
+                    href="#"
+                  >
                     <img src={sair} alt="log off the account" /> Sair
                   </a>
                 ) : (
@@ -195,14 +281,26 @@ export const Header: React.FC<IHeader> = ({ theme, loggedIn }) => {
                     <div className="modal-content">
                       <h2 className="modal-title-content">Deseja sair?</h2>
                       <p className="modal-text-content">
-                        Para voltar a postar no blog ou escrever perguntas e respostas, você
-                        precisará entrar novamente.
+                        Para voltar a postar no blog ou escrever perguntas e
+                        respostas, você precisará entrar novamente.
                       </p>
                       <div className="modal-buttons">
-                        <button className="voltar-button" onClick={() => setIsModalOpen(false)}>
+                        <button
+                          className="voltar-button"
+                          onClick={() => setIsModalOpen(false)}
+                        >
                           Voltar
                         </button>
-                        <button className="sair-button">Sair</button>
+                        <button
+                          className="sair-button"
+                          onClick={() => {
+                            logout();
+                            setIsModalOpen(false);
+                            toast.message("Logout realizado.");
+                          }}
+                        >
+                          Sair
+                        </button>
                       </div>
                     </div>
                   </div>

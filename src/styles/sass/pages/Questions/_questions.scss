@@ -7,7 +7,7 @@
     display: flex;
     align-items: baseline;
     font-family: $montserratFont;
-
+    min-height: 80vh;
     .left-side {
       display: flex;
       flex-direction: column;

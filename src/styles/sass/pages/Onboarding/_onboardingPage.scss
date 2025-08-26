@@ -1,0 +1,38 @@
+.onboardingWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  .onboarding-details {
+    width: 67.9%;
+    border-right: 1px solid #d9d9d9;
+    background-color: #f7f7f7;
+    padding: 40px 40px 40px 61px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .onboarding-header {
+      display: flex;
+      height: fit-content;
+      justify-content: space-between;
+    }
+  }
+  .desktop-tracker {
+    padding: 117px 60px 117px 20px;
+    width: 32.1%;
+    .MuiStepper-root {
+      background: transparent;
+    }
+    .MuiStep-root {
+      align-items: flex-start;
+    }
+    .MuiStepLabel-label {
+      font-weight: 600;
+    }
+    .MuiStepConnector-line {
+      border-left-style: solid !important;
+    }
+    .MuiStepLabel-root {
+      padding: 0px !important;
+    }
+  }
+}

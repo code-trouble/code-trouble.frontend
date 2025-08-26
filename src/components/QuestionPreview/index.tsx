@@ -3,22 +3,21 @@ import { Avatar } from "../Avatar";
 import comments from "../../assets/images/svg/comments.svg";
 import { Tag } from "../Tag";
 import { useDisableTabInside } from "../../hooks/useDisableTabInside";
-
-const tags = ["localization", "sphinx", "read-the-docs"];
+import { Question } from "../../types/questionTypes";
 
 interface IQuestionsPreview {
-  questionTitle: string;
-  questionDescription: string;
+  question: Question;
   onClick: () => void;
 }
 
 export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
-  questionTitle,
-  questionDescription,
+  question,
   onClick,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   useDisableTabInside(containerRef);
+
+  const descriptionHtml = question.body.description?.ops?.[0]?.insert || "";
 
   return (
     <div
@@ -27,7 +26,7 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
       onClick={onClick}
       style={{ cursor: "pointer" }}
     >
-      <h1>{questionTitle}</h1>
+      <h1>{question.title}</h1>
       <div
         className="previewQuestion-description"
         style={{
@@ -37,18 +36,23 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
           overflow: "hidden",
           textOverflow: "ellipsis",
         }}
-        dangerouslySetInnerHTML={{ __html: questionDescription }}
+        dangerouslySetInnerHTML={{ __html: descriptionHtml }}
       />
       <div className="previewQuestion-bottom">
         <div className="previewQuestion-avatar-area">
-          <Avatar sizes="small" name="Joana Lima" role="8 minutos atrás" />
+          <Avatar
+            sizes="small"
+            name={question.author.username}
+            src={question.author.avatarUrl}
+            role="8 minutos atrás"
+          />
           <div className="previewQuestion-comments">
             <p>4</p>
             <img src={comments} alt="ícone de comentário" />
           </div>
         </div>
         <div>
-          <Tag tags={tags} />
+          <Tag tags={question.body.tags} />
         </div>
       </div>
     </div>

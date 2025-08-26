@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { Header } from "../../components/Header";
 import messageBox from "../../assets/images/svg/messageBox.svg";
 import CustomButton from "../../components/CustomButton";
 import buttonArrow from "../../assets/images/svg/buttonArrow.svg";
 import { StackedCards } from "../../components/StackedCards";
-import { Footer } from "../../components/Footer";
 import { AuthModal } from "../../components/AuthModal";
 import { useNavigate } from "react-router-dom";
 
@@ -23,19 +21,18 @@ export const LandingPage: React.FC = () => {
 
   return (
     <div className="landing-page-container">
-      <Header theme="base" loggedIn={false} />
       <div className="landingContainer">
         <div className="upperHero">
           <div className="">
             <div className="heroTextContent">
               <h1 className="heroTextH1">
-                Todo <span className="green-middle-line">Dev precisa</span> de ajuda de vez em
-                quando.
+                Todo <span className="green-middle-line">Dev precisa</span> de
+                ajuda de vez em quando.
               </h1>
               <p className="heroTextPItalic">Na sua máquina não funciona?</p>
               <p className="heroTextP">
-                Aqui é o lugar certo pra trocar ideia, fazer perguntas, buscar soluções e desbravar
-                código com a galera
+                Aqui é o lugar certo pra trocar ideia, fazer perguntas, buscar
+                soluções e desbravar código com a galera
               </p>
             </div>
             <div className="customButtonWrapper">
@@ -74,12 +71,16 @@ export const LandingPage: React.FC = () => {
           <div className="lowerHeroRigthText">
             <div className="lowerHeroTextContent">
               <h1 className="lowerHeroH1">
-                Conheça nosso blog, feito por <span className="dev-blue-line">Devs</span> para{" "}
+                Conheça nosso blog, feito por{" "}
+                <span className="dev-blue-line">Devs</span> para{" "}
                 <span className="dev-blue-line">Devs</span>
               </h1>
-              <p className="lowerHeroPItalic">Leia artigos da sua área de interesse.</p>
+              <p className="lowerHeroPItalic">
+                Leia artigos da sua área de interesse.
+              </p>
               <p className="lowerHeroP">
-                Os melhores artigos vão além das respostas, guiando você em cada descoberta
+                Os melhores artigos vão além das respostas, guiando você em cada
+                descoberta
               </p>
             </div>
             <div className="lowerCustomButton">
@@ -102,7 +103,6 @@ export const LandingPage: React.FC = () => {
       </div>
 
       {modalType && <AuthModal type={modalType} onClose={handleCloseModal} />}
-      <Footer />
     </div>
   );
 };
