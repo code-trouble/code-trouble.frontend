@@ -17,12 +17,19 @@ import { SearchBar } from "./searchbar";
 import { makeElementAccessible } from "../../utils/makeElementAccessible"; // 👈 adicionado
 import { useAuthStore } from "../../stores/authStore";
 import { toast } from "sonner";
+import { useUserStore } from "../../stores/userStore";
 
 interface IHeader {
   theme?: "base" | "blue";
 }
 
 export const Header: React.FC<IHeader> = ({ theme }) => {
+  const currentUser = useUserStore((state) => state.currentUser);
+  const fetchCurrentUser = useUserStore((state) => state.fetchCurrentUser);
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [fetchCurrentUser]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
@@ -124,7 +131,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
               aria-expanded={userMenuOpen}
               onClick={() => setUserMenuOpen((v) => !v)}
             >
-              <Avatar sizes="medium" />
+              <Avatar src={currentUser?.avatarUrl as string} sizes="medium" />
             </button>
             <img className="NotificationBell" src={notifications} />
             {userMenuOpen && (
