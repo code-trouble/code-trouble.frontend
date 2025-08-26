@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { SignUpFormData, signUpSchema } from "../../../schema/authSchema";
 import { useAuthStore } from "../../../stores/authStore";
 import { toast } from "sonner";
-import { SingUpProps } from "../../../interfaces/authProps";
+import { SingUpProps } from "../../../types/authTypes";
 
 export const SignUp: React.FC<SingUpProps> = ({ onSignUpSuccess }) => {
   const { signUp, isLoading, error, success, reset } = useAuthStore();

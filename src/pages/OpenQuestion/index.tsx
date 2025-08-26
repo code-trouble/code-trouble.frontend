@@ -25,7 +25,7 @@ export const OpenQuestion: React.FC = () => {
   } = useQuestionStore();
 
   const [answer, setAnswer] = useState("");
-  const [answers, setAnswers] = useState<any[]>([]);
+  const [answers] = useState<any[]>([]);
 
   useEffect(() => {
     if (id) {
