@@ -22,7 +22,9 @@
 @use "./pages/Questions/questions";
 @use "./pages/OpenQuestion/openQuestion";
 @use "./pages/AskAQuestion/askAQuestion";
-
+@use "./pages/Onboarding/onboardingPage";
+@use "./components/OnboardingSection/onboardingSection";
+@use "./components/OnboardingSection/interests";
 @use "./components/BlogPostPreview/blogPostPreview";
 @use "./components/QuestionPreview/questionPreview";
 @use "./components/QuestionsFilterModal/questionsFIlterModal";

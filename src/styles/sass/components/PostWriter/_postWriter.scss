@@ -303,7 +303,6 @@
     width: 100%;
 
     .submitArea {
-      order: -1;
       padding: 0 20px;
       width: 100%;
       display: flex;
@@ -314,7 +313,6 @@
       }
     }
     .editor-container {
-      order: -1;
       border: none;
       padding: 30px 20px;
     }
@@ -373,7 +371,6 @@
     margin: 20px auto;
 
     .submitArea {
-      order: -1;
       padding: 0 10px;
       width: 100%;
       display: flex;
@@ -384,7 +381,6 @@
       }
     }
     .editor-container {
-      order: -1;
       /* Removed border override so base border remains */
       padding: 20px 10px;
     }

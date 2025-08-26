@@ -3,6 +3,7 @@
 .open-question-inner-container {
   display: flex;
   flex-direction: column;
+  min-height: 80vh;
 
   padding: 60px;
   margin: 0px 194px;
@@ -28,6 +29,7 @@
       font-family: $hindFont;
       font-size: 16px;
       line-height: 20%;
+      margin-bottom: 30px;
 
       .mutedCriado {
         color: $dimGray;

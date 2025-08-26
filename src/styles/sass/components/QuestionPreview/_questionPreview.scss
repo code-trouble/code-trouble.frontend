@@ -6,6 +6,10 @@
   gap: 25px;
   padding: 25px 0px;
   border-bottom: 1px solid #c9c9c9;
+  max-width: 804px;
+  @media (min-width: 1461px) {
+    max-width: 1200px;
+  }
   h1 {
     font-size: 32px;
     font-weight: 500;
