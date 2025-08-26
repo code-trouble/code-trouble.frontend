@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
 import DOMPurify, { Config as PurifyConfig } from "dompurify";
 import "quill/dist/quill.snow.css";
-import { useQuestions, Question, Answer } from "../../hooks/useQuestions";
 import { Tag } from "../../components/Tag";
 import { formatDate } from "../../utils/formatDate";
 import comments from "../../assets/images/svg/greenComments.svg";
@@ -13,68 +12,90 @@ import threeDotMenu from "../../assets/images/svg/3dotsMenu.svg";
 import { Avatar } from "../../components/Avatar";
 import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
+import { useQuestionStore } from "../../stores/questionStore";
 
 export const OpenQuestion: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getById } = useQuestions(); //  remove, deleteAnswer
-  const [question, setQuestion] = useState<Question>();
+  const {
+    currentQuestion: question,
+    isLoading,
+    error,
+    fetchQuestionsById,
+  } = useQuestionStore();
+
   const [answer, setAnswer] = useState("");
-  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [answers, setAnswers] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (id) {
+      fetchQuestionsById(id);
+    } else {
+      navigate("/questions");
+    }
+  }, [id, fetchQuestionsById, navigate]);
+
   const purifyConfig: PurifyConfig = {
     ADD_ATTR: ["class", "src", "href", "alt"],
   };
 
-  useEffect(() => {
-    if (!id) return navigate("/questions");
-    const q = getById(id);
-    if (!q) return navigate("/questions");
-    setQuestion(q);
-    setAnswers(q.answers ?? []);
-  }, [id, getById, navigate]);
-
-  if (!question) return null;
-  const tags = question.tags ?? [];
-
-  const cleanDesc = DOMPurify.sanitize(
-    question.description,
-    purifyConfig,
-  ) as string;
-  const cleanDetails = question.details
-    ? (DOMPurify.sanitize(question.details, purifyConfig) as string)
-    : "";
+  const convertDeltaToHtml = (delta: any): string => {
+    if (!delta) return "";
+    if (typeof delta === "string") return delta;
+    if (delta.ops) {
+      return delta.ops
+        .map((op: any) => {
+          let text = op.insert || "";
+          if (op.attributes) {
+            if (op.attributes.bold) text = `<strong>${text}</strong>`;
+            if (op.attributes.italic) text = `<em>${text}</em>`;
+            if (op.attributes["code-block"])
+              text = `<pre><code>${text}</code></pre>`;
+          }
+          return text.replace(/\n/g, "<br>");
+        })
+        .join("");
+    }
+    return String(delta);
+  };
 
   const handlePostAnswer = (e: React.FormEvent) => {
     e.preventDefault();
-    const text = answer.trim();
-    if (!text) return;
-    const newAnswer: Answer = {
-      id: Date.now().toString(),
-      text,
-      createdAt: new Date().toISOString(),
-    };
-    const stored = localStorage.getItem("questions");
-    if (stored) {
-      const allQuestions: Question[] = JSON.parse(stored);
-      const idx = allQuestions.findIndex((q) => q.id === question.id);
-      if (idx !== -1) {
-        const updatedQuestion = {
-          ...allQuestions[idx],
-          answers: [...(allQuestions[idx].answers || []), newAnswer],
-        };
-        allQuestions[idx] = updatedQuestion;
-        localStorage.setItem("questions", JSON.stringify(allQuestions));
-        setQuestion(updatedQuestion);
-        setAnswers([...answers, newAnswer]);
-        setAnswer("");
-      }
-    }
+    console.log("Answer posting not implemented yet:", answer);
+    setAnswer("");
   };
 
-  // const handleDeleteAnswer = (answerId: string) => {
-  //     deleteAnswer(question.id, answerId);
-  //     setAnswers(answers.filter(a => a.id !== answerId));
-  // };
+  if (isLoading) {
+    return (
+      <div className="open-question-container">
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          Carregando pergunta...
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !question) {
+    return (
+      <div className="open-question-container">
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          <p style={{ color: "red" }}>{error || "Pergunta não encontrada"}</p>
+          <button onClick={() => navigate("/questions")}>
+            Voltar para perguntas
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const tags = question.body.tags || [];
+  const descriptionHtml = convertDeltaToHtml(question.body.description);
+  const detailsHtml = convertDeltaToHtml(question.body.details);
+
+  const cleanDesc = DOMPurify.sanitize(descriptionHtml, purifyConfig) as string;
+  const cleanDetails = detailsHtml
+    ? (DOMPurify.sanitize(detailsHtml, purifyConfig) as string)
+    : "";
 
   return (
     <div className="open-question-container">
@@ -83,7 +104,7 @@ export const OpenQuestion: React.FC = () => {
           <h1>{question.title}</h1>
           <p>
             <span className="mutedCriado">Criado</span>{" "}
-            {formatDate(question.createdAt)}
+            {formatDate(question.created_at)}
           </p>
         </div>
         {tags.length > 0 && (
@@ -94,7 +115,7 @@ export const OpenQuestion: React.FC = () => {
         <div className="question-description ql-container ql-snow">
           <div className="ql-editor">{parse(cleanDesc)}</div>
         </div>
-        {question.details && (
+        {cleanDetails && (
           <section>
             <div className="open-question-details ql-container ql-snow">
               <div className="ql-editor">{parse(cleanDetails)}</div>
@@ -105,11 +126,11 @@ export const OpenQuestion: React.FC = () => {
           <div className="commentsNlikes">
             <p>
               <img src={upvotes} alt="upvotes" />
-              120k{" "}
+              120k
             </p>
             <p>
               <img src={comments} alt="comments" />
-              302{" "}
+              {answers.length}
             </p>
           </div>
           <div className="favoritesNoptions">
@@ -120,7 +141,12 @@ export const OpenQuestion: React.FC = () => {
         <div className="questionCreator">
           <p>Criador(a) da pergunta</p>
           <div className="followUser">
-            <Avatar sizes="large" name="Joana Lima" role="" src="" />
+            <Avatar
+              sizes="large"
+              name={question.author.username}
+              role=""
+              src={question.author.avatarUrl}
+            />
             <div className="followButton">
               <span className="dot" />
               <p>Seguir</p>
@@ -146,42 +172,18 @@ export const OpenQuestion: React.FC = () => {
           {answers.length === 0 ? (
             <div className="answerDisplayBlock">
               <div className="answerUserArea">
-                <Avatar sizes="large" name="Olivia Ryes" />
+                <Avatar sizes="large" name="Sem respostas" />
                 <p>
-                  <span className="mutedCriado">
-                    Criado
-                    <br /> {formatDate(question.createdAt)}
-                  </span>
+                  <span className="mutedCriado">Nenhuma resposta ainda</span>
                 </p>
               </div>
               <div className="answerText">
-                <p>no answers were found</p>
+                <p>Seja o primeiro a responder esta pergunta!</p>
               </div>
             </div>
           ) : (
             answers.map((ans) => (
-              <div
-                key={ans.id}
-                className="answerDisplayBlock"
-                style={{ position: "relative" }}
-              >
-                {/* <button
-                                onClick={() => handleDeleteAnswer(ans.id)}
-                                style={{
-                                  position: "absolute",
-                                  top: "8px",
-                                  right: "8px",
-                                  background: "transparent",
-                                  border: "none",
-                                  cursor: "pointer",
-                                  fontSize: "16px",
-                                  lineHeight: "1",
-                                  padding: "0",
-                                }}
-                              >
-                                ×
-                              </button> */}
-
+              <div key={ans.id} className="answerDisplayBlock">
                 <div className="answerUserArea">
                   <Avatar sizes="large" name="Olivia Ryes" />
                   <p>
@@ -218,16 +220,6 @@ export const OpenQuestion: React.FC = () => {
           </form>
         </div>
       </div>
-      {/* 
-        <button
-          onClick={() => {
-            remove(question.id);
-            navigate("/questions");
-          }}
-          style={{ marginLeft: 16 }}
-        >
-          Excluir pergunta
-        </button>  */}
     </div>
   );
 };

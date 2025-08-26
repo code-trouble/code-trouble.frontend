@@ -1,19 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuestions } from "../../hooks/useQuestions";
 import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
 import correa from "../../assets/images/svg/mascote sp 1.svg";
 import { TagSelector } from "../../components/TagSelector";
-import { removeEmptyParagraphs } from "../../utils/removeEmptyP";
+import { usePostStore } from "../../stores/postStore";
 
 export const AskAQuestion: React.FC = () => {
   const navigate = useNavigate();
-  const { getAll, add } = useQuestions();
+  const {
+    createPost,
+    setTitle: setStoreTitle,
+    setBody,
+    setKind,
+    isLoading,
+    error,
+    reset,
+  } = usePostStore();
 
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [details, setDetails] = useState("");
+  const [description, setDescription] = useState({});
+  const [details, setDetails] = useState({});
   const [tags, setTags] = useState<string[]>([]);
 
   function navigateTo(path: string) {
@@ -21,28 +28,46 @@ export const AskAQuestion: React.FC = () => {
     navigate(path);
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    const cleanedDesc = removeEmptyParagraphs(description);
-    //const cleanedDetails = details ? removeEmptyParagraphs(details) : undefined
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const all = getAll();
-    const maxId = all.reduce((acc, q) => Math.max(acc, Number(q.id)), 0);
-    const nextId = (maxId + 1).toString();
 
-    const newQuestion = {
-      id: nextId,
-      title,
-      description: cleanedDesc,
+    // Combine description and details into a single body
+    const combinedBody = {
+      description,
       details,
       tags,
-      createdAt: new Date().toISOString(),
     };
 
-    add(newQuestion);
-    navigateTo(`/questions/${newQuestion.id}`);
+    try {
+      // Set the store values first
+      setStoreTitle(title);
+      setBody(combinedBody);
+      setKind("question");
+
+      // Then create the post (no arguments needed)
+      const newPost = await createPost();
+
+      // Reset form and store
+      setTitle("");
+      setDescription({});
+      setDetails({});
+      setTags([]);
+      reset();
+
+      navigateTo(`/questions/${newPost.id}`);
+    } catch (error) {
+      console.error("Failed to create post:", error);
+    }
   }
 
   function handleDiscard() {
+    // Reset form state
+    setTitle("");
+    setDescription({});
+    setDetails({});
+    setTags([]);
+    reset();
+
     navigateTo("/questions");
   }
 
@@ -133,7 +158,7 @@ export const AskAQuestion: React.FC = () => {
                 </p>
                 <p>
                   Adicione quaisquer detalhes que possa ter esquecido e releia
-                  novamente. Agora é um bom momento para ter certeza de que o
+                  novamente. Agora é um bom momento for ter certeza de que o
                   título ainda descreve bem o seu problema.
                 </p>
               </div>
@@ -149,9 +174,14 @@ export const AskAQuestion: React.FC = () => {
           <div className="revision-message">
             <p>Antes de postar a sua pergunta, faça uma revisão final.</p>
           </div>
+
+          {error && (
+            <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>
+          )}
+
           <div className="submit-question">
             <CustomButton
-              text="Poste sua pergunta"
+              text={isLoading ? "Enviando..." : "Poste sua pergunta"}
               type="submit"
               padding="10px 24px"
               backgroundColor="#2DBA4F"
@@ -160,6 +190,7 @@ export const AskAQuestion: React.FC = () => {
               fontWeight="500"
               borderRadius="8px"
               customId="posteButton"
+              disabled={isLoading}
             />
             <CustomButton
               text="Descartar pergunta"
