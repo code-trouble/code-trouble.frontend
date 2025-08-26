@@ -4,7 +4,7 @@ import { AppRoutes } from "./routes/routes";
 export default function App() {
   return (
     <>
-      <Toaster position="top-left" richColors />
+      <Toaster position="top-right" richColors />
       <AppRoutes />
     </>
   );

@@ -10,6 +10,8 @@ import { WriteAPost } from "../pages/WriteAPost";
 import { ErrorPage } from "../pages/404";
 import { ComingSoonPage } from "../pages/ComingSoon";
 import { BlogLayout } from "../layouts/BlogLayout";
+import { Onboarding } from "../pages/Onboarding";
+import { ProfilePage } from "../pages/ProfilePage";
 
 export const AppRoutes = () => {
   return (
@@ -20,6 +22,8 @@ export const AppRoutes = () => {
         <Route path="/questions" element={<Questions />} />
         <Route path="/questions/:id" element={<OpenQuestion />} />
         <Route path="/ask-a-question" element={<AskAQuestion />} />
+        <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Route>
 
       <Route element={<BlogLayout />}>
