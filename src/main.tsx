@@ -10,6 +10,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom"; // Importando o BrowserRouter
 import App from "./App.tsx";
+import { initApiLayer } from "./services/api.setup.ts";
+
+initApiLayer();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
