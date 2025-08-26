@@ -11,6 +11,7 @@ interface ICustomButton {
   onClick?: () => void;
   customId?: string;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
 export const CustomButton: React.FC<ICustomButton> = ({
@@ -26,9 +27,11 @@ export const CustomButton: React.FC<ICustomButton> = ({
   onClick,
   customId,
   type,
+  disabled,
 }) => {
   return (
     <button
+      disabled={disabled}
       type={type}
       className="custom-button"
       id={customId}
