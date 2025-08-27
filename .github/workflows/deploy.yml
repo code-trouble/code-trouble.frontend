@@ -26,30 +26,24 @@ jobs:
       env:
         VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
 
-    - name: Deploy to S3
-      uses: jakejarvis/s3-sync-action@v0.5.1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
       with:
-        args: --follow-symlinks --delete
-      env:
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: 'sa-east-1'
-        SOURCE_DIR: 'dist'
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: 'sa-east-1'
+
+    - name: Deploy to S3
+      run: |
+        aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }}/ \
+          --delete \
+          --cache-control "max-age=0,public,must-revalidate"
 
     - name: Invalidate CloudFront
       run: |
-        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws configure set default.region sa-east-1
-
         DIST_ID=$(aws cloudfront list-distributions \
-          --query "DistributionList.Items[?contains(Aliases.Items,'yourdomain.com')].Id" \
+          --query "DistributionList.Items[?contains(Aliases.Items,'codetrouble.com.br')].Id" \
           --output text)
         aws cloudfront create-invalidation \
           --distribution-id $DIST_ID \
           --paths "/*"
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: 'sa-east-1'
