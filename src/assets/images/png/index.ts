@@ -1,0 +1,10 @@
+export { default as arrowButton } from "./arrowButton.png";
+export { default as checkboxIcon } from "./checkboxIcon.png";
+export { default as comments } from "./comments.png";
+export { default as dogImage } from "./dogImage.png";
+export { default as logoCodeTrouble } from "./logo-code-trouble.png";
+export { default as pfpPageBanner } from "./pfpPageBanner.png";
+export { default as profileAvatar } from "./profileAvatar.png";
+export { default as profileAvatar2 } from "./profileAvatar2.png";
+export { default as starVector } from "./starVector.png";
+export { default as upvote } from "./upvote.png";
