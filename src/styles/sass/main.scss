@@ -18,11 +18,6 @@
 @use "./components/CustomButton/customButton";
 @use "./components/PostWriter/postWriter";
 @use "./components/PostWriter/altPostWriter";
-@use "./pages/LandingPage/landingPage";
-@use "./pages/Questions/questions";
-@use "./pages/OpenQuestion/openQuestion";
-@use "./pages/AskAQuestion/askAQuestion";
-@use "./pages/Onboarding/onboardingPage";
 @use "./components/OnboardingSection/onboardingSection";
 @use "./components/OnboardingSection/interests";
 @use "./components/BlogPostPreview/blogPostPreview";
@@ -32,6 +27,13 @@
 @use "./components/Footer/footer";
 @use "./components/TooltipDescription/tooltipDescription";
 @use "./components/TagSelector/tagSelector";
+
+@use "./pages/LandingPage/landingPage";
+@use "./pages/Questions/questions";
+@use "./pages/OpenQuestion/openQuestion";
+@use "./pages/AskAQuestion/askAQuestion";
+@use "./pages/Onboarding/onboardingPage";
+@use "./pages/ProfilePage/profilePage";
 
 @font-face {
   font-family: "MS Sans Serif";
