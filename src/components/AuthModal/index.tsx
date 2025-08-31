@@ -4,33 +4,31 @@ import { SignIn, SignUp, ForgotPassword, RecoveryPassword } from "./Form";
 import { logoCodePrimary } from "../../assets/images/svg/icons";
 import { ProfessorCorrea } from "../../assets/images/svg/illustration";
 import { useNavigate } from "react-router-dom";
+import { useAuthModalStore } from "../../stores/authModalStore";
+import { useAuthStore } from "../../stores/authStore";
 
-interface IAuthModal {
-  type: "signIn" | "signUp" | "recovery" | "forgot";
-  onClose: () => void;
-}
-
-export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
+export const AuthModal: React.FC = () => {
+  const { type: currentType, closeModal, openModal } = useAuthModalStore();
+  const { reset } = useAuthStore();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [currentType, setCurrentType] = useState<IAuthModal["type"]>(type);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
+    const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const navigate = useNavigate();
 
   function navigateTo(path: string) {
     window.scrollTo(0, 0);
     navigate(path);
+    closeModal();
   }
+
+  const handleClose = () => {
+    closeModal();
+    reset();
+  };
 
   const renderNames = () => {
     switch (currentType) {
@@ -68,22 +66,12 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
       case "signIn":
         return (
           <SignIn
-            onForgot={() => setCurrentType("forgot")}
-            onSignInSuccess={() => {
-              navigateTo("/questions");
-              onClose();
-            }}
+            onForgot={() => openModal("forgot")}
+            onSignInSuccess={() => navigateTo("/questions")}
           />
         );
       case "signUp":
-        return (
-          <SignUp
-            onSignUpSuccess={() => {
-              setCurrentType("signIn");
-              onClose();
-            }}
-          />
-        );
+        return <SignUp onSignUpSuccess={() => openModal("signIn")} />;
       case "forgot":
         return <ForgotPassword />;
       case "recovery":
@@ -97,7 +85,7 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
   const nextType = currentType === "signIn" ? "signUp" : "signIn";
 
   return (
-    <div className="overlay" onClick={onClose}>
+    <div className="overlay" onClick={handleClose}>
       <FocusLock>
         <dialog onClick={(e) => e.stopPropagation()}>
           {windowWidth > 1070 && (
@@ -126,7 +114,7 @@ export const AuthModal: React.FC<IAuthModal> = ({ type, onClose }) => {
                 </div>
                 <p>
                   {names?.text}{" "}
-                  <button onClick={() => setCurrentType(nextType)}>
+                  <button onClick={() => openModal(nextType)}>
                     {names?.textDecoration}
                   </button>
                 </p>
