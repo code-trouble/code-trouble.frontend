@@ -12,6 +12,7 @@ import { ComingSoonPage } from "../pages/ComingSoon";
 import { BlogLayout } from "../layouts/BlogLayout";
 import { Onboarding } from "../pages/Onboarding";
 import { ProfilePage } from "../pages/ProfilePage";
+import { PassResetHandler } from "../pages/PassResetHandler";
 
 export const AppRoutes = () => {
   return (
@@ -24,6 +25,7 @@ export const AppRoutes = () => {
         <Route path="/ask-a-question" element={<AskAQuestion />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/reset-password" element={<PassResetHandler />} />
       </Route>
 
       <Route element={<BlogLayout />}>
