@@ -1,23 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import messageBox from "../../assets/images/svg/messageBox.svg";
 import CustomButton from "../../components/CustomButton";
 import buttonArrow from "../../assets/images/svg/buttonArrow.svg";
 import { StackedCards } from "../../components/StackedCards";
 import { AuthModal } from "../../components/AuthModal";
 import { useNavigate } from "react-router-dom";
+import { useAuthModalStore } from "../../stores/authModalStore";
 
 export const LandingPage: React.FC = () => {
-  const [modalType, setModalType] = useState<null | "signIn" | "signUp">(null);
-
   const navigate = useNavigate();
 
-  const handleOpenModal = (type: "signIn" | "signUp") => {
-    setModalType(type);
-  };
-
-  const handleCloseModal = () => {
-    setModalType(null);
-  };
+  const { isOpen, openModal } = useAuthModalStore();
 
   return (
     <div className="landing-page-container">
@@ -43,7 +36,7 @@ export const LandingPage: React.FC = () => {
                 color="white"
                 fontSize="18px"
                 fontWeight="500"
-                onClick={() => handleOpenModal("signUp")}
+                onClick={() => openModal("signUp")}
                 customId="CadastroButton"
               />
               <CustomButton
@@ -102,7 +95,7 @@ export const LandingPage: React.FC = () => {
         </div>
       </div>
 
-      {modalType && <AuthModal type={modalType} onClose={handleCloseModal} />}
+      {isOpen && <AuthModal />}
     </div>
   );
 };
