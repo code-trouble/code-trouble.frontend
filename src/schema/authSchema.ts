@@ -25,7 +25,7 @@ export const forgotPasswordSchema = z.object({
 
 export const recoveryPasswordSchema = z
   .object({
-    email: emailValidation,
+    //email: emailValidation,
     newPassword: z
       .string()
       .min(8, "A nova senha deve ter pelo menos 8 caracteres"),
@@ -38,7 +38,15 @@ export const recoveryPasswordSchema = z
     path: ["confirmPassword"],
   });
 
+export const recoveryPasswordAPISchema = z.object({
+  newPassword: z
+    .string()
+    .min(8, "A nova senha deve ter pelo menos 8 caracteres"),
+  token: z.string().nonempty("O token é obrigatório"),
+});
+
 export type SignUpFormData = z.infer<typeof signUpSchema>;
 export type SignInFormData = z.infer<typeof signInSchema>;
 export type RecoveryPasswordFormData = z.infer<typeof recoveryPasswordSchema>;
+export type RecoveryPasswordAPIData = z.infer<typeof recoveryPasswordAPISchema>;
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
