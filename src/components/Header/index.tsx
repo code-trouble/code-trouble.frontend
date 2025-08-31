@@ -1,23 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
-import code from "../../assets/images/svg/codeLogo.svg";
-import codeBlue from "../../assets/images/svg/codeLogoBlue.svg";
-import smallCode from "../../assets/images/svg/smCodeLogo.svg";
-import smallCodeBlue from "../../assets/images/svg/smCodeLogoBlue.svg";
-import burger from "../../assets/images/svg/burgerMenu.svg";
-import closeX from "../../assets/images/svg/closeMenu.svg";
-import home from "../../assets/images/svg/home.svg";
-import questions from "../../assets/images/svg/questions.svg";
-import notifications from "../../assets/images/svg/notifications.svg";
-import blog from "../../assets/images/svg/blog.svg";
-import sair from "../../assets/images/svg/sair.svg";
 import { Avatar } from "../Avatar";
 import { AuthModal } from "../AuthModal";
 import { useNavigate } from "react-router-dom";
 import { SearchBar } from "./searchbar";
-import { makeElementAccessible } from "../../utils/makeElementAccessible"; // 👈 adicionado
+import { makeElementAccessible } from "../../utils/makeElementAccessible";
 import { useAuthStore } from "../../stores/authStore";
 import { toast } from "sonner";
 import { useUserStore } from "../../stores/userStore";
+import { useAuthModalStore } from "../../stores/authModalStore";
+import {
+  CodeLogo,
+  CodeLogoBlue,
+  SmCodeLogoBlue,
+  SmCodeLogo,
+  CloseMenu,
+  BurgerMenu,
+  Home,
+  Notifications,
+  Questions,
+  Blog,
+  Sair,
+} from "../../assets/images/svg";
 
 interface IHeader {
   theme?: "base" | "blue";
@@ -30,13 +33,13 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
   useEffect(() => {
     fetchCurrentUser();
   }, [fetchCurrentUser]);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<null | "signIn" | "signUp">(null);
 
+  const { isOpen, type, openModal, closeModal } = useAuthModalStore();
   const { token, hydrateFromStorage, logout } = useAuthStore();
   const loggedIn = !!token;
 
@@ -63,10 +66,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
     };
   });
 
-  const handleCloseModal = () => setModalType(null);
-
   const toggleMenu = () => setMenuOpen(!menuOpen);
-
   const handleModalOpen = () => setIsModalOpen(true);
 
   function navigateTo(path: string) {
@@ -83,13 +83,13 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
       >
         <img
           className="normal-logo"
-          src={theme === "base" ? code : codeBlue}
+          src={theme === "base" ? CodeLogo : CodeLogoBlue}
           alt="navbar Code Trouble logo"
         />
 
         <img
           className="small-logo"
-          src={theme === "base" ? smallCode : smallCodeBlue}
+          src={theme === "base" ? SmCodeLogo : SmCodeLogoBlue}
           alt="navbar Code Trouble logo"
         />
       </div>
@@ -133,7 +133,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
             >
               <Avatar src={currentUser?.avatarUrl as string} sizes="medium" />
             </button>
-            <img className="NotificationBell" src={notifications} />
+            <img className="NotificationBell" src={Notifications} />
             {userMenuOpen && (
               <div className="UserDropdown" role="menu">
                 <button
@@ -163,19 +163,19 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
           <div className="authButtons">
             <button
               className={theme === "base" ? "login" : "loginBlue"}
-              {...makeElementAccessible(() => setModalType("signIn"), "button")}
+              {...makeElementAccessible(() => openModal("signIn"), "button")}
             >
               Login
             </button>
             <button
               className={theme === "base" ? "cadastro" : "cadastroBlue"}
-              {...makeElementAccessible(() => setModalType("signUp"), "button")}
+              {...makeElementAccessible(() => openModal("signUp"), "button")}
             >
               Cadastro
             </button>
           </div>
         )}
-        {modalType && <AuthModal type={modalType} onClose={handleCloseModal} />}
+        {isOpen && <AuthModal type={type!} onClose={closeModal} />}
       </div>
 
       {/* HAMBURGUER MENU */}
@@ -183,7 +183,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
         className="burguer-div"
         {...makeElementAccessible(toggleMenu, "button")}
       >
-        <img className="hamburger" src={burger} alt="hamburger menu" />
+        <img className="hamburger" src={BurgerMenu} alt="hamburger menu" />
 
         {menuOpen && (
           <>
@@ -215,7 +215,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
                     <div className="auth-col">
                       <button
                         className={theme === "base" ? "login" : "loginBlue"}
-                        onClick={() => setModalType("signIn")}
+                        onClick={() => openModal("signIn")}
                       >
                         Login
                       </button>
@@ -223,18 +223,16 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
                         className={
                           theme === "base" ? "cadastro" : "cadastroBlue"
                         }
-                        onClick={() => setModalType("signUp")}
+                        onClick={() => openModal("signUp")}
                       >
                         Cadastro
                       </button>
                     </div>
-                    {modalType && (
-                      <AuthModal type={modalType} onClose={handleCloseModal} />
-                    )}
+                    {isOpen && <AuthModal type={type!} onClose={closeModal} />}
                   </div>
                 )}
                 <img
-                  src={closeX}
+                  src={CloseMenu}
                   alt="close hamburguer menu"
                   {...makeElementAccessible(toggleMenu, "button")}
                 />
@@ -246,7 +244,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
                     navigateTo("/");
                   })}
                 >
-                  <img src={home} alt="navigate to the home page" /> Home
+                  <img src={Home} alt="navigate to the home page" /> Home
                 </span>
                 <span
                   className="icon-with-a"
@@ -254,7 +252,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
                     navigateTo("/questions");
                   })}
                 >
-                  <img src={questions} alt="navigate to the questions page" />{" "}
+                  <img src={Questions} alt="navigate to the questions page" />{" "}
                   Perguntas
                 </span>
                 <span
@@ -263,7 +261,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
                     navigateTo("/blog");
                   })}
                 >
-                  <img src={blog} alt="navigate to the blog page" /> Blog
+                  <img src={Blog} alt="navigate to the blog page" /> Blog
                 </span>
                 {loggedIn ? (
                   <a
@@ -271,7 +269,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
                     onClick={() => handleModalOpen()}
                     href="#"
                   >
-                    <img src={sair} alt="log off the account" /> Sair
+                    <img src={Sair} alt="log off the account" /> Sair
                   </a>
                 ) : (
                   ""
