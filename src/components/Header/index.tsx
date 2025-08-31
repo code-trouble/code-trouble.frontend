@@ -39,7 +39,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { isOpen, type, openModal, closeModal } = useAuthModalStore();
+  const { isOpen, openModal } = useAuthModalStore();
   const { token, hydrateFromStorage, logout } = useAuthStore();
   const loggedIn = !!token;
 
@@ -175,7 +175,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
             </button>
           </div>
         )}
-        {isOpen && <AuthModal type={type!} onClose={closeModal} />}
+        {isOpen && <AuthModal />}
       </div>
 
       {/* HAMBURGUER MENU */}
@@ -228,7 +228,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
                         Cadastro
                       </button>
                     </div>
-                    {isOpen && <AuthModal type={type!} onClose={closeModal} />}
+                    {isOpen && <AuthModal />}
                   </div>
                 )}
                 <img
