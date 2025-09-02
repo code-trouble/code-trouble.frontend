@@ -5,11 +5,9 @@ import { logoCodePrimary } from "../../assets/images/svg/icons";
 import { ProfessorCorrea } from "../../assets/images/svg/illustration";
 import { useNavigate } from "react-router-dom";
 import { useAuthModalStore } from "../../stores/authModalStore";
-import { useAuthStore } from "../../stores/authStore";
 
 export const AuthModal: React.FC = () => {
   const { type: currentType, closeModal, openModal } = useAuthModalStore();
-  const { reset } = useAuthStore();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
 
@@ -27,7 +25,6 @@ export const AuthModal: React.FC = () => {
 
   const handleClose = () => {
     closeModal();
-    reset();
   };
 
   const renderNames = () => {
