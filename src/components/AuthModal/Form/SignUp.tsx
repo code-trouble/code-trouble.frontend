@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { SingUpProps } from "../../../types/authTypes";
 
 export const SignUp: React.FC<SingUpProps> = ({ onSignUpSuccess }) => {
-  const { signUp, isLoading, error, success, reset } = useAuthStore();
+  const { signUp, isLoading, error, signUpSuccess, reset } = useAuthStore();
 
   const {
     register,
@@ -18,7 +18,7 @@ export const SignUp: React.FC<SingUpProps> = ({ onSignUpSuccess }) => {
   });
 
   useEffect(() => {
-    if (success) {
+    if (signUpSuccess) {
       toast.success("Cadastro realizado com sucesso!");
       onSignUpSuccess();
 
@@ -28,7 +28,7 @@ export const SignUp: React.FC<SingUpProps> = ({ onSignUpSuccess }) => {
       toast.error(error);
       reset();
     }
-  }, [success, error, reset, onSignUpSuccess]);
+  }, [signUpSuccess, error, reset, onSignUpSuccess]);
 
   const onSubmit = (data: SignUpFormData) => {
     signUp(data);

@@ -1,15 +1,26 @@
-import { SignInFormData, SignUpFormData } from "../schema/authSchema";
+import {
+  ForgotPasswordFormData,
+  RecoveryPasswordAPIData,
+  SignInFormData,
+  SignUpFormData,
+} from "../schema/authSchema";
 
 export interface AuthState {
   isLoading: boolean;
   error: string | null;
-  success: boolean;
   token: string | null;
+  success: boolean;
+
+  signUpSuccess: boolean;
+  forgotPasswordSuccess: boolean;
+  passwordResetSuccess: boolean;
 
   signUp: (data: SignUpFormData) => Promise<void>;
   signIn: (data: SignInFormData) => Promise<void>;
-  reset: () => void;
+  forgotPassword: (data: ForgotPasswordFormData) => Promise<void>;
+  resetPassword: (data: RecoveryPasswordAPIData) => Promise<void>;
 
+  reset: () => void;
   setToken: (t: string | null) => void;
   hydrateFromStorage: () => void;
   logout: () => void;

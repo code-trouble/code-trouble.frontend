@@ -1,12 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   ForgotPasswordFormData,
   forgotPasswordSchema,
 } from "../../../schema/authSchema";
+import { useAuthStore } from "../../../stores/authStore";
+import { toast } from "sonner";
 
 export const ForgotPassword: React.FC = () => {
+  const { forgotPassword, forgotPasswordSuccess, reset, isLoading, error } =
+    useAuthStore();
   const {
     register,
     handleSubmit,
@@ -15,8 +19,23 @@ export const ForgotPassword: React.FC = () => {
     resolver: zodResolver(forgotPasswordSchema),
   });
 
+  useEffect(() => {
+    if (forgotPasswordSuccess) {
+      toast.success("Email enviado com sucesso.");
+    }
+    if (error) {
+      toast.error(error);
+    }
+
+    return () => {
+      if (forgotPasswordSuccess || error) {
+        reset();
+      }
+    };
+  }, [forgotPasswordSuccess, error, reset]);
+
   const onSubmit = (data: ForgotPasswordFormData) => {
-    console.log(data);
+    forgotPassword(data);
   };
 
   return (
@@ -35,11 +54,13 @@ export const ForgotPassword: React.FC = () => {
           )}
         </section>
         <p className="info-text">
-          Enviaremos um e-mail para a recuperação de sua senha.{" "}
+          {forgotPasswordSuccess
+            ? "Se o endereço de email está correto, um link para recuperação foi enviado!"
+            : `Enviaremos um e-mail para a recuperação de sua senha.`}
         </p>
       </div>
       <button type="submit" className="btn-submit">
-        Enviar
+        {isLoading ? "Enviando..." : "Enviar"}
       </button>
     </form>
   );

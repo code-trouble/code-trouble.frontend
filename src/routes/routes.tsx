@@ -12,6 +12,12 @@ import { ComingSoonPage } from "../pages/ComingSoon";
 import { BlogLayout } from "../layouts/BlogLayout";
 import { Onboarding } from "../pages/Onboarding";
 import { ProfilePage } from "../pages/ProfilePage";
+import { PassResetHandler } from "../pages/PassResetHandler";
+import { ProtectedRoute } from "./guards/authGuard";
+
+const protect = (element: React.ReactNode) => (
+  <ProtectedRoute>{element}</ProtectedRoute>
+);
 
 export const AppRoutes = () => {
   return (
@@ -19,16 +25,17 @@ export const AppRoutes = () => {
       <Route element={<FaqLayout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/test" element={<TestingPage />} />
-        <Route path="/questions" element={<Questions />} />
-        <Route path="/questions/:id" element={<OpenQuestion />} />
-        <Route path="/ask-a-question" element={<AskAQuestion />} />
-        <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/reset-password" element={<PassResetHandler />} />
+        <Route path="/questions" element={protect(<Questions />)} />
+        <Route path="/questions/:id" element={protect(<OpenQuestion />)} />
+        <Route path="/ask-a-question" element={protect(<AskAQuestion />)} />
+        <Route path="/onboarding" element={protect(<Onboarding />)} />
+        <Route path="/profile" element={protect(<ProfilePage />)} />
       </Route>
 
       <Route element={<BlogLayout />}>
-        <Route path="/write-a-post" element={<WriteAPost />} />
-        <Route path="/blog" element={<Blog />} />
+        <Route path="/write-a-post" element={protect(<WriteAPost />)} />
+        <Route path="/blog" element={protect(<Blog />)} />
       </Route>
 
       <Route path="coming-soon" element={<ComingSoonPage />} />

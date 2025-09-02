@@ -1,12 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   RecoveryPasswordFormData,
   recoveryPasswordSchema,
 } from "../../../schema/authSchema";
+import { useAuthStore } from "../../../stores/authStore";
+import { useAuthModalStore } from "../../../stores/authModalStore";
+import { toast } from "sonner";
 
 export const RecoveryPassword: React.FC = () => {
+  const { resetPassword, isLoading, error, passwordResetSuccess, reset } =
+    useAuthStore();
+  const { recoveryToken, openModal } = useAuthModalStore();
   const {
     register,
     handleSubmit,
@@ -15,13 +21,39 @@ export const RecoveryPassword: React.FC = () => {
     resolver: zodResolver(recoveryPasswordSchema),
   });
 
-  const onSubmit = (data: RecoveryPasswordFormData) => {
-    console.log(data);
+  useEffect(() => {
+    if (passwordResetSuccess) {
+      toast.success("Sua senha foi alterada com sucesso!");
+      openModal("signIn");
+    }
+    if (error) {
+      toast.error(error);
+    }
+
+    return () => {
+      if (passwordResetSuccess || error) {
+        reset();
+      }
+    };
+  }, [passwordResetSuccess, error, reset, openModal]);
+
+  const onSubmit: SubmitHandler<RecoveryPasswordFormData> = (data) => {
+    if (!recoveryToken) {
+      console.error("Token de recuperação não encontrado!");
+      return;
+    }
+
+    const apiPayload = {
+      newPassword: data.newPassword,
+      token: recoveryToken,
+    };
+
+    resetPassword(apiPayload);
   };
   return (
     <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
-        <section>
+        {/* <section>
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -32,7 +64,7 @@ export const RecoveryPassword: React.FC = () => {
           {errors.email && (
             <p className="error-message">{errors.email.message}</p>
           )}
-        </section>
+        </section> */}
         <section>
           <label htmlFor="new-password">Nova Senha</label>
           <input
@@ -59,7 +91,7 @@ export const RecoveryPassword: React.FC = () => {
         </section>
       </div>
       <button type="submit" className="btn-submit">
-        Cadastrar
+        {isLoading ? "Enviando. . ." : "Enviar"}
       </button>
     </form>
   );

@@ -24,6 +24,7 @@ export { default as PreviousPage } from "./previousPage.svg";
 export { default as Questions } from "./questions.svg";
 export { default as Sair } from "./sair.svg";
 export { default as SmCodeLogoBlue } from "./smCodeLogoBlue.svg";
+export { default as SmCodeLogo } from "./smCodeLogo.svg";
 export { default as ToolbarImg } from "./toolbarImg.svg";
 export { default as ToolbarLink } from "./toolbarLink.svg";
 export { default as ToolbarList } from "./toolbarList.svg";
