@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   RecoveryPasswordFormData,
@@ -10,8 +10,7 @@ import { useAuthModalStore } from "../../../stores/authModalStore";
 import { toast } from "sonner";
 
 export const RecoveryPassword: React.FC = () => {
-  const { resetPassword, isLoading, error, passwordResetSuccess, reset } =
-    useAuthStore();
+  const { resetPassword, isLoading, error: authError } = useAuthStore();
   const { recoveryToken, openModal } = useAuthModalStore();
   const {
     register,
@@ -21,25 +20,10 @@ export const RecoveryPassword: React.FC = () => {
     resolver: zodResolver(recoveryPasswordSchema),
   });
 
-  useEffect(() => {
-    if (passwordResetSuccess) {
-      toast.success("Sua senha foi alterada com sucesso!");
-      openModal("signIn");
-    }
-    if (error) {
-      toast.error(error);
-    }
-
-    return () => {
-      if (passwordResetSuccess || error) {
-        reset();
-      }
-    };
-  }, [passwordResetSuccess, error, reset, openModal]);
-
-  const onSubmit: SubmitHandler<RecoveryPasswordFormData> = (data) => {
+  const onSubmit: SubmitHandler<RecoveryPasswordFormData> = async (data) => {
     if (!recoveryToken) {
       console.error("Token de recuperação não encontrado!");
+      toast.error("Token de recuperação não encontrado!");
       return;
     }
 
@@ -48,7 +32,14 @@ export const RecoveryPassword: React.FC = () => {
       token: recoveryToken,
     };
 
-    resetPassword(apiPayload);
+    try {
+      await resetPassword(apiPayload);
+      toast.success("Sua senha foi alterada com sucesso!");
+      openModal("signIn");
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message || "Ocorreu um erro desconhecido");
+    }
   };
   return (
     <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
@@ -92,6 +83,7 @@ export const RecoveryPassword: React.FC = () => {
       </div>
       <button type="submit" className="btn-submit">
         {isLoading ? "Enviando. . ." : "Enviar"}
+        {authError && <p>{authError}</p>}
       </button>
     </form>
   );

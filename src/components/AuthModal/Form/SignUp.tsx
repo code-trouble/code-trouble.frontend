@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { SignUpFormData, signUpSchema } from "../../../schema/authSchema";
 import { useAuthStore } from "../../../stores/authStore";
 import { toast } from "sonner";
 import { SingUpProps } from "../../../types/authTypes";
 
 export const SignUp: React.FC<SingUpProps> = ({ onSignUpSuccess }) => {
-  const { signUp, isLoading, error, signUpSuccess, reset } = useAuthStore();
+  const { signUp, isLoading, error: authError } = useAuthStore();
 
   const {
     register,
@@ -17,21 +17,15 @@ export const SignUp: React.FC<SingUpProps> = ({ onSignUpSuccess }) => {
     resolver: zodResolver(signUpSchema),
   });
 
-  useEffect(() => {
-    if (signUpSuccess) {
+  const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
+    try {
+      await signUp(data);
       toast.success("Cadastro realizado com sucesso!");
       onSignUpSuccess();
-
-      reset();
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message || "Ocorreu um erro desconhecido");
     }
-    if (error) {
-      toast.error(error);
-      reset();
-    }
-  }, [signUpSuccess, error, reset, onSignUpSuccess]);
-
-  const onSubmit = (data: SignUpFormData) => {
-    signUp(data);
   };
 
   return (
@@ -79,6 +73,7 @@ export const SignUp: React.FC<SingUpProps> = ({ onSignUpSuccess }) => {
       </div>
       <button type="submit" className="btn-submit" disabled={isLoading}>
         {isLoading ? "Cadastrando..." : "Cadastrar"}
+        {authError && <p>{authError}</p>}
       </button>
     </form>
   );

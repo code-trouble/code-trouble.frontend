@@ -10,13 +10,12 @@ export const ProfilePage: React.FC = () => {
 
   useEffect(() => {
     fetchCurrentUser();
-  }, [fetchCurrentUser]);
+  }, []);
 
   if (!currentUser) {
     return <div>Carregando perfil...</div>;
   }
 
-  console.log(currentUser.avatarUrl);
   return (
     <>
       <div className="profile-page-wrapper">
