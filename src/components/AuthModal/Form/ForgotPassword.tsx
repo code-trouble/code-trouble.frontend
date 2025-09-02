@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   ForgotPasswordFormData,
   forgotPasswordSchema,
@@ -9,8 +9,8 @@ import { useAuthStore } from "../../../stores/authStore";
 import { toast } from "sonner";
 
 export const ForgotPassword: React.FC = () => {
-  const { forgotPassword, forgotPasswordSuccess, reset, isLoading, error } =
-    useAuthStore();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { forgotPassword, isLoading } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -19,23 +19,15 @@ export const ForgotPassword: React.FC = () => {
     resolver: zodResolver(forgotPasswordSchema),
   });
 
-  useEffect(() => {
-    if (forgotPasswordSuccess) {
+  const onSubmit: SubmitHandler<ForgotPasswordFormData> = async (data) => {
+    try {
+      await forgotPassword(data);
       toast.success("Email enviado com sucesso.");
+      setIsSubmitted(true);
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message || "Ocorreu um erro desconhecido");
     }
-    if (error) {
-      toast.error(error);
-    }
-
-    return () => {
-      if (forgotPasswordSuccess || error) {
-        reset();
-      }
-    };
-  }, [forgotPasswordSuccess, error, reset]);
-
-  const onSubmit = (data: ForgotPasswordFormData) => {
-    forgotPassword(data);
   };
 
   return (
@@ -54,7 +46,7 @@ export const ForgotPassword: React.FC = () => {
           )}
         </section>
         <p className="info-text">
-          {forgotPasswordSuccess
+          {isSubmitted
             ? "Se o endereço de email está correto, um link para recuperação foi enviado!"
             : `Enviaremos um e-mail para a recuperação de sua senha.`}
         </p>

@@ -1,16 +1,15 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormData, signInSchema } from "../../../schema/authSchema";
 import { useAuthStore } from "../../../stores/authStore";
 import { toast } from "sonner";
 import { SignInProps } from "../../../types/authTypes";
+import { useAuthModalStore } from "../../../stores/authModalStore";
 
-export const SignIn: React.FC<SignInProps> = ({
-  onForgot,
-  onSignInSuccess,
-}) => {
-  const { signIn, isLoading, error, success, reset } = useAuthStore();
+export const SignIn: React.FC<SignInProps> = ({ onForgot }) => {
+  const { signIn, isLoading, error: authError } = useAuthStore();
+  const { closeModal } = useAuthModalStore();
   const {
     register,
     handleSubmit,
@@ -19,21 +18,15 @@ export const SignIn: React.FC<SignInProps> = ({
     resolver: zodResolver(signInSchema),
   });
 
-  useEffect(() => {
-    if (success) {
+  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
+    try {
+      await signIn(data);
       toast.success("Login realizado com sucesso!");
-      onSignInSuccess();
-
-      reset();
+      closeModal();
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message || "Ocorreu um erro desconhecido");
     }
-    if (error) {
-      toast.error(`${error}: Credenciais invalidas.`);
-      reset();
-    }
-  }, [success, error, reset, onSignInSuccess]);
-
-  const onSubmit = (data: SignInFormData) => {
-    signIn(data);
   };
 
   return (
@@ -72,6 +65,7 @@ export const SignIn: React.FC<SignInProps> = ({
       <button type="submit" className="btn-submit" disabled={isLoading}>
         {isLoading ? "Entrando. . ." : "Entrar"}
       </button>
+      {authError && <p>{authError}</p>}
     </form>
   );
 };
