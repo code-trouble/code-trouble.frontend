@@ -35,4 +35,80 @@
       padding: 0px !important;
     }
   }
+
+  .profile-details {
+    .profile-form {
+      margin-top: 70px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        input {
+          padding: 10px 14px;
+          border: 1px solid #c7c7c7;
+          border-radius: 8px;
+        }
+
+        select {
+          padding: 10px 14px;
+          border: 1px solid #c7c7c7;
+          border-radius: 8px;
+        }
+
+        textarea {
+          border: 1px solid #c7c7c7;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+
+  .socials-section {
+    .social-wrapper {
+      display: flex;
+      justify-content: space-between;
+      padding: 21px 10px;
+      border-top: 1px solid #c7c7c7;
+      &:first-child {
+        border-top: none;
+      }
+      &.one {
+        border-top: none !important;
+      }
+      .social-title {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        img {
+          width: 33px;
+          height: 33px;
+        }
+      }
+
+      .social-input {
+        width: 463px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+
+        input {
+          padding: 10px 14px;
+          border-radius: 8px;
+          width: 100%;
+          border: 1px solid #c7c7c7;
+        }
+      }
+    }
+  }
+
+  #submitButton {
+    width: 342px;
+    align-self: flex-end;
+  }
 }
