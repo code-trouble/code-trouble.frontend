@@ -25,7 +25,8 @@ export const ProfilePage: React.FC = () => {
   const hiddenUserTags = userInterestTags.slice(maxVisibleTags);
   const remainingUserCount = hiddenUserTags.length;
 
-  console.log(currentUser.banner_url);
+  console.log("cloudinary", currentUser.banner_url);
+  console.log("cloudinary", currentUser.avatarUrl);
   return (
     <>
       <div className="profile-page-wrapper">
