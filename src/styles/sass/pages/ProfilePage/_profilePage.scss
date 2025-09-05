@@ -7,14 +7,18 @@
     position: absolute;
     width: 100%;
     height: 193px;
+
+    @media (max-width: 650px) {
+      height: 115px;
+    }
   }
 
   .profile-details {
-    padding: 88px 60px;
+    padding: 88px 66px 40px 60px;
     border-bottom: 1px solid $frenchGray;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
     .userInfo {
       display: flex;
       flex-direction: column;
@@ -27,6 +31,10 @@
         z-index: 10;
         display: flex;
         align-items: center;
+        @media (max-width: 650px) {
+          width: 110px;
+          height: 110px;
+        }
         .avatar-container {
           width: 237px;
           height: 100%;
@@ -52,6 +60,10 @@
         color: $eerieBlack;
         margin-bottom: 10px;
         text-wrap: wrap;
+        @media (max-width: 650px) {
+          margin-top: 22px;
+          font-size: 24px;
+        }
       }
 
       p {
@@ -66,8 +78,17 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
+      width: 382px;
 
-      button {
+      .tag-list {
+        padding: 10px 5px;
+        display: flex;
+        justify-content: flex-end;
+        width: 382px;
+        position: relative;
+      }
+
+      .custom-button {
         margin: 35px 0px;
       }
 
@@ -77,6 +98,15 @@
         font-weight: 400;
         color: $onyx;
         margin-bottom: 10px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      flex-direction: column;
+      padding: 60px 20px 60px 20px;
+
+      .userActions {
+        align-self: flex-end;
       }
     }
   }
