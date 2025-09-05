@@ -5,10 +5,13 @@ import { SignUpFormData, signUpSchema } from "../../../schema/authSchema";
 import { useAuthStore } from "../../../stores/authStore";
 import { toast } from "sonner";
 import { SingUpProps } from "../../../types/authTypes";
+import { useNavigate } from "react-router-dom";
+import { useAuthModalStore } from "../../../stores/authModalStore";
 
-export const SignUp: React.FC<SingUpProps> = ({ onSignUpSuccess }) => {
-  const { signUp, isLoading, error: authError } = useAuthStore();
-
+export const SignUp: React.FC<SingUpProps> = () => {
+  const { signUp, signIn, isLoading, error: authError } = useAuthStore();
+  const { closeModal } = useAuthModalStore();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -20,8 +23,13 @@ export const SignUp: React.FC<SingUpProps> = ({ onSignUpSuccess }) => {
   const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
     try {
       await signUp(data);
-      toast.success("Cadastro realizado com sucesso!");
-      onSignUpSuccess();
+
+      await signIn({
+        email: data.email,
+        password: data.password,
+      });
+      closeModal();
+      navigate("/onboarding");
     } catch (err: any) {
       console.log(err);
       toast.error(err.message || "Ocorreu um erro desconhecido");
