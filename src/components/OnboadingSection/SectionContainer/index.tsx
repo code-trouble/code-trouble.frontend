@@ -9,7 +9,6 @@ export const SectionContainer: React.FC<onboardingSectionProps> = ({
     <section className="section-container">
       <h2>{sectionTitle}</h2>
       <p>{sectionDescription}</p>
-      <div className="separator"></div>
       <div className="content">{sectionContent}</div>
     </section>
   );
