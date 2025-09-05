@@ -8,3 +8,6 @@ export { default as profileAvatar } from "./profileAvatar.png";
 export { default as profileAvatar2 } from "./profileAvatar2.png";
 export { default as starVector } from "./starVector.png";
 export { default as upvote } from "./upvote.png";
+export { default as fulanoPfp } from "./fulanoPfp.png";
+export { default as pfpAddIcon } from "./pfpAddIcon.png";
+export { default as imgUploadIcon } from "./imgUploadIcon.png";
