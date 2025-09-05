@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useUserStore } from "../../stores/userStore";
-import { pfpPageBanner, profileAvatar } from "../../assets/images/png";
+import {profileAvatar } from "../../assets/images/png";
 import { Avatar } from "../../components/Avatar";
 import CustomButton from "../../components/CustomButton";
 import { TagBadge } from "../../components/TagBadge";
