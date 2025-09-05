@@ -30,6 +30,7 @@
     "react-dom": "^18.3.1",
     "react-focus-lock": "^2.13.6",
     "react-hook-form": "^7.53.2",
+    "react-loading-skeleton": "^3.5.0",
     "react-quill": "^2.0.0",
     "react-quilljs": "^2.0.4",
     "react-router-dom": "^6.27.0",
