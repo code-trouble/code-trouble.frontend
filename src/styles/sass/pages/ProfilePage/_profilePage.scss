@@ -27,28 +27,21 @@
         width: 210px;
         height: 210px;
         border-radius: 100%;
-        border: 2px solid #c9c9c9;
+        border: 2px solid $frenchGray;
         z-index: 10;
         display: flex;
+        overflow: hidden;
         align-items: center;
         @media (max-width: 650px) {
           width: 110px;
           height: 110px;
         }
-        .avatar-container {
-          width: 237px;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          text-align: center;
 
-          img {
-            width: 100%;
-            height: 100%;
-            border-radius: 100%;
-            position: relative;
-            margin-bottom: 35px;
-          }
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          position: relative;
         }
       }
 

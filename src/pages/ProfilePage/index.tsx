@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useUserStore } from "../../stores/userStore";
 import { pfpPageBanner, profileAvatar } from "../../assets/images/png";
-import { Avatar } from "../../components/Avatar";
 import CustomButton from "../../components/CustomButton";
 import { TagBadge } from "../../components/TagBadge";
 import { ProfileSkeleton } from "../../skeletons/ProfileSkeleton";
@@ -39,13 +38,13 @@ export const ProfilePage: React.FC = () => {
         <div className="profile-details">
           <div className="userInfo">
             <div className="avatarDisplay">
-              <Avatar
-                sizes="large"
+              <img
                 src={
                   currentUser.avatarUrl
                     ? (currentUser.avatarUrl as string)
                     : profileAvatar
                 }
+                alt="foto de perfil"
               />
             </div>
             <h1>{currentUser.username}</h1>
