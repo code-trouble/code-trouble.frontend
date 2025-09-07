@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../components/CustomButton";
 import { InterestSection } from "../../components/OnboadingSection/InterestSection";
@@ -10,11 +10,57 @@ import { useUserStore } from "../../stores/userStore";
 import { toast } from "sonner";
 
 export const Onboarding = () => {
-  const { interestTagIds, profileDetails, socialLinks, resetOnboardingState } =
-    useOnboardingStore();
-  const { updateProfile, updateUserInterests } = useUserStore();
+  const {
+    interestTagIds,
+    profileDetails,
+    socialLinks,
+    resetOnboardingState,
+    updateProfileDetail,
+    updateSocialLink,
+  } = useOnboardingStore();
+  const { updateProfile, updateUserInterests, currentUser } = useUserStore();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    if (currentUser && !isInitialized) {
+      updateProfileDetail("display_name", currentUser.display_name || "");
+      updateProfileDetail("username", currentUser.username || "");
+      updateProfileDetail("pronouns", currentUser.pronouns || "not_specified");
+      updateProfileDetail("bio", currentUser.bio || "");
+
+      if (currentUser.social_links) {
+        const socialKeys: (keyof typeof currentUser.social_links)[] = [
+          "linkedin",
+          "github",
+          "dribbble",
+          "behance",
+        ];
+        socialKeys.forEach((key) => {
+          if (currentUser.social_links && currentUser.social_links[key]) {
+            updateSocialLink(key, currentUser.social_links[key] || "");
+          }
+        });
+      }
+
+      setIsInitialized(true);
+    }
+  }, [currentUser, isInitialized, updateProfileDetail, updateSocialLink]);
+
+  const userHasSelectedTags = interestTagIds.size > 0;
+
+  const userHasFilledProfile = Object.entries(profileDetails).some(
+    ([key, value]) =>
+      key !== "pronouns" &&
+      value !== "" &&
+      value !== null &&
+      value !== undefined,
+  );
+
+  const userHasConnectedSocials = Object.values(socialLinks).some(
+    (value) => value !== "" && value !== null && value !== undefined,
+  );
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -23,13 +69,19 @@ export const Onboarding = () => {
     try {
       const interestsArray = Array.from(interestTagIds);
       const profileData = { ...profileDetails, social_links: socialLinks };
+      const cleanProfileData = Object.fromEntries(
+        Object.entries(profileData).filter(
+          ([_, value]) => value !== "" && value !== null && value !== undefined,
+        ),
+      );
       console.log(interestsArray);
 
-      await Promise.all([
-        updateUserInterests(interestsArray),
-        updateProfile(profileData),
-      ]);
+      const promises = [updateProfile(cleanProfileData)];
+      if (interestsArray.length >= 1) {
+        promises.push(updateUserInterests(interestsArray));
+      }
 
+      await Promise.all(promises);
       toast.success("Perfil salvo com sucesso!");
       resetOnboardingState();
       navigate("/profile");
@@ -76,6 +128,9 @@ export const Onboarding = () => {
           steps={["Interesses", "Detalhes do perfil", "Conecte suas redes"]}
           activeStep={1}
           connectorHeights={[173, 941]}
+          hasSelectedTags={userHasSelectedTags}
+          hasFilledProfileDetails={userHasFilledProfile}
+          hasConnectedSocials={userHasConnectedSocials}
         />
       </div>
     </form>
