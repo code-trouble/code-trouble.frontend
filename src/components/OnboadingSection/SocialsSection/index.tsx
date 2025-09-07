@@ -1,4 +1,9 @@
-import { linkedIn } from "../../../assets/images/svg/icons";
+import {
+  behanceSocial,
+  dribbleSocial,
+  githubSocial,
+  linkedinSocial,
+} from "../../../assets/images/svg/icons";
 import { SectionContainer } from "../SectionContainer";
 import { useOnboardingStore } from "../../../stores/onboardingStore";
 import { SocialLinks } from "../../../types/onboardingSectionTypes";
@@ -9,22 +14,22 @@ const platformConfig: Record<
 > = {
   linkedin: {
     label: "LinkedIn",
-    icon: linkedIn,
+    icon: linkedinSocial,
     placeholder: "linkedin.com/in/seu-usuario",
   },
   github: {
     label: "GitHub",
-    icon: linkedIn,
+    icon: githubSocial,
     placeholder: "github.com/seu-usuario",
   },
   dribbble: {
     label: "Dribbble",
-    icon: linkedIn,
+    icon: dribbleSocial,
     placeholder: "dribbble.com/seu-usuario",
   },
   behance: {
     label: "Behance",
-    icon: linkedIn,
+    icon: behanceSocial,
     placeholder: "behance.net/seu-usuario",
   },
 };

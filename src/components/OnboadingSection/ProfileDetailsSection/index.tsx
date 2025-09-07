@@ -35,7 +35,6 @@ export const ProfileDetailsSection = () => {
                   onChange={(e) =>
                     updateProfileDetail("display_name", e.target.value)
                   }
-                  required
                 />
               </div>
               <div className="input-group">
@@ -48,7 +47,6 @@ export const ProfileDetailsSection = () => {
                   onChange={(e) =>
                     updateProfileDetail("username", e.target.value)
                   }
-                  required
                 />
               </div>
 
@@ -61,7 +59,6 @@ export const ProfileDetailsSection = () => {
                   onChange={(e) =>
                     updateProfileDetail("pronouns", e.target.value)
                   }
-                  required
                 >
                   {pronounOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -74,10 +71,10 @@ export const ProfileDetailsSection = () => {
               <div className="input-group">
                 <label htmlFor="biografia">Biografia</label>
                 <textarea
+                  placeholder="Placeholder"
                   name="biografia"
                   value={profileDetails.bio}
                   onChange={(e) => updateProfileDetail("bio", e.target.value)}
-                  required
                 />
               </div>
             </div>
