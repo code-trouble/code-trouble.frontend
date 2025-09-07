@@ -2,10 +2,24 @@ import { useTagStore } from "../../../stores/tagStore";
 import { TagBadge } from "../../TagBadge";
 import { SectionContainer } from "../SectionContainer";
 import { useOnboardingStore } from "../../../stores/onboardingStore";
+import { useEffect, useState } from "react";
+import { useUserStore } from "../../../stores/userStore";
 
 export const InterestSection = () => {
   const { tags } = useTagStore();
   const { interestTagIds, setInterests } = useOnboardingStore();
+  const { currentUser } = useUserStore();
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    if (currentUser && currentUser.user_interests && !isInitialized) {
+      const existingInterestIds = new Set<number>(
+        currentUser.user_interests.map((userInterest) => userInterest.tag_id),
+      );
+      setInterests(existingInterestIds);
+      setIsInitialized(true);
+    }
+  }, [currentUser, isInitialized, setInterests]);
 
   const handleTagToggle = (tagId: number) => {
     const newActiveIds = new Set(interestTagIds);
@@ -17,7 +31,6 @@ export const InterestSection = () => {
     }
 
     setInterests(newActiveIds);
-    console.log(newActiveIds);
   };
 
   return (
