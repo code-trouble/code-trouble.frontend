@@ -13,6 +13,7 @@ import { Avatar } from "../../components/Avatar";
 import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
 import { useQuestionStore } from "../../stores/questionStore";
+import { OpenQuestionSkeleton } from "../../skeletons/OpenQuestionSkeleton";
 
 export const OpenQuestion: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -66,13 +67,7 @@ export const OpenQuestion: React.FC = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="open-question-container">
-        <div style={{ textAlign: "center", padding: "2rem" }}>
-          Carregando pergunta...
-        </div>
-      </div>
-    );
+    return <OpenQuestionSkeleton />;
   }
 
   if (error || !question) {

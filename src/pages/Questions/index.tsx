@@ -7,6 +7,7 @@ import filterSettings from "../../assets/images/svg/filterSettings.svg";
 import { QuestionsFilterModal } from "../../components/QuestionsFilterModal";
 import { Pagination } from "../../components/QuestionsPagination";
 import { useQuestionStore } from "../../stores/questionStore";
+import { QuestionsSkeleton } from "../../skeletons/QuestionsPageSkeleton";
 
 const tags = [
   "Design",
@@ -47,16 +48,7 @@ export const Questions: React.FC = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="questions-container">
-        <div
-          className="questions-inner-container"
-          style={{ textAlign: "center", padding: "2rem" }}
-        >
-          Carregando perguntas...
-        </div>
-      </div>
-    );
+    return <QuestionsSkeleton />;
   }
 
   if (error) {
