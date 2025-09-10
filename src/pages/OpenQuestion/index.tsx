@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
 import DOMPurify, { Config as PurifyConfig } from "dompurify";
+import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import "quill/dist/quill.snow.css";
 import { Tag } from "../../components/Tag";
 import { formatDate } from "../../utils/formatDate";
@@ -14,6 +15,10 @@ import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
 import { useQuestionStore } from "../../stores/questionStore";
 import { OpenQuestionSkeleton } from "../../skeletons/OpenQuestionSkeleton";
+
+// Import a syntax highlighting theme if you want it for code blocks
+import "highlight.js/styles/github-dark.css";
+import hljs from "highlight.js";
 
 export const OpenQuestion: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,28 +41,26 @@ export const OpenQuestion: React.FC = () => {
     }
   }, [id, fetchQuestionsById, navigate]);
 
+  useEffect(() => {
+    if (!isLoading && question) {
+      document.querySelectorAll("pre").forEach((block) => {
+        hljs.highlightElement(block as HTMLElement);
+      });
+    }
+  }, [question, isLoading]);
+
   const purifyConfig: PurifyConfig = {
-    ADD_ATTR: ["class", "src", "href", "alt"],
+    USE_PROFILES: { html: true },
+    ADD_TAGS: ["iframe"],
+    ADD_ATTR: ["class", "src", "href", "alt", "target"],
   };
 
-  const convertDeltaToHtml = (delta: any): string => {
-    if (!delta) return "";
-    if (typeof delta === "string") return delta;
-    if (delta.ops) {
-      return delta.ops
-        .map((op: any) => {
-          let text = op.insert || "";
-          if (op.attributes) {
-            if (op.attributes.bold) text = `<strong>${text}</strong>`;
-            if (op.attributes.italic) text = `<em>${text}</em>`;
-            if (op.attributes["code-block"])
-              text = `<pre><code>${text}</code></pre>`;
-          }
-          return text.replace(/\n/g, "<br>");
-        })
-        .join("");
-    }
-    return String(delta);
+  const convertDelta = (delta: any): string => {
+    if (!delta || !delta.ops) return "";
+    const converter = new QuillDeltaToHtmlConverter(delta.ops, {
+      inlineStyles: true,
+    });
+    return converter.convert();
   };
 
   const handlePostAnswer = (e: React.FormEvent) => {
@@ -84,12 +87,12 @@ export const OpenQuestion: React.FC = () => {
   }
 
   const tags = question.body.tags || [];
-  const descriptionHtml = convertDeltaToHtml(question.body.description);
-  const detailsHtml = convertDeltaToHtml(question.body.details);
+  const descriptionHtml = convertDelta(question.body.description);
+  const detailsHtml = convertDelta(question.body.details);
 
-  const cleanDesc = DOMPurify.sanitize(descriptionHtml, purifyConfig) as string;
+  const cleanDesc = DOMPurify.sanitize(descriptionHtml, purifyConfig);
   const cleanDetails = detailsHtml
-    ? (DOMPurify.sanitize(detailsHtml, purifyConfig) as string)
+    ? DOMPurify.sanitize(detailsHtml, purifyConfig)
     : "";
 
   return (
@@ -108,11 +111,17 @@ export const OpenQuestion: React.FC = () => {
           </div>
         )}
         <div className="question-description ql-container ql-snow">
+          <p>
+            <strong>Breve resumo:</strong>
+          </p>
           <div className="ql-editor">{parse(cleanDesc)}</div>
         </div>
         {cleanDetails && (
           <section>
             <div className="open-question-details ql-container ql-snow">
+              <p>
+                <strong>O que já tentei fazer:</strong>
+              </p>
               <div className="ql-editor">{parse(cleanDetails)}</div>
             </div>
           </section>

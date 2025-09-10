@@ -1,29 +1,27 @@
-// src/components/TagSelector.tsx
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { Tag } from "../Tag";
-
-const allTags = [
-  "Formatação",
-  "Medium",
-  "Dicas",
-  "Conteúdo DIgital",
-  "Experiência",
-  "Web",
-  "Figma",
-  "Corinthians",
-  "Libertadores",
-  "CDB",
-];
+import { useTagStore } from "../../stores/tagStore";
 
 interface ITagSelector {
   selectedTags: string[];
   onChange: (tags: string[]) => void;
 }
 
-export const TagSelector: React.FC<ITagSelector> = ({ selectedTags, onChange }) => {
+export const TagSelector: React.FC<ITagSelector> = ({
+  selectedTags,
+  onChange,
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const tagsFromStore = useTagStore((state) => state.tags);
+  console.log(tagsFromStore);
+
+  const allTags = useMemo(
+    () => tagsFromStore.map((tag) => tag.name),
+    [tagsFromStore],
+  );
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
@@ -58,14 +56,24 @@ export const TagSelector: React.FC<ITagSelector> = ({ selectedTags, onChange }) 
   }, []);
 
   return (
-    <div className="tag-selector-container" ref={containerRef} style={{ position: "relative" }}>
+    <div
+      className="tag-selector-container"
+      ref={containerRef}
+      style={{ position: "relative" }}
+    >
       <div className="input-area tag-selector-input" onClick={toggleDropdown}>
         {selectedTags.length > 0 ? (
           <div className="tags-container">
-            <Tag tags={selectedTags} onTagRemove={handleRemoveTag} icon={true} />
+            <Tag
+              tags={selectedTags}
+              onTagRemove={handleRemoveTag}
+              icon={true}
+            />
           </div>
         ) : (
-          <span className="placeholder">Ex: javascript, array, front-end, etc</span>
+          <span className="placeholder">
+            Ex: javascript, array, front-end, etc
+          </span>
         )}
       </div>
       {dropdownOpen && (
@@ -80,7 +88,11 @@ export const TagSelector: React.FC<ITagSelector> = ({ selectedTags, onChange }) 
             allTags
               .filter((tag) => !selectedTags.includes(tag))
               .map((tag, index) => (
-                <button key={index} className="dropdown-tag-item" onClick={() => handleAddTag(tag)}>
+                <button
+                  key={index}
+                  className="dropdown-tag-item"
+                  onClick={() => handleAddTag(tag)}
+                >
                   {tag}
                 </button>
               ))

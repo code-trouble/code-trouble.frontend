@@ -3,34 +3,34 @@ import { api } from "../services/api";
 import { useUserStore } from "./userStore";
 import { AuthState } from "../types/authTypes";
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   isLoading: false,
   error: null,
-  token: null,
 
-  setToken: (t) => {
-    if (t) localStorage.setItem("authToken", t);
-    else localStorage.removeItem("authToken");
-    set({ token: t });
-  },
+  clearLocalState: () => set({ isLoading: false, error: null }),
 
-  hydrateFromStorage: () => {
-    const t = localStorage.getItem("authToken");
-    set({ token: t });
-  },
-
-  logout: () => {
-    localStorage.removeItem("authToken");
-    set({ token: null, isLoading: false, error: null });
-    useUserStore.getState().clearUser();
+  logout: async () => {
+    try {
+      await api.post("/auth/logout");
+    } catch (err) {
+      console.error(
+        "Logout falhou no servidor, limpando o cliente mesmo assim.",
+        err,
+      );
+    } finally {
+      useUserStore.getState().clearUser();
+      set({ isLoading: false, error: null });
+    }
   },
 
   signIn: async (data) => {
     set({ isLoading: true, error: null });
+
     try {
       const response = await api.post("/auth/login", data);
-      const { access_token } = response.data;
-      get().setToken(access_token);
+      const user = response.data.user;
+
+      (await import("./userStore")).useUserStore.getState().setUser(user);
     } catch (err: any) {
       const message =
         err.response?.data?.message || "Email ou senha inválidos.";

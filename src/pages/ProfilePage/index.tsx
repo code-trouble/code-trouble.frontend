@@ -28,7 +28,11 @@ export const ProfilePage: React.FC = () => {
     <>
       <div className="profile-page-wrapper">
         <img
-          src={currentUser.banner_url as string}
+          src={
+            currentUser.banner_url
+              ? (currentUser.banner_url as string)
+              : pfpPageBanner
+          }
           alt=""
         />
         <div className="profile-details">
