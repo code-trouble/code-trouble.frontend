@@ -33,7 +33,7 @@ export const ProfilePage: React.FC = () => {
               ? (currentUser.banner_url as string)
               : pfpPageBanner
           }
-          alt=""
+          alt="banner do usuário"
         />
         <div className="profile-details">
           <div className="userInfo">
