@@ -28,26 +28,16 @@ interface IHeader {
 
 export const Header: React.FC<IHeader> = ({ theme }) => {
   const currentUser = useUserStore((state) => state.currentUser);
-  const fetchCurrentUser = useUserStore((state) => state.fetchCurrentUser);
+  const loggedIn = !!currentUser;
 
-  useEffect(() => {
-    fetchCurrentUser();
-  }, [fetchCurrentUser]);
+  const { logout } = useAuthStore();
+  const { isOpen, openModal } = useAuthModalStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { isOpen, openModal } = useAuthModalStore();
-  const { token, hydrateFromStorage, logout } = useAuthStore();
-  const loggedIn = !!token;
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    hydrateFromStorage();
-  }, [hydrateFromStorage]);
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
