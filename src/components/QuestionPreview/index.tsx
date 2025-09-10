@@ -4,6 +4,7 @@ import comments from "../../assets/images/svg/comments.svg";
 import { Tag } from "../Tag";
 import { useDisableTabInside } from "../../hooks/useDisableTabInside";
 import { Question } from "../../types/questionTypes";
+import { formatDate } from "../../utils/formatDate";
 
 interface IQuestionsPreview {
   question: Question;
@@ -44,10 +45,10 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
             sizes="small"
             name={question.author.username}
             src={question.author.avatarUrl}
-            role="8 minutos atrás"
+            role={formatDate(question.created_at)}
           />
           <div className="previewQuestion-comments">
-            <p>4</p>
+            <p>0</p>
             <img src={comments} alt="ícone de comentário" />
           </div>
         </div>
