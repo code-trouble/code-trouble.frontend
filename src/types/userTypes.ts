@@ -46,9 +46,10 @@ export type UpdateProfileData = Partial<{
 
 export interface UserState {
   currentUser: User | null;
-  isLoading: boolean;
+  isInitializing: boolean;
   fetchCurrentUser: () => Promise<void>;
   updateProfile: (data: UpdateProfileData) => Promise<void>;
   updateUserInterests: (tagIds: number[]) => Promise<void>;
   clearUser: () => void;
+  setUser: (user: User) => void;
 }
