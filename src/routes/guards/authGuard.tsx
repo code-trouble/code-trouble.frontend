@@ -1,23 +1,27 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthModalStore } from "../../stores/authModalStore";
-import { useAuthStore } from "../../stores/authStore";
+import { useUserStore } from "../../stores/userStore";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { token } = useAuthStore();
+  const { currentUser, isLoading } = useUserStore();
   const { openModal } = useAuthModalStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
+    if (!isLoading && !currentUser) {
       openModal("signIn");
       navigate("/", { replace: true });
     }
-  }, [token, openModal, navigate]);
+  }, [currentUser, isLoading, openModal, navigate]);
 
-  return token ? <>{children}</> : null;
+  if (isLoading) {
+    return null;
+  }
+
+  return currentUser ? <>{children}</> : null;
 };
