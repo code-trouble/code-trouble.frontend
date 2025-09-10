@@ -8,18 +8,18 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { currentUser, isLoading } = useUserStore();
+  const { currentUser, isInitializing } = useUserStore();
   const { openModal } = useAuthModalStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoading && !currentUser) {
+    if (!isInitializing && !currentUser) {
       openModal("signIn");
       navigate("/", { replace: true });
     }
-  }, [currentUser, isLoading, openModal, navigate]);
+  }, [currentUser, isInitializing, openModal, navigate]);
 
-  if (isLoading) {
+  if (isInitializing) {
     return null;
   }
 
