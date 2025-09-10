@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import codespace from "../../assets/images/svg/codespace.svg";
@@ -11,21 +11,29 @@ import favoriteBadge from "../../assets/images/svg/blueFavorite.svg";
 import { Tag } from "../Tag";
 import CustomButton from "../CustomButton";
 import { TooltipDescription } from "./TooltipDescription";
+import { useTagStore } from "../../stores/tagStore";
 
 interface IPostWriter {
   layout: "q&a" | "blog";
 }
 
 export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
-  const toolbarId = useRef("custom-toolbar-" + Math.random().toString(36).substring(2, 9));
+  const toolbarId = useRef(
+    "custom-toolbar-" + Math.random().toString(36).substring(2, 9),
+  );
 
   useEffect(() => {
     const updateToolbarPosition = () => {
       if (window.innerWidth <= 1000 && window.visualViewport) {
-        const keyboardHeight = window.innerHeight - window.visualViewport.height;
+        const keyboardHeight =
+          window.innerHeight - window.visualViewport.height;
         if (keyboardHeight > 0) {
-          const adjustedBottom = keyboardHeight - window.visualViewport.offsetTop;
-          document.documentElement.style.setProperty("--toolbar-bottom", `${adjustedBottom}px`);
+          const adjustedBottom =
+            keyboardHeight - window.visualViewport.offsetTop;
+          document.documentElement.style.setProperty(
+            "--toolbar-bottom",
+            `${adjustedBottom}px`,
+          );
         } else {
           document.documentElement.style.setProperty("--toolbar-bottom", "0px");
         }
@@ -46,18 +54,13 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
   const quillRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<Quill | null>(null);
 
-  const allTags = [
-    "Formatação",
-    "Medium",
-    "Dicas",
-    "Conteúdo DIgital",
-    "Experiência",
-    "Web",
-    "Figma",
-    "Corinthians",
-    "Libertadores",
-    "CDB",
-  ];
+  const tagsFromStore = useTagStore((state) => state.tags);
+
+  const allTags = useMemo(
+    () => tagsFromStore.map((tag) => tag.name),
+    [tagsFromStore],
+  );
+
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -126,7 +129,12 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                       length: 0,
                     };
                     // insere a imagem com fonte "user"
-                    this.quill.insertEmbed(rangeToInsert.index, "image", reader.result, "user");
+                    this.quill.insertEmbed(
+                      rangeToInsert.index,
+                      "image",
+                      reader.result,
+                      "user",
+                    );
                     // posiciona o cursor logo após
                     this.quill.setSelection(rangeToInsert.index + 1, 0, "user");
                   };
@@ -184,10 +192,19 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
           '.ql-list[value="ordered"]',
           `<img src="${toolbarOrdered}" alt="Ordered List tool" />`,
         );
-        replaceIcon(".ql-code-block", `<img src="${codespace}" alt="Code Block tool" />`);
+        replaceIcon(
+          ".ql-code-block",
+          `<img src="${codespace}" alt="Code Block tool" />`,
+        );
         replaceIcon(".ql-link", `<img src="${toolbarLink}" alt="Link tool" />`);
-        replaceIcon(".ql-image", `<img src="${toolbarImg}" alt="Image tool" />`);
-        replaceIcon(".ql-video", `<img src="${toolbarVideo}" alt="Video tool" />`);
+        replaceIcon(
+          ".ql-image",
+          `<img src="${toolbarImg}" alt="Image tool" />`,
+        );
+        replaceIcon(
+          ".ql-video",
+          `<img src="${toolbarVideo}" alt="Video tool" />`,
+        );
       }, 100);
     }
   }, []);
@@ -207,7 +224,9 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
 
   useEffect(() => {
     const adjustDropdownPosition = () => {
-      const dropdown = document.querySelector(".tags-dropdown") as HTMLElement | null;
+      const dropdown = document.querySelector(
+        ".tags-dropdown",
+      ) as HTMLElement | null;
       const container = dropdown?.parentElement as HTMLElement | null;
       if (!dropdown || !container) return;
       const dropdownRect = dropdown.getBoundingClientRect();
@@ -235,7 +254,9 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
   }, [dropdownOpen]);
 
   useEffect(() => {
-    const btn = document.querySelector(`#${toolbarId.current} .ql-image`) as HTMLElement | null;
+    const btn = document.querySelector(
+      `#${toolbarId.current} .ql-image`,
+    ) as HTMLElement | null;
     if (!btn) return;
 
     const onCaptureClick = (e: MouseEvent) => {
@@ -270,7 +291,8 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
 
     // listener em captura, antes do Quill
     btn.addEventListener("click", onCaptureClick, { capture: true });
-    return () => btn.removeEventListener("click", onCaptureClick, { capture: true });
+    return () =>
+      btn.removeEventListener("click", onCaptureClick, { capture: true });
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -410,7 +432,8 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                   </button>
                   {dropdownOpen && (
                     <div className="tags-dropdown">
-                      {allTags.filter((tag) => !selectedTags.includes(tag)).length === 0 ? (
+                      {allTags.filter((tag) => !selectedTags.includes(tag))
+                        .length === 0 ? (
                         <span>There are no tags left.</span>
                       ) : (
                         allTags
