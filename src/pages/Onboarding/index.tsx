@@ -26,7 +26,6 @@ export const Onboarding = () => {
   useEffect(() => {
     if (currentUser && !isInitialized) {
       updateProfileDetail("display_name", currentUser.display_name || "");
-      updateProfileDetail("username", currentUser.username || "");
       updateProfileDetail("pronouns", currentUser.pronouns || "not_specified");
       updateProfileDetail("bio", currentUser.bio || "");
 
@@ -84,7 +83,7 @@ export const Onboarding = () => {
       await Promise.all(promises);
       toast.success("Perfil salvo com sucesso!");
       resetOnboardingState();
-      navigate("/profile");
+      navigate(`/${currentUser?.username}`);
     } catch (error) {
       toast.error("Ocorreu um erro ao salvar seu perfil. Tente novamente.");
       console.error(error);
