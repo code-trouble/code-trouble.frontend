@@ -8,13 +8,18 @@ import { LoadingScreen } from "./components/LoadingScreen";
 export default function App() {
   const fetchTags = useTagStore((state) => state.fetchTags);
   const fetchCurrentUser = useUserStore((state) => state.fetchCurrentUser);
-
+  const currentUser = useUserStore((state) => state.currentUser);
   const isInitializing = useUserStore((state) => state.isInitializing);
 
   useEffect(() => {
-    fetchTags();
     fetchCurrentUser();
-  }, [fetchTags, fetchCurrentUser]);
+  }, [fetchCurrentUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      fetchTags();
+    }
+  }, [currentUser, fetchTags]);
 
   if (isInitializing) {
     return <LoadingScreen />;
