@@ -9,11 +9,19 @@ const emailValidation = z
   }, "Formato de email inválido");
 
 export const signUpSchema = z.object({
-  username: z.string().min(5, "O nome deve ter ao menos 5 caracteres"),
+  username: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .min(3, { message: "O nome de usuário deve ter no mínimo 3 caracteres." })
+    .max(20, { message: "O nome de usuário não pode exceder 20 caracteres." })
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+      message:
+        "Use apenas letras minúsculas, números e hifens (não no início ou fim).",
+    }),
   email: emailValidation,
   password: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
 });
-
 export const signInSchema = z.object({
   email: emailValidation,
   password: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),

@@ -130,7 +130,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
                   className="UserDropdownItem"
                   onClick={() => {
                     setUserMenuOpen(false);
-                    navigate("/profile");
+                    navigate(`/${currentUser.username}`);
                   }}
                 >
                   Ver Perfil

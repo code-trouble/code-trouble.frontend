@@ -40,7 +40,7 @@ export const SignUp: React.FC<SingUpProps> = () => {
     <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
       <div className="input-wrapper">
         <section>
-          <label htmlFor="social-name">Nome Social/Username</label>
+          <label htmlFor="social-name">Username</label>
           <input
             type="text"
             id="social-name"

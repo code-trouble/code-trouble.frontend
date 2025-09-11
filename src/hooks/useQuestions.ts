@@ -1,10 +1,8 @@
-// src/hooks/useQuestions.ts
 import { useCallback } from "react";
 import { initialQuestions } from "../utils/initialQuestions";
 
 const STORAGE_KEY = "questions";
 
-// seed localStorage once on first load
 if (!localStorage.getItem(STORAGE_KEY)) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(initialQuestions));
 }
@@ -53,19 +51,22 @@ export function useQuestions() {
     saveQuestions(all.filter((q) => q.id !== id));
   }, []);
 
-  const deleteAnswer = useCallback((questionId: string, answerId: string): void => {
-    const all = getStoredQuestions();
-    const idx = all.findIndex((q) => q.id === questionId);
-    if (idx !== -1) {
-      const q = all[idx];
-      const updated = {
-        ...q,
-        answers: (q.answers || []).filter((a) => a.id !== answerId),
-      };
-      all[idx] = updated;
-      saveQuestions(all);
-    }
-  }, []);
+  const deleteAnswer = useCallback(
+    (questionId: string, answerId: string): void => {
+      const all = getStoredQuestions();
+      const idx = all.findIndex((q) => q.id === questionId);
+      if (idx !== -1) {
+        const q = all[idx];
+        const updated = {
+          ...q,
+          answers: (q.answers || []).filter((a) => a.id !== answerId),
+        };
+        all[idx] = updated;
+        saveQuestions(all);
+      }
+    },
+    [],
+  );
 
   return { getAll, getById, add, remove, deleteAnswer };
 }

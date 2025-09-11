@@ -23,6 +23,18 @@
       display: flex;
       flex-direction: column;
       width: 237px;
+      p {
+        margin-bottom: 15px;
+      }
+
+      span {
+        padding: 5px;
+        background-color: $frenchGray;
+        width: fit-content;
+        border-radius: 8px;
+        font-family: $hindFont;
+      }
+
       .avatarDisplay {
         width: 210px;
         height: 210px;

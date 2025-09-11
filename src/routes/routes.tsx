@@ -30,7 +30,7 @@ export const AppRoutes = () => {
         <Route path="/questions/:id" element={protect(<OpenQuestion />)} />
         <Route path="/ask-a-question" element={protect(<AskAQuestion />)} />
         <Route path="/onboarding" element={protect(<Onboarding />)} />
-        <Route path="/profile" element={protect(<ProfilePage />)} />
+        <Route path="/:username" element={protect(<ProfilePage />)} />
       </Route>
 
       <Route element={<BlogLayout />}>

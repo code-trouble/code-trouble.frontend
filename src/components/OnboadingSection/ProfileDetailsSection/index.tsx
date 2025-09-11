@@ -8,10 +8,10 @@ export const ProfileDetailsSection = () => {
   const { profileDetails, updateProfileDetail } = useOnboardingStore();
 
   const pronounOptions = [
-    { value: "not_specified", label: "Prefiro não dizer" },
-    { value: "he", label: "Ele/Dele" },
-    { value: "she", label: "Ela/Dela" },
-    { value: "they", label: "Elu/Delu" },
+    { value: "", label: "Prefiro não dizer" },
+    { value: "Ele/Dele", label: "Ele/Dele" },
+    { value: "Ela/Dela", label: "Ela/Dela" },
+    { value: "Elu/Delu", label: "Elu/Delu" },
     { value: "any", label: "Qualquer Pronome" },
   ];
 
@@ -35,6 +35,7 @@ export const ProfileDetailsSection = () => {
                   onChange={(e) =>
                     updateProfileDetail("display_name", e.target.value)
                   }
+                  required
                 />
               </div>
               <div className="input-group">
@@ -44,9 +45,7 @@ export const ProfileDetailsSection = () => {
                   type="text"
                   placeholder={currentUser?.username || "ex: joana1234"}
                   value={profileDetails?.username}
-                  onChange={(e) =>
-                    updateProfileDetail("username", e.target.value)
-                  }
+                  disabled={true}
                 />
               </div>
 
