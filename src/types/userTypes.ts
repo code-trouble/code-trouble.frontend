@@ -31,7 +31,6 @@ export interface User {
 
 export type UpdateProfileData = Partial<{
   display_name: string;
-  username: string;
   pronouns: string;
   bio: string;
   avatar_url: string;
@@ -47,9 +46,14 @@ export type UpdateProfileData = Partial<{
 export interface UserState {
   currentUser: User | null;
   isInitializing: boolean;
+  profileUser: User | null;
+  isLoadingProfile: boolean;
   fetchCurrentUser: () => Promise<void>;
   updateProfile: (data: UpdateProfileData) => Promise<void>;
   updateUserInterests: (tagIds: number[]) => Promise<void>;
   clearUser: () => void;
   setUser: (user: User) => void;
+
+  fetchUserProfile: (username: string) => Promise<User>;
+  clearProfileUser: () => void;
 }
