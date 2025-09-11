@@ -44,7 +44,7 @@ export const ProfileDetailsSection = () => {
                   name="nomeDeUsuario"
                   type="text"
                   placeholder={currentUser?.username || "ex: joana1234"}
-                  value={profileDetails?.username}
+                  value={currentUser?.username}
                   disabled={true}
                 />
               </div>

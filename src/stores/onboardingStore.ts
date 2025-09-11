@@ -5,7 +5,6 @@ const initialState = {
   interestTagIds: new Set<number>(),
   profileDetails: {
     display_name: "",
-    username: "",
     pronouns: "not_specified",
     bio: "",
   },

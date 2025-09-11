@@ -1,6 +1,5 @@
 interface ProfileDetails {
   display_name: string;
-  username: string;
   pronouns: string;
   bio: string;
 }
