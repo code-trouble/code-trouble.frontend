@@ -111,17 +111,11 @@ export const OpenQuestion: React.FC = () => {
           </div>
         )}
         <div className="question-description ql-container ql-snow">
-          <p>
-            <strong>Breve resumo:</strong>
-          </p>
           <div className="ql-editor">{parse(cleanDesc)}</div>
         </div>
         {cleanDetails && (
           <section>
             <div className="open-question-details ql-container ql-snow">
-              <p>
-                <strong>O que já tentei fazer:</strong>
-              </p>
               <div className="ql-editor">{parse(cleanDetails)}</div>
             </div>
           </section>
@@ -150,6 +144,7 @@ export const OpenQuestion: React.FC = () => {
               name={question.author.username}
               role=""
               src={question.author.avatarUrl}
+              onClick={() => navigate(`/${question.author.username}`)}
             />
             <div className="followButton">
               <span className="dot" />
