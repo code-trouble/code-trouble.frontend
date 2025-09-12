@@ -16,7 +16,6 @@ export const TagSelector: React.FC<ITagSelector> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const tagsFromStore = useTagStore((state) => state.tags);
-  console.log(tagsFromStore);
 
   const allTags = useMemo(
     () => tagsFromStore.map((tag) => tag.name),
