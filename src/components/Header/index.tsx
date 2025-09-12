@@ -188,13 +188,17 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
               <div className="auth-buttons">
                 {loggedIn ? (
                   <div className="BurgerloggedInContent">
-                    <Avatar sizes="medium" />
+                    <Avatar
+                      sizes="medium"
+                      src={currentUser?.avatarUrl as string}
+                    />
                     <div className="burgerLoggedText">
-                      <h1>Joana Lima</h1>
+                      <h1>{currentUser.display_name}</h1>
                       <p
                         className={
                           theme === "base" ? "verPerfil" : "verPerfilBlue"
                         }
+                        onClick={() => navigate(`/${currentUser.username}`)}
                       >
                         Ver Perfil
                       </p>

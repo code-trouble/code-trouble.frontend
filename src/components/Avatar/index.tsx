@@ -16,11 +16,18 @@ interface IAvatar {
   role?: string;
   sizes: "small" | "medium" | "large";
   src?: string;
+  onClick?: VoidFunction;
 }
 
-export const Avatar: React.FC<IAvatar> = ({ name, role, sizes, src }) => {
+export const Avatar: React.FC<IAvatar> = ({
+  name,
+  role,
+  sizes,
+  src,
+  onClick,
+}) => {
   return (
-    <main className="avatar-container">
+    <main onClick={onClick} className="avatar-container">
       <img
         src={src ? src : ProfessorCorrea}
         alt="profile image"
