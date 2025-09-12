@@ -28,7 +28,7 @@ export const Questions: React.FC = () => {
     fetchAllQuestions();
   }, [fetchAllQuestions]);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
   const totalPages = Math.ceil(questions.length / itemsPerPage);
 
   const displayedQuestions = questions.slice(
