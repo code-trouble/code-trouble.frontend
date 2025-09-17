@@ -18,6 +18,23 @@
         padding: 41px 60px;
         overflow-y: auto;
 
+        .active-filters {
+          margin-top: 5px;
+          width: fit-content;
+          display: flex;
+          gap: 10px;
+
+          .tag-item {
+            display: flex;
+            gap: 5px;
+            button {
+              cursor: pointer;
+              &:hover {
+                transform: scale(0.9);
+              }
+            }
+          }
+        }
         &::-webkit-scrollbar {
           width: 12px;
         }
