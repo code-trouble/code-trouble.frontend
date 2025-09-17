@@ -1,19 +1,21 @@
 import React, { useRef } from "react";
 import { Avatar } from "../Avatar";
 import comments from "../../assets/images/svg/comments.svg";
-import { Tag } from "../Tag";
 import { useDisableTabInside } from "../../hooks/useDisableTabInside";
 import { Question } from "../../types/questionTypes";
 import { formatDate } from "../../utils/formatDate";
+import { TagSearcher } from "../TagSearcher";
 
 interface IQuestionsPreview {
   question: Question;
   onClick: () => void;
+  onTagClick?: (tag: string) => void;
 }
 
 export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
   question,
   onClick,
+  onTagClick,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   useDisableTabInside(containerRef);
@@ -53,7 +55,7 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
           </div>
         </div>
         <div>
-          <Tag tags={question.body.tags} />
+          <TagSearcher tags={question.body.tags} onTagClick={onTagClick} />
         </div>
       </div>
     </div>

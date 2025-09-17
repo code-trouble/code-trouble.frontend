@@ -8,7 +8,12 @@ interface ITag {
   icon?: boolean;
 }
 
-export const Tag: React.FC<ITag> = ({ tags, onTagRemove, disabled, icon }) => {
+export const TagList: React.FC<ITag> = ({
+  tags,
+  onTagRemove,
+  disabled,
+  icon,
+}) => {
   return (
     <div className="tag-list">
       {tags.map((tag, index) => (
