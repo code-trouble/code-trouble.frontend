@@ -9,18 +9,25 @@ import { TagSearcher } from "../TagSearcher";
 interface IQuestionsPreview {
   question: Question;
   onClick: () => void;
+  onAvatarClick?: () => void;
   onTagClick?: (tag: string) => void;
 }
 
 export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
   question,
   onClick,
+  onAvatarClick,
   onTagClick,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   useDisableTabInside(containerRef);
 
   const descriptionHtml = question.body.description?.ops?.[0]?.insert || "";
+
+  const handleAvatarClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAvatarClick?.();
+  };
 
   return (
     <div
@@ -42,7 +49,10 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
         dangerouslySetInnerHTML={{ __html: descriptionHtml }}
       />
       <div className="previewQuestion-bottom">
-        <div className="previewQuestion-avatar-area">
+        <div
+          className="previewQuestion-avatar-area"
+          onClick={handleAvatarClick}
+        >
           <Avatar
             sizes="small"
             name={question.author.username}
