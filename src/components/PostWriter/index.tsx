@@ -8,7 +8,7 @@ import toolbarImg from "../../assets/images/svg/toolbarImg.svg";
 import toolbarVideo from "../../assets/images/svg/toolbarVideo.svg";
 import toolbarLink from "../../assets/images/svg/toolbarLink.svg";
 import favoriteBadge from "../../assets/images/svg/blueFavorite.svg";
-import { Tag } from "../Tag";
+import { TagList } from "../Tag";
 import CustomButton from "../CustomButton";
 import { TooltipDescription } from "./TooltipDescription";
 import { useTagStore } from "../../stores/tagStore";
@@ -417,7 +417,10 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
               <div className="editor-tags">
                 {selectedTags.length > 0 && (
                   <div className="tags-container">
-                    <Tag tags={selectedTags} onTagRemove={handleRemoveTag} />
+                    <TagList
+                      tags={selectedTags}
+                      onTagRemove={handleRemoveTag}
+                    />
                   </div>
                 )}
                 <div className="tags-button-wrapper">

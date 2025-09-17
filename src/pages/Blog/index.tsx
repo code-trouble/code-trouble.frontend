@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CustomButton from "../../components/CustomButton";
-import { Tag } from "../../components/Tag";
+import { TagList } from "../../components/Tag";
 import { Avatar } from "../../components/Avatar";
 import { BlogPostPreview } from "../../components/BlogPostPreview";
 import { Pagination } from "../../components/QuestionsPagination";
@@ -257,7 +257,7 @@ export const Blog: React.FC = () => {
               <div className="recommended-topics">
                 <h2>Tópicos Recomendados</h2>
                 <div className="tag-group">
-                  <Tag tags={tags} />
+                  <TagList tags={tags} />
                 </div>
                 <span>Ver mais tópicos</span>
               </div>

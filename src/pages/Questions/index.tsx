@@ -2,26 +2,26 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../components/CustomButton";
 import { QuestionsPreview } from "../../components/QuestionPreview";
-import { Tag } from "../../components/Tag";
 import filterSettings from "../../assets/images/svg/filterSettings.svg";
 import { QuestionsFilterModal } from "../../components/QuestionsFilterModal";
 import { Pagination } from "../../components/QuestionsPagination";
 import { useQuestionStore } from "../../stores/questionStore";
 import { QuestionsSkeleton } from "../../skeletons/QuestionsPageSkeleton";
+import { TagSearcher } from "../../components/TagSearcher";
 
 const tags = [
   "Design",
+  "Banco de Dados",
+  "Back-End",
+  "Javascript",
   "Programação",
-  "Arte",
-  "Ciência de Dados",
-  "Tecnologia",
 ];
 
 export const Questions: React.FC = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const { questions, isLoading, error, fetchAllQuestions } = useQuestionStore();
 
   useEffect(() => {
@@ -31,16 +31,34 @@ export const Questions: React.FC = () => {
   const itemsPerPage = 8;
   const totalPages = Math.ceil(questions.length / itemsPerPage);
 
-  const displayedQuestions = questions.slice(
+  const filteredQuestions =
+    selectedTags.length > 0
+      ? questions.filter((question) =>
+          selectedTags.every((tag) => question.body.tags.includes(tag)),
+        )
+      : questions;
+
+  const displayedQuestions = filteredQuestions.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   );
+
+  //  const clearAllTags = () => setSelectedTags([]);
 
   const navigateTo = (path: string) => {
     window.scrollTo(0, 0);
     navigate(path);
   };
 
+  const handleTagClick = (tagName: string) => {
+    setSelectedTags((prev) => {
+      if (prev.includes(tagName)) {
+        return prev.filter((tag) => tag !== tagName);
+      } else {
+        return [...prev, tagName];
+      }
+    });
+  };
   const toggleModal = () => setIsModalOpen((prev) => !prev);
   const closeModal = () => setIsModalOpen(false);
   const handlePageChange = (page: number) => {
@@ -82,6 +100,17 @@ export const Questions: React.FC = () => {
                 onClick={() => navigateTo("/ask-a-question")}
               />
             </div>
+            {selectedTags.length > 0 && (
+              <div className="active-filters">
+                <code>Tags selecionadas: </code>
+                {selectedTags.map((tag) => (
+                  <code key={tag} className="tag-item">
+                    [{tag}
+                    <button onClick={() => handleTagClick(tag)}>×]</button>
+                  </code>
+                ))}
+              </div>
+            )}
             <div className="category-selection">
               <a href="#">Novo</a>
               <a href="#">Top</a>
@@ -100,6 +129,7 @@ export const Questions: React.FC = () => {
                     key={question.id}
                     question={question}
                     onClick={() => navigateTo(`/questions/${question.id}`)}
+                    onTagClick={handleTagClick}
                   />
                 ))
               )}
@@ -118,7 +148,7 @@ export const Questions: React.FC = () => {
             <div className="recommended-topics">
               <h2>Tópicos Recomendados</h2>
               <div className="tag-group">
-                <Tag tags={tags} />
+                <TagSearcher onTagClick={handleTagClick} tags={tags} />
               </div>
               <span>Ver mais tópicos</span>
             </div>
