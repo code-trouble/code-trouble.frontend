@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
-import { Tag } from "../Tag";
+import { TagList } from "../Tag";
 import { useTagStore } from "../../stores/tagStore";
 
 interface ITagSelector {
@@ -63,7 +63,7 @@ export const TagSelector: React.FC<ITagSelector> = ({
       <div className="input-area tag-selector-input" onClick={toggleDropdown}>
         {selectedTags.length > 0 ? (
           <div className="tags-container">
-            <Tag
+            <TagList
               tags={selectedTags}
               onTagRemove={handleRemoveTag}
               icon={true}

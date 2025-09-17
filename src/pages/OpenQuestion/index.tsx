@@ -4,7 +4,7 @@ import parse from "html-react-parser";
 import DOMPurify, { Config as PurifyConfig } from "dompurify";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import "quill/dist/quill.snow.css";
-import { Tag } from "../../components/Tag";
+import { TagList } from "../../components/Tag";
 import { formatDate } from "../../utils/formatDate";
 import comments from "../../assets/images/svg/greenComments.svg";
 import upvotes from "../../assets/images/svg/greenUpvote.svg";
@@ -107,7 +107,7 @@ export const OpenQuestion: React.FC = () => {
         </div>
         {tags.length > 0 && (
           <div className="tagList-area">
-            <Tag tags={tags} />
+            <TagList tags={tags} />
           </div>
         )}
         <div className="question-description ql-container ql-snow">

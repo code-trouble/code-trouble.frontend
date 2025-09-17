@@ -3,7 +3,7 @@ import vectorStar from "../../assets/images/png/starVector.png";
 import upvote from "../../assets/images/png/upvote.png";
 import comments from "../../assets/images/png/comments.png";
 import arrowButton from "../../assets/images/svg/arrowButton.svg";
-import { Tag } from "../Tag/index";
+import { TagList } from "../Tag/index";
 import { Avatar } from "../Avatar";
 
 interface IStackedCard {
@@ -44,7 +44,7 @@ export const StackedCard: React.FC<IStackedCard> = ({
           <h1 className="card-heading">{headingTitle}</h1>
           <p className="card-description">{subTitle}</p>
 
-          <Tag tags={tagArray} />
+          <TagList tags={tagArray} />
 
           <div className="card-details">
             <div className="details-left">
@@ -58,8 +58,14 @@ export const StackedCard: React.FC<IStackedCard> = ({
                 302
               </p>
             </div>
-            <div className={`details-right ${!isDisabled ? "active-arrow" : ""}`}>
-              <button onClick={onArrowClick} className="arrow-button" disabled={isDisabled}>
+            <div
+              className={`details-right ${!isDisabled ? "active-arrow" : ""}`}
+            >
+              <button
+                onClick={onArrowClick}
+                className="arrow-button"
+                disabled={isDisabled}
+              >
                 <img
                   className="arrow-button-img"
                   src={arrowButton}
