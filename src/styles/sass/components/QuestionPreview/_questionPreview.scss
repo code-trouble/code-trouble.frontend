@@ -7,9 +7,7 @@
   padding: 25px 0px;
   border-bottom: 1px solid #c9c9c9;
   max-width: 100%;
-  @media (min-width: 1461px) {
-    max-width: 1200px;
-  }
+
   h1 {
     font-size: 32px;
     font-weight: 500;
@@ -36,7 +34,9 @@
     display: flex;
     gap: 15px;
     align-items: center;
-
+    &:hover {
+      transform: scale(0.9);
+    }
     .previewQuestion-comments {
       display: flex;
       align-items: center;
