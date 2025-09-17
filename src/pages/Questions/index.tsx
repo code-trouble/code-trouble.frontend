@@ -8,25 +8,26 @@ import { Pagination } from "../../components/QuestionsPagination";
 import { useQuestionStore } from "../../stores/questionStore";
 import { QuestionsSkeleton } from "../../skeletons/QuestionsPageSkeleton";
 import { TagSearcher } from "../../components/TagSearcher";
-
-const tags = [
-  "Design",
-  "Banco de Dados",
-  "Back-End",
-  "Javascript",
-  "Programação",
-];
+import { useTagStore } from "../../stores/tagStore";
 
 export const Questions: React.FC = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [showAllTopics, setShowAllTopics] = useState(false);
   const { questions, isLoading, error, fetchAllQuestions } = useQuestionStore();
+  const { tags } = useTagStore();
 
   useEffect(() => {
     fetchAllQuestions();
   }, [fetchAllQuestions]);
+
+  const TOPICS_LIMIT = 5;
+  const displayedTags = showAllTopics
+    ? tags.map((tag) => tag.name)
+    : tags.slice(0, TOPICS_LIMIT).map((tag) => tag.name);
+  const toggleTopics = () => setShowAllTopics((prev) => !prev);
 
   const itemsPerPage = 8;
   const totalPages = Math.ceil(questions.length / itemsPerPage);
@@ -130,6 +131,9 @@ export const Questions: React.FC = () => {
                     question={question}
                     onClick={() => navigateTo(`/questions/${question.id}`)}
                     onTagClick={handleTagClick}
+                    onAvatarClick={() =>
+                      navigateTo(`/${question.author.username}`)
+                    }
                   />
                 ))
               )}
@@ -148,9 +152,11 @@ export const Questions: React.FC = () => {
             <div className="recommended-topics">
               <h2>Tópicos Recomendados</h2>
               <div className="tag-group">
-                <TagSearcher onTagClick={handleTagClick} tags={tags} />
+                <TagSearcher onTagClick={handleTagClick} tags={displayedTags} />
               </div>
-              <span>Ver mais tópicos</span>
+              <span onClick={toggleTopics}>
+                {showAllTopics ? "Ver menos tópicos" : "Ver mais tópicos"}
+              </span>
             </div>
           </div>
           <div className="custom-filters">
