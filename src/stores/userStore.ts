@@ -1,12 +1,15 @@
 import { create } from "zustand";
 import { api } from "../services/api";
 import { User, UserState, UpdateProfileData } from "../types/userTypes";
+import { useAuthModalStore } from "./authModalStore";
+import axios from "axios";
 
 export const useUserStore = create<UserState>((set, get) => ({
   currentUser: null,
   isInitializing: true,
   profileUser: null,
   isLoadingProfile: false,
+  followingUsers: new Set(),
 
   setUser: (user: User) => set({ currentUser: user, isInitializing: false }),
 
@@ -19,6 +22,32 @@ export const useUserStore = create<UserState>((set, get) => ({
       set({ currentUser: null, isInitializing: false });
       throw error;
     }
+  },
+
+  isFollowingUser: (userId: number) => get().followingUsers.has(userId),
+
+  followUser: async (userId: number) => {
+    try {
+      await api.post(`/users/${userId}/follow`);
+      set((state) => ({
+        followingUsers: new Set(state.followingUsers).add(userId),
+      }));
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+        useAuthModalStore.getState().openModal("signIn");
+        return;
+      }
+      throw err;
+    }
+  },
+
+  unfollowUser: async (userId: number) => {
+    await api.delete(`/users/${userId}/follow`);
+    set((state) => {
+      const newSet = new Set(state.followingUsers);
+      newSet.delete(userId);
+      return { followingUsers: newSet };
+    });
   },
 
   updateProfile: async (data: UpdateProfileData) => {
@@ -42,7 +71,12 @@ export const useUserStore = create<UserState>((set, get) => ({
     }
   },
 
-  clearUser: () => set({ currentUser: null, isInitializing: false }),
+  clearUser: () =>
+    set({
+      currentUser: null,
+      isInitializing: false,
+      followingUsers: new Set(),
+    }),
 
   fetchUserProfile: async (username: string) => {
     set({ isLoadingProfile: true });
