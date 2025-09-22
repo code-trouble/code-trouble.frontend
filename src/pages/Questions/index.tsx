@@ -5,10 +5,10 @@ import { QuestionsPreview } from "../../components/QuestionPreview";
 import filterSettings from "../../assets/images/svg/filterSettings.svg";
 import { QuestionsFilterModal } from "../../components/QuestionsFilterModal";
 import { Pagination } from "../../components/QuestionsPagination";
-import { useQuestionStore } from "../../stores/questionStore";
 import { QuestionsSkeleton } from "../../skeletons/QuestionsPageSkeleton";
 import { TagSearcher } from "../../components/TagSearcher";
 import { useTagStore } from "../../stores/tagStore";
+import { usePostStore } from "../../stores/postStore";
 
 export const Questions: React.FC = () => {
   const navigate = useNavigate();
@@ -16,7 +16,8 @@ export const Questions: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showAllTopics, setShowAllTopics] = useState(false);
-  const { questions, isLoading, error, fetchAllQuestions } = useQuestionStore();
+  const { questions, isLoadingPosts, error, fetchAllQuestions } =
+    usePostStore();
   const { tags } = useTagStore();
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export const Questions: React.FC = () => {
     setCurrentPage(page);
   };
 
-  if (isLoading) {
+  if (isLoadingPosts) {
     return <QuestionsSkeleton />;
   }
 

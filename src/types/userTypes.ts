@@ -17,7 +17,7 @@ export interface User {
   display_name: string | null;
   pronouns: string | null;
   bio: string | null;
-  avatarUrl: string;
+  avatar_url: string;
   banner_url: string | null;
   social_links: {
     linkedin?: string;
@@ -53,6 +53,10 @@ export interface UserState {
   updateUserInterests: (tagIds: number[]) => Promise<void>;
   clearUser: () => void;
   setUser: (user: User) => void;
+  followingUsers: Set<number>;
+  followUser: (userId: number) => Promise<void>;
+  unfollowUser: (userId: number) => Promise<void>;
+  isFollowingUser: (userId: number) => boolean;
 
   fetchUserProfile: (username: string) => Promise<User>;
   clearProfileUser: () => void;

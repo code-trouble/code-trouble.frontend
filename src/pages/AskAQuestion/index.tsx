@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
@@ -10,12 +10,17 @@ export const AskAQuestion: React.FC = () => {
   const navigate = useNavigate();
   const {
     createPost,
+    updatePost,
     setTitle: setStoreTitle,
     setBody,
     setKind,
     isLoading,
     error,
     reset,
+    isEditMode,
+    editingPostId,
+    title: storeTitle,
+    body: storeBody,
   } = usePostStore();
 
   const [title, setTitle] = useState("");
@@ -28,10 +33,18 @@ export const AskAQuestion: React.FC = () => {
     navigate(path);
   }
 
+  useEffect(() => {
+    if (isEditMode && storeBody) {
+      setTitle(storeTitle || "");
+      setDescription(storeBody.description || {});
+      setDetails(storeBody.details || {});
+      setTags(storeBody.tags || []);
+    }
+  }, [isEditMode, storeTitle, storeBody]);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    // Combine description and details into a single body
     const combinedBody = {
       description,
       details,
@@ -39,13 +52,21 @@ export const AskAQuestion: React.FC = () => {
     };
 
     try {
-      // Set the store values first
       setStoreTitle(title);
       setBody(combinedBody);
       setKind("question");
 
-      // Then create the post (no arguments needed)
-      const newPost = await createPost();
+      let result;
+      if (isEditMode && editingPostId) {
+        // Update existing post
+        result = await updatePost(editingPostId, {
+          title,
+          body: combinedBody,
+        });
+      } else {
+        // Create new post
+        result = await createPost();
+      }
 
       // Reset form and store
       setTitle("");
@@ -54,9 +75,9 @@ export const AskAQuestion: React.FC = () => {
       setTags([]);
       reset();
 
-      navigateTo(`/questions/${newPost.id}`);
+      navigateTo(`/questions/${result.id}`);
     } catch (error) {
-      console.error("Failed to create post:", error);
+      console.error("Failed to save post:", error);
     }
   }
 
@@ -75,7 +96,7 @@ export const AskAQuestion: React.FC = () => {
     <div className="askAquestion-container">
       <form onSubmit={handleSubmit} className="askAquestion-wrapper">
         <div className="left-side">
-          <h1>Fazer uma pergunta</h1>
+          <h1>{isEditMode ? "Editar pergunta" : "Fazer uma pergunta"}</h1>
           <div className="message-box">
             <h1>Como escrever uma boa pergunta</h1>
             <p>
@@ -134,7 +155,11 @@ export const AskAQuestion: React.FC = () => {
               Introduza o problema e desenvolva o que você colocou no título.
               Mínimo de 20 caracteres.
             </p>
-            <AltPostWriter value={description} onChange={setDescription} />
+            <AltPostWriter
+              isEditMode={isEditMode}
+              value={description}
+              onChange={setDescription}
+            />
           </div>
           <div className="question-details">
             <h6>
@@ -145,7 +170,11 @@ export const AskAQuestion: React.FC = () => {
               realmente aconteceu (como o erro, por exemplo). Mínimo de 20
               caracteres.
             </p>
-            <AltPostWriter value={details} onChange={setDetails} />
+            <AltPostWriter
+              isEditMode={isEditMode}
+              value={details}
+              onChange={setDetails}
+            />
           </div>
           <div className="message-box second-box">
             <h1>Revise antes de postar</h1>
@@ -181,7 +210,13 @@ export const AskAQuestion: React.FC = () => {
 
           <div className="submit-question">
             <CustomButton
-              text={isLoading ? "Enviando..." : "Poste sua pergunta"}
+              text={
+                isLoading
+                  ? "Salvando..."
+                  : isEditMode
+                    ? "Atualizar pergunta"
+                    : "Poste sua pergunta"
+              }
               type="submit"
               padding="10px 24px"
               backgroundColor="#2DBA4F"

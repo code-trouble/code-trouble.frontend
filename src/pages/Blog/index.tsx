@@ -1,177 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomButton from "../../components/CustomButton";
-import { TagList } from "../../components/Tag";
 import { Avatar } from "../../components/Avatar";
 import { BlogPostPreview } from "../../components/BlogPostPreview";
 import { Pagination } from "../../components/QuestionsPagination";
 import { useNavigate } from "react-router-dom";
-
-interface IBlogPost {
-  title: string;
-  description: string;
-  image?: boolean;
-}
-
-const tags = [
-  "Design",
-  "Programação",
-  "Arte",
-  "Ciência de Dados",
-  "Tecnologia",
-];
-
-const blogPosts: IBlogPost[] = [
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: true,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-  {
-    title: "Como faz array no javascript?",
-    description:
-      "Breve descrição aqui, um subtítulo no máximo uns 100 caractéres.",
-    image: false,
-  },
-];
+import { useTagStore } from "../../stores/tagStore";
+import { TagSearcher } from "../../components/TagSearcher";
+import { QuestionsSkeleton } from "../../skeletons/QuestionsPageSkeleton";
+import { usePostStore } from "../../stores/postStore";
 
 export const Blog: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [showAllTopics, setShowAllTopics] = useState(false);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(blogPosts.length / itemsPerPage);
-  const displayedPosts = blogPosts.slice(
+
+  const navigate = useNavigate();
+
+  const {
+    articles,
+    isLoadingPosts: articlesLoading,
+    error: articlesError,
+    fetchAllArticles,
+  } = usePostStore();
+
+  const {
+    tags,
+    isLoading: tagsLoading,
+    error: tagsError,
+    fetchTags,
+  } = useTagStore();
+
+  const totalPages = Math.ceil(articles.length / itemsPerPage);
+  const displayedPosts = articles.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   );
@@ -180,11 +40,52 @@ export const Blog: React.FC = () => {
     setCurrentPage(page);
   };
 
-  const navigate = useNavigate();
-
   function navigateTo(path: string) {
     window.scrollTo(0, 0);
     navigate(path);
+  }
+
+  useEffect(() => {
+    fetchAllArticles();
+    fetchTags();
+  }, [fetchAllArticles, fetchTags]);
+
+  const TOPICS_LIMIT = 5;
+  const displayedTags = showAllTopics
+    ? tags.map((tag) => tag.name)
+    : tags.slice(0, TOPICS_LIMIT).map((tag) => tag.name);
+  const toggleTopics = () => setShowAllTopics((prev) => !prev);
+
+  const getArticleDescription = (body: any): string => {
+    if (body?.content?.ops) {
+      return (
+        body.content.ops
+          .map((op: any) => (typeof op.insert === "string" ? op.insert : ""))
+          .join("")
+          .trim()
+          .slice(0, 100) + (body.content.ops.join("").length > 100 ? "..." : "")
+      );
+    }
+    return "Sem descrição disponível";
+  };
+
+  const hasImage = (body: any): boolean => {
+    if (body?.content?.ops) {
+      return body.content.ops.some(
+        (op: any) => typeof op.insert === "object" && op.insert?.image,
+      );
+    }
+    return false;
+  };
+
+  const tagNames = displayedTags;
+
+  const handleTagClick = (tagName: string) => {
+    console.log("Tag clicked:", tagName);
+  };
+
+  if (articlesLoading) {
+    return <QuestionsSkeleton />;
   }
 
   return (
@@ -199,7 +100,7 @@ export const Blog: React.FC = () => {
                 color="white"
                 fontWeight="500"
                 fontSize="18px"
-                text="Perguntar"
+                text="Escrever"
                 padding="8px 41px"
                 customId="writeAPostButton"
                 onClick={() => {
@@ -215,24 +116,52 @@ export const Blog: React.FC = () => {
               <a href="#">UX</a>
               <a href="#">UI</a>
             </div>
-            <div className="blog-list">
-              {displayedPosts.map((post, index) => (
-                <BlogPostPreview
-                  key={index}
-                  blogPostTitle={post.title}
-                  blogPostDescription={post.description}
-                  image={post.image}
-                />
-              ))}
-            </div>
+
+            {/* Error states */}
+            {articlesError && (
+              <div style={{ color: "red", padding: "1rem" }}>
+                {articlesError}
+              </div>
+            )}
+
+            {/* Loading state */}
+            {articlesLoading ? (
+              <div style={{ padding: "2rem", textAlign: "center" }}>
+                Carregando artigos...
+              </div>
+            ) : (
+              <>
+                <div className="blog-list">
+                  {displayedPosts.length > 0 ? (
+                    displayedPosts.map((article) => (
+                      <BlogPostPreview
+                        key={article.id}
+                        blogPostTitle={article.title || "untitled"}
+                        blogPostDescription={getArticleDescription(
+                          article.body,
+                        )}
+                        image={hasImage(article.body)}
+                      />
+                    ))
+                  ) : (
+                    <div style={{ padding: "2rem", textAlign: "center" }}>
+                      Nenhum artigo encontrado.
+                    </div>
+                  )}
+                </div>
+
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                    activeColor="#3348A4"
+                    customId="blogPagination"
+                  />
+                )}
+              </>
+            )}
           </div>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            activeColor="#3348A4"
-            customId="blogPagination"
-          />
         </div>
 
         <div className="right-side">
@@ -256,10 +185,34 @@ export const Blog: React.FC = () => {
             <div className="topics-area">
               <div className="recommended-topics">
                 <h2>Tópicos Recomendados</h2>
-                <div className="tag-group">
-                  <TagList tags={tags} />
-                </div>
-                <span>Ver mais tópicos</span>
+                {tagsError && (
+                  <div
+                    style={{
+                      color: "red",
+                      fontSize: "14px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {tagsError}
+                  </div>
+                )}
+                {tagsLoading ? (
+                  <div>Carregando tags...</div>
+                ) : tagNames.length > 0 ? (
+                  <>
+                    <div className="tag-group">
+                      <TagSearcher
+                        onTagClick={handleTagClick}
+                        tags={tagNames}
+                      />
+                    </div>
+                    <span onClick={toggleTopics}>
+                      {showAllTopics ? "Ver menos tópicos" : "Ver mais tópicos"}
+                    </span>
+                  </>
+                ) : (
+                  <div>Nenhuma tag encontrada.</div>
+                )}
               </div>
             </div>
           </div>

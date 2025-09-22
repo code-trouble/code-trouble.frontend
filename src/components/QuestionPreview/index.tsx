@@ -2,12 +2,12 @@ import React, { useRef } from "react";
 import { Avatar } from "../Avatar";
 import comments from "../../assets/images/svg/comments.svg";
 import { useDisableTabInside } from "../../hooks/useDisableTabInside";
-import { Question } from "../../types/questionTypes";
 import { formatDate } from "../../utils/formatDate";
 import { TagSearcher } from "../TagSearcher";
+import { Post } from "../../types/postTypes";
 
 interface IQuestionsPreview {
-  question: Question;
+  question: Post;
   onClick: () => void;
   onAvatarClick?: () => void;
   onTagClick?: (tag: string) => void;
@@ -56,7 +56,7 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
           <Avatar
             sizes="small"
             name={question.author.username}
-            src={question.author.avatarUrl}
+            src={question.author.avatar_url}
             role={formatDate(question.created_at)}
           />
           <div className="previewQuestion-comments">

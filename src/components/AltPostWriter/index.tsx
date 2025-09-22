@@ -9,13 +9,15 @@ import toolbarVideo from "../../assets/images/svg/toolbarVideo.svg";
 import toolbarLink from "../../assets/images/svg/toolbarLink.svg";
 
 interface IAltPostWriter {
-  value: any; // Delta object
+  value: any;
   onChange: (delta: any) => void;
+  isEditMode?: boolean;
 }
 
 export const AltPostWriter: React.FC<IAltPostWriter> = ({
   value,
   onChange,
+  isEditMode = false,
 }) => {
   const toolbarId = useRef(
     "custom-toolbar-" + Math.random().toString(36).substring(2, 9),
@@ -24,7 +26,7 @@ export const AltPostWriter: React.FC<IAltPostWriter> = ({
   const editorRef = useRef<Quill | null>(null);
 
   useEffect(() => {
-    if (!editorRef.current && quillRef.current) {
+    if (quillRef.current && !editorRef.current) {
       editorRef.current = new Quill(quillRef.current, {
         theme: "snow",
         modules: {
@@ -75,12 +77,6 @@ export const AltPostWriter: React.FC<IAltPostWriter> = ({
                 input.onchange = async () => {
                   const file = input.files?.[0];
                   if (!file) return;
-
-                  // TODO: Upload to S3 and get URL
-                  // const imageUrl = await uploadToS3(file);
-                  // this.quill.insertEmbed(range?.index ?? this.quill.getLength(), "image", imageUrl);
-
-                  // For now, use base64 (will be replaced with S3 URL later)
                   const reader = new FileReader();
                   reader.onload = () => {
                     const idx = range?.index ?? this.quill.getLength();
@@ -93,37 +89,16 @@ export const AltPostWriter: React.FC<IAltPostWriter> = ({
             },
           },
         },
-        placeholder: "",
+        placeholder: isEditMode ? "" : "Escreva seu texto...",
       });
 
-      // Load initial content from Delta
-      if (value && value.ops) {
-        editorRef.current.setContents(value);
-      }
-
-      const updatePlaceholder = () => {
-        const editor = quillRef.current?.querySelector(".ql-editor");
-        const textLength = editorRef.current?.getText().trim().length ?? 0;
-        if (textLength === 0) {
-          editor?.setAttribute("data-placeholder", "Escreva seu texto...");
-        } else {
-          editor?.removeAttribute("data-placeholder");
+      editorRef.current.on("text-change", (_delta, _oldDelta, source) => {
+        if (source === "user") {
+          const currentContents = editorRef.current!.getContents();
+          onChange(currentContents);
         }
-      };
-
-      editorRef.current.on("text-change", () => {
-        updatePlaceholder();
-        const delta = editorRef.current!.getContents();
-        onChange(delta);
       });
 
-      editorRef.current.on("selection-change", (range) => {
-        if (range == null) updatePlaceholder();
-      });
-
-      updatePlaceholder();
-
-      // Custom toolbar styling
       setTimeout(() => {
         const toolbar = document.getElementById(toolbarId.current)!;
         const replace = (sel: string, icon: string) => {
@@ -148,7 +123,18 @@ export const AltPostWriter: React.FC<IAltPostWriter> = ({
         replace(".ql-video", `<img src="${toolbarVideo}" alt="Video"/>`);
       }, 100);
     }
-  }, [value, onChange]);
+  }, [isEditMode]);
+
+  useEffect(() => {
+    if (editorRef.current && value) {
+      const editorContent = editorRef.current.getContents();
+      if (JSON.stringify(editorContent) !== JSON.stringify(value)) {
+        editorRef.current.setContents(value, "silent");
+      }
+    } else if (editorRef.current && !value) {
+      editorRef.current.setText("", "silent");
+    }
+  }, [value]);
 
   return (
     <div className="postWriter-container alt">

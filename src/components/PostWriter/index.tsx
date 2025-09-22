@@ -7,17 +7,27 @@ import toolbarOrdered from "../../assets/images/svg/toolbarOrderedList.svg";
 import toolbarImg from "../../assets/images/svg/toolbarImg.svg";
 import toolbarVideo from "../../assets/images/svg/toolbarVideo.svg";
 import toolbarLink from "../../assets/images/svg/toolbarLink.svg";
-import favoriteBadge from "../../assets/images/svg/blueFavorite.svg";
 import { TagList } from "../Tag";
-import CustomButton from "../CustomButton";
 import { TooltipDescription } from "./TooltipDescription";
 import { useTagStore } from "../../stores/tagStore";
 
 interface IPostWriter {
-  layout: "q&a" | "blog";
+  value: any; // Delta object
+  onChange: (delta: any) => void;
+  title: string;
+  onTitleChange: (title: string) => void;
+  tags: string[];
+  onTagsChange: (tags: string[]) => void;
 }
 
-export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
+export const PostWriter: React.FC<IPostWriter> = ({
+  value,
+  onChange,
+  title,
+  onTitleChange,
+  tags,
+  onTagsChange,
+}) => {
   const toolbarId = useRef(
     "custom-toolbar-" + Math.random().toString(36).substring(2, 9),
   );
@@ -61,11 +71,10 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
     [tagsFromStore],
   );
 
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
-    if (quillRef.current) {
+    if (!editorRef.current && quillRef.current) {
       editorRef.current = new Quill(quillRef.current, {
         theme: "snow",
         modules: {
@@ -107,7 +116,6 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
                   this.quill.format("code-block", !format["code-block"]);
                 }
               },
-              // === aqui somente foi ajustado o handler de "image" ===
               image: function (this: { quill: Quill }) {
                 const range = this.quill.getSelection();
                 const input = document.createElement("input");
@@ -122,25 +130,20 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
 
                   const reader = new FileReader();
                   reader.onload = () => {
-                    // garante que o editor está em foco
                     this.quill.focus();
                     const rangeToInsert = range || {
                       index: this.quill.getLength(),
                       length: 0,
                     };
-                    // insere a imagem com fonte "user"
                     this.quill.insertEmbed(
                       rangeToInsert.index,
                       "image",
                       reader.result,
                       "user",
                     );
-                    // posiciona o cursor logo após
                     this.quill.setSelection(rangeToInsert.index + 1, 0, "user");
                   };
                   reader.readAsDataURL(file);
-
-                  // remove o input do DOM após uso
                   document.body.removeChild(input);
                 });
 
@@ -152,6 +155,11 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
         placeholder: "",
       });
 
+      // Load initial content from Delta
+      if (value && value.ops) {
+        editorRef.current.setContents(value);
+      }
+
       const updatePlaceholder = () => {
         const editor = quillRef.current?.querySelector(".ql-editor");
         const textLength = editorRef.current?.getText().trim().length;
@@ -162,7 +170,12 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
         }
       };
 
-      editorRef.current.on("text-change", updatePlaceholder);
+      editorRef.current.on("text-change", () => {
+        updatePlaceholder();
+        const delta = editorRef.current!.getContents();
+        onChange(delta);
+      });
+
       editorRef.current.on("selection-change", (range) => {
         if (range == null) {
           updatePlaceholder();
@@ -170,7 +183,7 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
       });
       updatePlaceholder();
 
-      // Customize toolbar icons
+      // Customize toolbar icons - BLACK MAGIC STAYS INTACT!
       setTimeout(() => {
         const toolbarContainer = document.getElementById(toolbarId.current)!;
         const replaceIcon = (selector: string, newIcon: string) => {
@@ -207,17 +220,17 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
         );
       }, 100);
     }
-  }, []);
+  }, [value, onChange]);
 
   const handleAddTag = (tag: string) => {
-    if (!selectedTags.includes(tag)) {
-      setSelectedTags([tag, ...selectedTags]);
+    if (!tags.includes(tag)) {
+      onTagsChange([tag, ...tags]);
     }
     setDropdownOpen(false);
   };
 
   const handleRemoveTag = (tag: string) => {
-    setSelectedTags(selectedTags.filter((t) => t !== tag));
+    onTagsChange(tags.filter((t) => t !== tag));
   };
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
@@ -227,8 +240,7 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
       const dropdown = document.querySelector(
         ".tags-dropdown",
       ) as HTMLElement | null;
-      const container = dropdown?.parentElement as HTMLElement | null;
-      if (!dropdown || !container) return;
+      if (!dropdown) return;
       const dropdownRect = dropdown.getBoundingClientRect();
       const viewportWidth = window.innerWidth;
       dropdown.style.left = "";
@@ -253,6 +265,7 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
     };
   }, [dropdownOpen]);
 
+  // MORE BLACK MAGIC - STAYS INTACT!
   useEffect(() => {
     const btn = document.querySelector(
       `#${toolbarId.current} .ql-image`,
@@ -260,8 +273,7 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
     if (!btn) return;
 
     const onCaptureClick = (e: MouseEvent) => {
-      e.preventDefault(); // impede o handler padrão
-      // cria input e abre o picker dentro do evento de usuário
+      e.preventDefault();
       const input = document.createElement("input");
       input.type = "file";
       input.accept = "image/*";
@@ -289,38 +301,13 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
       input.click();
     };
 
-    // listener em captura, antes do Quill
     btn.addEventListener("click", onCaptureClick, { capture: true });
     return () =>
       btn.removeEventListener("click", onCaptureClick, { capture: true });
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const editorContent = editorRef.current?.root.innerHTML || "";
-    console.log("Conteúdo enviado:", editorContent);
-    console.log("Tags selecionadas:", selectedTags);
-  };
-
   return (
     <div className="postWriter-container">
-      <div className="submitArea">
-        {layout === "blog" && (
-          <div className="submitButtons">
-            <button>
-              <img src={favoriteBadge} alt="botão para favoritar" />
-            </button>
-            <CustomButton
-              text="Postar"
-              padding="10px 100px"
-              color="white"
-              backgroundColor="#3348A4"
-              fontSize="18px"
-              fontWeight="500"
-            />
-          </div>
-        )}
-      </div>
       <div id={toolbarId.current} className="custom-toolbar">
         <span className="ql-formats">
           {window.innerWidth > 1200 ? (
@@ -402,64 +389,58 @@ export const PostWriter: React.FC<IPostWriter> = ({ layout }) => {
         </span>
       </div>
 
-      <form onSubmit={handleSubmit} className="editor-form">
+      <div className="editor-form">
         <div className="editor-container">
-          {layout === "blog" && (
-            <>
-              <textarea
-                placeholder="Título"
-                className="editor-title"
-                onInput={(e) => {
-                  e.currentTarget.style.height = "auto";
-                  e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+          <textarea
+            placeholder="Título"
+            className="editor-title"
+            value={title}
+            onChange={(e) => onTitleChange(e.target.value)}
+            onInput={(e) => {
+              e.currentTarget.style.height = "auto";
+              e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+            }}
+          />
+          <div className="editor-tags">
+            {tags.length > 0 && (
+              <div className="tags-container">
+                <TagList tags={tags} onTagRemove={handleRemoveTag} />
+              </div>
+            )}
+            <div className="tags-button-wrapper">
+              <button
+                className="tags-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleDropdown();
                 }}
-              />
-              <div className="editor-tags">
-                {selectedTags.length > 0 && (
-                  <div className="tags-container">
-                    <TagList
-                      tags={selectedTags}
-                      onTagRemove={handleRemoveTag}
-                    />
-                  </div>
-                )}
-                <div className="tags-button-wrapper">
-                  <button
-                    className="tags-button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleDropdown();
-                    }}
-                  >
-                    {selectedTags.length === 0 ? "Adicione tags +" : "+"}
-                  </button>
-                  {dropdownOpen && (
-                    <div className="tags-dropdown">
-                      {allTags.filter((tag) => !selectedTags.includes(tag))
-                        .length === 0 ? (
-                        <span>There are no tags left.</span>
-                      ) : (
-                        allTags
-                          .filter((tag) => !selectedTags.includes(tag))
-                          .map((tag, index) => (
-                            <button
-                              key={index}
-                              className="dropdown-tag-item"
-                              onClick={() => handleAddTag(tag)}
-                            >
-                              {tag}
-                            </button>
-                          ))
-                      )}
-                    </div>
+              >
+                {tags.length === 0 ? "Adicione tags +" : "+"}
+              </button>
+              {dropdownOpen && (
+                <div className="tags-dropdown">
+                  {allTags.filter((tag) => !tags.includes(tag)).length === 0 ? (
+                    <span>There are no tags left.</span>
+                  ) : (
+                    allTags
+                      .filter((tag) => !tags.includes(tag))
+                      .map((tag, index) => (
+                        <button
+                          key={index}
+                          className="dropdown-tag-item"
+                          onClick={() => handleAddTag(tag)}
+                        >
+                          {tag}
+                        </button>
+                      ))
                   )}
                 </div>
-              </div>
-            </>
-          )}
+              )}
+            </div>
+          </div>
           <div ref={quillRef} className="editor-area"></div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
