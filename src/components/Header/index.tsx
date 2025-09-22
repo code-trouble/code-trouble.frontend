@@ -121,7 +121,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
               aria-expanded={userMenuOpen}
               onClick={() => setUserMenuOpen((v) => !v)}
             >
-              <Avatar src={currentUser?.avatarUrl as string} sizes="medium" />
+              <Avatar src={currentUser?.avatar_url as string} sizes="medium" />
             </button>
             <img className="NotificationBell" src={Notifications} />
             {userMenuOpen && (
@@ -190,7 +190,7 @@ export const Header: React.FC<IHeader> = ({ theme }) => {
                   <div className="BurgerloggedInContent">
                     <Avatar
                       sizes="medium"
-                      src={currentUser?.avatarUrl as string}
+                      src={currentUser?.avatar_url as string}
                     />
                     <div className="burgerLoggedText">
                       <h1>{currentUser.display_name}</h1>

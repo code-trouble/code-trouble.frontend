@@ -26,8 +26,8 @@ export const AppRoutes = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/test" element={<TestingPage />} />
         <Route path="/reset-password" element={<PassResetHandler />} />
-        <Route path="/questions" element={protect(<Questions />)} />
-        <Route path="/questions/:id" element={protect(<OpenQuestion />)} />
+        <Route path="/questions" element={<Questions />} />
+        <Route path="/questions/:id" element={<OpenQuestion />} />
         <Route path="/ask-a-question" element={protect(<AskAQuestion />)} />
         <Route path="/onboarding" element={protect(<Onboarding />)} />
         <Route path="/:username" element={protect(<ProfilePage />)} />
@@ -35,7 +35,7 @@ export const AppRoutes = () => {
 
       <Route element={<BlogLayout />}>
         <Route path="/write-a-post" element={protect(<WriteAPost />)} />
-        <Route path="/blog" element={protect(<Blog />)} />
+        <Route path="/blog" element={<Blog />} />
       </Route>
 
       <Route path="coming-soon" element={<ComingSoonPage />} />

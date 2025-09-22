@@ -87,7 +87,7 @@ export const ProfileImages: React.FC = () => {
 
   const displayBanner =
     bannerPreview || currentUser?.banner_url || pfpPageBanner;
-  const displayPfp = avatarPreview || currentUser?.avatarUrl || fulanoPfp;
+  const displayPfp = avatarPreview || currentUser?.avatar_url || fulanoPfp;
 
   return (
     <div className="banner-pfp">

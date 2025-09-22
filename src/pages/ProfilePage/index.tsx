@@ -17,6 +17,9 @@ export const ProfilePage: React.FC = () => {
     isLoadingProfile,
     fetchUserProfile,
     clearProfileUser,
+    isFollowingUser,
+    unfollowUser,
+    followUser,
   } = useUserStore();
 
   const [isTagsPopupOpen, setIsTagsPopupOpen] = useState(false);
@@ -25,6 +28,15 @@ export const ProfilePage: React.FC = () => {
   const isOwnProfile = currentUser?.username === username;
 
   const displayUser = isOwnProfile ? currentUser : profileUser;
+
+  const handleFollow = () => {
+    if (displayUser) {
+      isFollowing ? unfollowUser(displayUser.id) : followUser(displayUser.id);
+    }
+  };
+
+  const isFollowing =
+    displayUser && !isOwnProfile ? isFollowingUser(displayUser.id) : false;
 
   useEffect(() => {
     if (!username) return;
@@ -111,8 +123,8 @@ export const ProfilePage: React.FC = () => {
             <div className="avatarDisplay">
               <img
                 src={
-                  displayUser.avatarUrl
-                    ? (displayUser.avatarUrl as string)
+                  displayUser.avatar_url
+                    ? (displayUser.avatar_url as string)
                     : profileAvatar
                 }
                 alt="foto de perfil"
@@ -137,10 +149,9 @@ export const ProfilePage: React.FC = () => {
                 backgroundColor="#15181B"
                 color="#fff"
                 padding="8px 78px"
-                text="Seguir"
+                text={isFollowing ? "Seguindo" : "Seguir"}
                 onClick={() => {
-                  // TODO: Implementar lógica de seguir
-                  console.log(`Seguir ${displayUser.username}`);
+                  handleFollow();
                 }}
               />
             )}
