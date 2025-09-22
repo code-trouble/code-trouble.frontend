@@ -13,25 +13,33 @@ import threeDotMenu from "../../assets/images/svg/3dotsMenu.svg";
 import { Avatar } from "../../components/Avatar";
 import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
-import { useQuestionStore } from "../../stores/questionStore";
 import { OpenQuestionSkeleton } from "../../skeletons/OpenQuestionSkeleton";
 
-// Import a syntax highlighting theme if you want it for code blocks
 import "highlight.js/styles/github-dark.css";
 import hljs from "highlight.js";
+import { useUserStore } from "../../stores/userStore";
+import { usePostStore } from "../../stores/postStore";
+import { usePostActions } from "../../hooks/usePostActions";
 
 export const OpenQuestion: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const {
     currentQuestion: question,
-    isLoading,
+    isLoadingPosts,
     error,
+    isPostOwner,
     fetchQuestionsById,
-  } = useQuestionStore();
+  } = usePostStore();
+
+  const { isFollowingUser, currentUser, followUser, unfollowUser } =
+    useUserStore();
+
+  const { handleDelete, handleEdit } = usePostActions();
 
   const [answer, setAnswer] = useState("");
   const [answers] = useState<any[]>([]);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -42,12 +50,12 @@ export const OpenQuestion: React.FC = () => {
   }, [id, fetchQuestionsById, navigate]);
 
   useEffect(() => {
-    if (!isLoading && question) {
+    if (!isLoadingPosts && question) {
       document.querySelectorAll("pre").forEach((block) => {
         hljs.highlightElement(block as HTMLElement);
       });
     }
-  }, [question, isLoading]);
+  }, [question, isLoadingPosts]);
 
   const purifyConfig: PurifyConfig = {
     USE_PROFILES: { html: true },
@@ -69,7 +77,19 @@ export const OpenQuestion: React.FC = () => {
     setAnswer("");
   };
 
-  if (isLoading) {
+  const onDelete = () => {
+    if (!question) return;
+    handleDelete(question?.id, "/questions");
+    setShowMenu(false);
+  };
+
+  const onEdit = () => {
+    if (!question) return;
+    handleEdit(question);
+    setShowMenu(false);
+  };
+
+  if (isLoadingPosts) {
     return <OpenQuestionSkeleton />;
   }
 
@@ -94,6 +114,15 @@ export const OpenQuestion: React.FC = () => {
   const cleanDetails = detailsHtml
     ? DOMPurify.sanitize(detailsHtml, purifyConfig)
     : "";
+
+  const questionAuthor = question.author.id;
+
+  const isFollowing = isFollowingUser(questionAuthor);
+  const handleFollow = () => {
+    if (question.author.id) {
+      isFollowing ? unfollowUser(questionAuthor) : followUser(questionAuthor);
+    }
+  };
 
   return (
     <div className="open-question-container">
@@ -133,7 +162,61 @@ export const OpenQuestion: React.FC = () => {
           </div>
           <div className="favoritesNoptions">
             <img src={addToFavorite} alt="add to favorites" />
-            <img src={threeDotMenu} alt="menu with 3 dots" />
+            {isPostOwner(question, currentUser?.id) && (
+              <div style={{ position: "relative" }}>
+                <img
+                  src={threeDotMenu}
+                  alt="menu with 3 dots"
+                  onClick={() => setShowMenu(!showMenu)}
+                  style={{ cursor: "pointer" }}
+                />
+                {showMenu && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      top: "100%",
+                      background: "white",
+                      border: "1px solid #ccc",
+                      borderRadius: "4px",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                      zIndex: 1000,
+                      minWidth: "120px",
+                    }}
+                  >
+                    <button
+                      onClick={onEdit}
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        padding: "8px 16px",
+                        border: "none",
+                        background: "none",
+                        textAlign: "left",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={onDelete}
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        padding: "8px 16px",
+                        border: "none",
+                        background: "none",
+                        textAlign: "left",
+                        cursor: "pointer",
+                        color: "red",
+                      }}
+                    >
+                      Deletar
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
         <div className="questionCreator">
@@ -143,12 +226,20 @@ export const OpenQuestion: React.FC = () => {
               sizes="large"
               name={question.author.username}
               role=""
-              src={question.author.avatarUrl}
+              src={question.author.avatar_url}
               onClick={() => navigate(`/${question.author.username}`)}
             />
             <div className="followButton">
-              <span className="dot" />
-              <p>Seguir</p>
+              {question.author.id == currentUser?.id ? (
+                ""
+              ) : (
+                <>
+                  <span className="dot" />
+                  <p onClick={() => handleFollow()}>
+                    {isFollowing ? "Seguindo" : "Seguir"}
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>
