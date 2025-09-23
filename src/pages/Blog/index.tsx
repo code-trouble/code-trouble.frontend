@@ -117,14 +117,14 @@ export const Blog: React.FC = () => {
               <a href="#">UI</a>
             </div>
 
-            {/* Error states */}
-            {articlesError && (
+            {articlesError && articlesLoading ? (
               <div style={{ color: "red", padding: "1rem" }}>
                 {articlesError}
               </div>
+            ) : (
+              ""
             )}
 
-            {/* Loading state */}
             {articlesLoading ? (
               <div style={{ padding: "2rem", textAlign: "center" }}>
                 Carregando artigos...

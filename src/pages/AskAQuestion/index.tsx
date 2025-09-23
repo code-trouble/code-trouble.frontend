@@ -28,6 +28,12 @@ export const AskAQuestion: React.FC = () => {
   const [details, setDetails] = useState({});
   const [tags, setTags] = useState<string[]>([]);
 
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, [reset]);
+
   function navigateTo(path: string) {
     window.scrollTo(0, 0);
     navigate(path);
@@ -52,23 +58,19 @@ export const AskAQuestion: React.FC = () => {
     };
 
     try {
-      setStoreTitle(title);
-      setBody(combinedBody);
-      setKind("question");
-
       let result;
       if (isEditMode && editingPostId) {
-        // Update existing post
         result = await updatePost(editingPostId, {
           title,
           body: combinedBody,
         });
       } else {
-        // Create new post
+        setStoreTitle(title);
+        setBody(combinedBody);
+        setKind("question");
         result = await createPost();
       }
 
-      // Reset form and store
       setTitle("");
       setDescription({});
       setDetails({});
@@ -82,7 +84,6 @@ export const AskAQuestion: React.FC = () => {
   }
 
   function handleDiscard() {
-    // Reset form state
     setTitle("");
     setDescription({});
     setDetails({});

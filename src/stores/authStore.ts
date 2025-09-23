@@ -27,10 +27,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true, error: null });
 
     try {
-      const response = await api.post("/auth/login", data);
-      const user = response.data.user;
+      await api.post("/auth/login", data);
 
-      (await import("./userStore")).useUserStore.getState().setUser(user);
+      await useUserStore.getState().fetchCurrentUser();
     } catch (err: any) {
       const message =
         err.response?.data?.message || "Email ou senha inválidos.";

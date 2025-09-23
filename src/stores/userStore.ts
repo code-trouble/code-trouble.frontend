@@ -18,12 +18,14 @@ export const useUserStore = create<UserState>((set, get) => ({
     try {
       const response = await api.get<User>("/users/me");
       set({ currentUser: response.data, isInitializing: false });
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.isHandledError) {
+        return;
+      }
+
       set({ currentUser: null, isInitializing: false });
-      throw error;
     }
   },
-
   isFollowingUser: (userId: number) => get().followingUsers.has(userId),
 
   followUser: async (userId: number) => {
