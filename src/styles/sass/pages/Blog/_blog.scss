@@ -35,7 +35,8 @@
       .blog-list {
         display: flex;
         flex-direction: column;
-        gap: 60px;
+        margin-top: 30px;
+        gap: 30px;
       }
 
       @media (max-width: 400px) {
@@ -106,7 +107,7 @@
     }
 
     .right-side {
-      padding: 65px 0px;
+      padding: 65px 40px;
       width: 35%;
       display: flex;
       flex-direction: column;
@@ -212,6 +213,7 @@
 
       .blog-area {
         padding: 30px 30px;
+        width: 100%;
 
         .blog-title {
           position: relative;
@@ -270,8 +272,8 @@
         .blog-title {
           position: relative;
           align-items: center;
-          padding-top: 30px;
-          padding-bottom: 40px;
+          padding-top: 10px;
+          padding-bottom: 10px;
           h1 {
             font-size: 24px !important;
           }
@@ -297,7 +299,7 @@
         }
 
         .blog-list {
-          margin-top: 60px;
+          margin-top: 10px;
         }
       }
 
