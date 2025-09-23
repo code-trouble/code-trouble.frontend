@@ -20,6 +20,12 @@ export const WriteAPost: React.FC = () => {
   const [content, setContent] = useState({});
   const [tags, setTags] = useState<string[]>([]);
 
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, [reset]);
+
   function navigateTo(path: string) {
     window.scrollTo(0, 0);
     navigate(path);
