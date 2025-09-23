@@ -97,7 +97,6 @@ export const OpenQuestion: React.FC = () => {
     return (
       <div className="open-question-container">
         <div style={{ textAlign: "center", padding: "2rem" }}>
-          <p style={{ color: "red" }}>{error || "Pergunta não encontrada"}</p>
           <button onClick={() => navigate("/questions")}>
             Voltar para perguntas
           </button>

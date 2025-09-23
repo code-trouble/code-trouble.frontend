@@ -121,7 +121,7 @@ export const Questions: React.FC = () => {
               <a href="#">Mês</a>
             </div>
             <div className="questions-list">
-              {questions.length === 0 ? (
+              {questions.length === 0 && isLoadingPosts ? (
                 <div style={{ textAlign: "center", padding: "2rem" }}>
                   Nenhuma pergunta encontrada.
                 </div>
