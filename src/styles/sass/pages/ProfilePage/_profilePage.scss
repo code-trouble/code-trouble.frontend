@@ -3,7 +3,7 @@
 .profile-page-wrapper {
   width: 100%;
   min-height: 100vh;
-  img {
+  > img {
     position: absolute;
     width: 100%;
     height: 193px;
@@ -24,15 +24,12 @@
       flex-direction: column;
       width: 237px;
       p {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
       }
 
       span {
-        padding: 5px;
-        background-color: $frenchGray;
-        width: fit-content;
-        border-radius: 8px;
-        font-family: $hindFont;
+        border-radius: 4px;
+        margin-bottom: 10px;
       }
 
       .avatarDisplay {
@@ -79,6 +76,20 @@
       }
     }
 
+    .followersInfo {
+      display: flex;
+      gap: 15px;
+      font-size: 16px;
+      font-family: $montserratFont;
+      font-weight: 400;
+      color: $dimGray;
+
+      .count {
+        display: flex;
+        gap: 5px;
+      }
+    }
+
     .userActions {
       display: flex;
       flex-direction: column;
@@ -112,6 +123,72 @@
 
       .userActions {
         align-self: flex-end;
+      }
+    }
+  }
+
+  .user-posts-display {
+    padding: 40px 60px;
+    @media (max-width: 650px) {
+      padding: 18px 30px;
+    }
+    @media (max-width: 450px) {
+      padding: 35px 0px;
+
+      .posts-display-header {
+        padding: 0px 15px;
+      }
+    }
+
+    .posts-display-header {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      margin-bottom: 35px;
+      p {
+        font-size: 24px;
+        font-family: $loraItalicFont;
+      }
+
+      .filter-select-wrapper {
+        position: relative;
+        width: 254px;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          right: 15px;
+          transform: translateY(-50%);
+
+          background-image: var(--arrow-icon);
+          background-repeat: no-repeat;
+          background-position: center;
+
+          width: 10px;
+          height: 6px;
+
+          pointer-events: none;
+        }
+      }
+      .filter-select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+
+        width: 100%;
+        padding: 10px 30px 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+
+        &:focus {
+          outline: none;
+          border-color: $dimGray;
+          box-shadow: 0 0 0 2px rgba(51, 72, 164, 0.2);
+        }
       }
     }
   }

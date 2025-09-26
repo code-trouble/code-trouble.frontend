@@ -6,6 +6,7 @@
   font-family: $hindFont;
   display: flex;
   align-items: center;
+  gap: 5px;
 
   .custom-button:hover {
     transform: scale(1.05);
