@@ -25,7 +25,7 @@ export const SignIn: React.FC<SignInProps> = ({ onForgot }) => {
       closeModal();
     } catch (err: any) {
       console.log(err);
-      toast.error(err.message || "Ocorreu um erro desconhecido");
+      toast.error("Verifique suas credenciais e tente novamente.");
     }
   };
 

@@ -4,14 +4,17 @@ import comments from "../../assets/images/svg/icons/blueComment.svg";
 import heart from "../../assets/images/svg/icons/blueHeart.svg";
 import favorite from "../../assets/images/svg/icons/favoriteBlog.svg";
 import dogImage from "../../assets/images/png/dogImage.png";
+import { Post } from "../../types/postTypes";
 
 interface IBlogPostPreview {
+  article: Post;
   blogPostTitle: string;
   blogPostDescription: string;
   image?: boolean;
 }
 
 export const BlogPostPreview: React.FC<IBlogPostPreview> = ({
+  article,
   blogPostTitle,
   blogPostDescription,
   image,
@@ -20,14 +23,18 @@ export const BlogPostPreview: React.FC<IBlogPostPreview> = ({
     <div className="outer-post-wrapper">
       <div className="post-wrapper">
         <div className="post-content">
-          <Avatar name="Joana Lima" sizes="medium" />
+          <Avatar
+            name={article.author.display_name}
+            sizes="medium"
+            src={article.author.avatar_url}
+          />
           <h1 className="blog-post-title">{blogPostTitle}</h1>
           <p className="blog-post-description">{blogPostDescription}</p>
           <div className="blog-post-footer">
             <div className="main-footer">
               <span>10 Nov, 2024</span>
               <p>
-                <img src={heart} alt="like icon" /> 120k
+                <img src={heart} alt="like icon" /> {article.likeCount || 0}
               </p>
               <p>
                 <img src={comments} alt="comments icon" /> 302
