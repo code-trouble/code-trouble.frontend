@@ -1,7 +1,7 @@
 export interface Post {
   id: number;
-  title: string; // Remove the optional - both articles and questions have titles
-  body: any; // This should handle both Quill content and { description, details, tags }
+  title: string;
+  body: any;
   kind: "article" | "question" | "answer";
   created_at: string;
   updated_at?: string;
@@ -43,13 +43,10 @@ export interface PostState {
   success: boolean;
   isEditMode: boolean;
   editingPostId: number | null;
+  isLiking: boolean;
 
-  posts: Post[];
-  articles: Post[];
-  questions: Post[];
+  postList: Post[];
   currentPost: Post | null;
-  currentQuestion: Post | null;
-  currentArticle: Post | null;
   isLoadingPosts: boolean;
   pagination: PostPagination | null;
 
@@ -60,31 +57,9 @@ export interface PostState {
   createPost: () => Promise<Post>;
   updatePost: (id: number, data: Partial<Post>) => Promise<Post>;
   deletePost: (id: number) => Promise<void>;
-
   fetchAllPosts: (filters?: PostFilters) => Promise<void>;
-  fetchAllArticles: () => Promise<void>;
-  fetchAllQuestions: () => Promise<void>;
   fetchPostById: (id: string) => Promise<Post>;
-  fetchArticleById: (id: string) => Promise<Post>;
-  fetchQuestionsById: (id: string) => Promise<Post>;
-
+  toggleLike: (postId: number) => Promise<any>;
   loadPostForEdit: (post: Post) => void;
   isPostOwner: (post: Post, currentUserId?: number) => boolean;
-}
-
-export interface Question {
-  id: number;
-  title: string;
-  body: {
-    description: any;
-    details: any;
-    tags: string[];
-  };
-  kind: string;
-  created_at: string;
-  author: {
-    id: number;
-    username: string;
-    avatar_url: string;
-  };
 }

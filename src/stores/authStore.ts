@@ -33,7 +33,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch (err: any) {
       const message =
         err.response?.data?.message || "Email ou senha inválidos.";
-      set({ error: message });
+      set({ error: "Email ou senha inválidos." });
       throw new Error(message);
     } finally {
       set({ isLoading: false });

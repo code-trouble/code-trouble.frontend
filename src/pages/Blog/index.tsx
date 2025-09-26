@@ -15,20 +15,24 @@ export const Blog: React.FC = () => {
   const itemsPerPage = 10;
 
   const navigate = useNavigate();
-
-  const {
-    articles,
-    isLoadingPosts: articlesLoading,
-    error: articlesError,
-    fetchAllArticles,
-  } = usePostStore();
-
   const {
     tags,
     isLoading: tagsLoading,
     error: tagsError,
     fetchTags,
   } = useTagStore();
+
+  const {
+    postList: articles,
+    isLoadingPosts: articlesLoading,
+    error: articlesError,
+    fetchAllPosts,
+  } = usePostStore();
+
+  useEffect(() => {
+    fetchAllPosts({ kind: "article" });
+    fetchTags();
+  }, [fetchAllPosts, fetchTags]);
 
   const totalPages = Math.ceil(articles.length / itemsPerPage);
   const displayedPosts = articles.slice(
@@ -44,11 +48,6 @@ export const Blog: React.FC = () => {
     window.scrollTo(0, 0);
     navigate(path);
   }
-
-  useEffect(() => {
-    fetchAllArticles();
-    fetchTags();
-  }, [fetchAllArticles, fetchTags]);
 
   const TOPICS_LIMIT = 5;
   const displayedTags = showAllTopics
@@ -135,6 +134,7 @@ export const Blog: React.FC = () => {
                   {displayedPosts.length > 0 ? (
                     displayedPosts.map((article) => (
                       <BlogPostPreview
+                        article={article}
                         key={article.id}
                         blogPostTitle={article.title || "untitled"}
                         blogPostDescription={getArticleDescription(

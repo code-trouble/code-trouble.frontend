@@ -1,5 +1,6 @@
 interface ICustomButton {
   text?: string;
+  children?: React.ReactNode;
   padding?: string;
   color?: string;
   borderRadius?: string;
@@ -16,6 +17,7 @@ interface ICustomButton {
 
 export const CustomButton: React.FC<ICustomButton> = ({
   text,
+  children,
   padding,
   color,
   borderRadius,
@@ -48,6 +50,7 @@ export const CustomButton: React.FC<ICustomButton> = ({
     >
       {text}
       {icon && <img src={icon} alt="generic icon for a button" />}
+      {children}
     </button>
   );
 };

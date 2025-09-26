@@ -7,33 +7,41 @@ import "quill/dist/quill.snow.css";
 import { TagList } from "../../components/Tag";
 import { formatDate } from "../../utils/formatDate";
 import comments from "../../assets/images/svg/greenComments.svg";
-import upvotes from "../../assets/images/svg/greenUpvote.svg";
 import addToFavorite from "../../assets/images/svg/addToFavorite.svg";
 import threeDotMenu from "../../assets/images/svg/3dotsMenu.svg";
 import { Avatar } from "../../components/Avatar";
 import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
 import { OpenQuestionSkeleton } from "../../skeletons/OpenQuestionSkeleton";
+import { ClipLoader } from "react-spinners";
 
 import "highlight.js/styles/github-dark.css";
 import hljs from "highlight.js";
 import { useUserStore } from "../../stores/userStore";
 import { usePostStore } from "../../stores/postStore";
 import { usePostActions } from "../../hooks/usePostActions";
+import { upvote } from "../../assets/images/png";
 
 export const OpenQuestion: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const {
-    currentQuestion: question,
+    currentPost: question,
     isLoadingPosts,
     error,
     isPostOwner,
-    fetchQuestionsById,
+    fetchPostById: fetchQuestionsById,
+    toggleLike,
+    isLiking,
   } = usePostStore();
 
-  const { isFollowingUser, currentUser, followUser, unfollowUser } =
-    useUserStore();
+  const {
+    isFollowingUser,
+    currentUser,
+    followUser,
+    unfollowUser,
+    isUpdatingFollowStatus,
+  } = useUserStore();
 
   const { handleDelete, handleEdit } = usePostActions();
 
@@ -105,6 +113,14 @@ export const OpenQuestion: React.FC = () => {
     );
   }
 
+  const handleLikeClick = async (postId: number) => {
+    try {
+      await toggleLike(postId);
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
+  };
+
   const tags = question.body.tags || [];
   const descriptionHtml = convertDelta(question.body.description);
   const detailsHtml = convertDelta(question.body.details);
@@ -123,6 +139,8 @@ export const OpenQuestion: React.FC = () => {
     }
   };
 
+  const isLoadingFollow = isUpdatingFollowStatus(questionAuthor || 0);
+
   return (
     <div className="open-question-container">
       <div className="open-question-inner-container">
@@ -133,11 +151,9 @@ export const OpenQuestion: React.FC = () => {
             {formatDate(question.created_at)}
           </p>
         </div>
-        {tags.length > 0 && (
-          <div className="tagList-area">
-            <TagList tags={tags} />
-          </div>
-        )}
+        <div className="tagList-area">
+          {tags.length > 0 ? <TagList tags={tags} /> : <code> (sem tags)</code>}
+        </div>
         <div className="question-description ql-container ql-snow">
           <div className="ql-editor">{parse(cleanDesc)}</div>
         </div>
@@ -150,13 +166,23 @@ export const OpenQuestion: React.FC = () => {
         )}
         <div className="bottomGroupDiv">
           <div className="commentsNlikes">
-            <p>
-              <img src={upvotes} alt="upvotes" />
-              120k
-            </p>
+            <button
+              disabled={isLiking}
+              onClick={() => {
+                handleLikeClick(question.id);
+              }}
+              className="like-button"
+            >
+              <img
+                src={upvote}
+                alt="upvotes"
+                className={question.isLikedByUser ? "liked" : ""}
+              />
+              <p>{question.likeCount}</p>
+            </button>
             <p>
               <img src={comments} alt="comments" />
-              {answers.length}
+              {answers.length || 0}
             </p>
           </div>
           <div className="favoritesNoptions">
@@ -234,8 +260,17 @@ export const OpenQuestion: React.FC = () => {
               ) : (
                 <>
                   <span className="dot" />
-                  <p onClick={() => handleFollow()}>
-                    {isFollowing ? "Seguindo" : "Seguir"}
+                  <p
+                    onClick={!isLoadingFollow ? handleFollow : undefined}
+                    style={{ cursor: isLoadingFollow ? "default" : "pointer" }}
+                  >
+                    {isLoadingFollow ? (
+                      <ClipLoader color="#2DBA4F" size={15} />
+                    ) : isFollowing ? (
+                      "Seguindo"
+                    ) : (
+                      "Seguir"
+                    )}
                   </p>
                 </>
               )}

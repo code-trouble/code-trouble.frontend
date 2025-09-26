@@ -16,13 +16,17 @@ export const Questions: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showAllTopics, setShowAllTopics] = useState(false);
-  const { questions, isLoadingPosts, error, fetchAllQuestions } =
-    usePostStore();
+  const {
+    postList: questions,
+    isLoadingPosts,
+    error,
+    fetchAllPosts,
+  } = usePostStore();
   const { tags } = useTagStore();
 
   useEffect(() => {
-    fetchAllQuestions();
-  }, [fetchAllQuestions]);
+    fetchAllPosts({ kind: "question" });
+  }, [fetchAllPosts]);
 
   const TOPICS_LIMIT = 5;
   const displayedTags = showAllTopics

@@ -29,7 +29,6 @@
       font-family: $hindFont;
       font-size: 16px;
       line-height: 20%;
-      margin-bottom: 30px;
 
       .mutedCriado {
         color: $dimGray;
@@ -42,6 +41,9 @@
     padding: 20px 0px;
     border-top: 1px solid $dimGray;
     border-bottom: 1px solid $dimGray;
+    min-height: 74px;
+    display: flex;
+    align-items: center;
   }
 
   .question-description,
@@ -104,6 +106,16 @@
       display: flex;
       gap: 15px;
 
+      .like-button img {
+        transition: transform 0.3s ease;
+        transform: rotate(180deg);
+      }
+
+      .like-button img.liked {
+        transform: rotate(360deg);
+      }
+
+      button,
       p {
         font-family: $hindFont;
         font-size: 20px;

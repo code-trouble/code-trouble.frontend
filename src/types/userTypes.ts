@@ -27,6 +27,14 @@ export interface User {
   } | null;
 
   user_interests: UserInterest[];
+
+  following?: { followed_user_id: number }[];
+
+  _count?: {
+    posts: number;
+    followers: number;
+    following: number;
+  };
 }
 
 export type UpdateProfileData = Partial<{
@@ -48,6 +56,10 @@ export interface UserState {
   isInitializing: boolean;
   profileUser: User | null;
   isLoadingProfile: boolean;
+
+  updatingFollowStatus: Set<number>;
+  isUpdatingFollowStatus: (userId: number) => boolean;
+
   fetchCurrentUser: () => Promise<void>;
   updateProfile: (data: UpdateProfileData) => Promise<void>;
   updateUserInterests: (tagIds: number[]) => Promise<void>;
