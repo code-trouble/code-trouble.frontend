@@ -34,3 +34,4 @@ export { default as TrackConfirm } from "./trackConfirm.svg";
 export { default as TrackThree } from "./trackThree.svg";
 export { default as TrackTwo } from "./trackTwo.svg";
 export { default as XIcon } from "./xIcon.svg";
+export { default as filterDropdownArrow } from "./filterDropdownArrow.svg";
