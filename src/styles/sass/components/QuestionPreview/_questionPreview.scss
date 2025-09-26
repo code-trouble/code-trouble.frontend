@@ -37,7 +37,8 @@
     &:hover {
       transform: scale(0.9);
     }
-    .previewQuestion-comments {
+    .previewQuestion-comments,
+    .previewQuestion-likes {
       display: flex;
       align-items: center;
       gap: 2px;
