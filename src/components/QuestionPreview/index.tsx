@@ -5,6 +5,7 @@ import { useDisableTabInside } from "../../hooks/useDisableTabInside";
 import { formatDate } from "../../utils/formatDate";
 import { TagSearcher } from "../TagSearcher";
 import { Post } from "../../types/postTypes";
+import { GreenUpvote } from "../../assets/images/svg";
 
 interface IQuestionsPreview {
   question: Post;
@@ -59,8 +60,12 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
             src={question.author.avatar_url}
             role={formatDate(question.created_at)}
           />
+          <div className="previewQuestion-likes">
+            <p>{question.likeCount}</p>
+            <img src={GreenUpvote} alt="ícone de comentário" />
+          </div>
           <div className="previewQuestion-comments">
-            <p>0</p>
+            <p>{question.commentCount || 0}</p>
             <img src={comments} alt="ícone de comentário" />
           </div>
         </div>
