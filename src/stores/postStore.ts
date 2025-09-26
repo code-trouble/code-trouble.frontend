@@ -17,14 +17,11 @@ const initialCreationState = {
 
 export const usePostStore = create<PostState>((set, get) => ({
   ...initialCreationState,
-  posts: [],
-  articles: [],
-  questions: [],
+  postList: [],
   currentPost: null,
   isLoadingPosts: false,
   pagination: null,
-  currentQuestion: null,
-  currentArticle: null,
+  isLiking: false,
 
   setTitle: (title) => set({ title }),
   setBody: (body) => set({ body }),
@@ -56,23 +53,20 @@ export const usePostStore = create<PostState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await api.put(`/posts/${id}`, data);
-      set({ isLoading: false, success: true });
-
       const updatedPost = response.data;
+
       set((state) => ({
-        posts: state.posts.map((p) => (p.id === id ? updatedPost : p)),
-        articles: state.articles.map((p) => (p.id === id ? updatedPost : p)),
-        questions: state.questions.map((p) => (p.id === id ? updatedPost : p)),
+        postList: state.postList.map((p) => (p.id === id ? updatedPost : p)),
         currentPost:
           state.currentPost?.id === id ? updatedPost : state.currentPost,
+        isLoading: false,
+        success: true,
       }));
 
       return updatedPost;
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response?.status === 401) {
         useAuthModalStore.getState().openModal("signIn");
-        set({ isLoading: false });
-        return;
       }
       const message = err.response?.data?.message || "Erro ao atualizar post";
       set({ isLoading: false, error: message });
@@ -83,11 +77,8 @@ export const usePostStore = create<PostState>((set, get) => ({
   deletePost: async (id: number) => {
     try {
       await api.delete(`/posts/${id}`);
-
       set((state) => ({
-        posts: state.posts.filter((p) => p.id !== id),
-        articles: state.articles.filter((p) => p.id !== id),
-        questions: state.questions.filter((p) => p.id !== id),
+        postList: state.postList.filter((p) => p.id !== id),
         currentPost: state.currentPost?.id === id ? null : state.currentPost,
       }));
     } catch (err: any) {
@@ -113,41 +104,12 @@ export const usePostStore = create<PostState>((set, get) => ({
 
       const response = await api.get(`/posts?${params.toString()}`);
       set({
-        posts: response.data.data,
+        postList: response.data.data,
         pagination: response.data.pagination,
         isLoadingPosts: false,
       });
     } catch (err: any) {
       const message = err.response?.data?.message || "Erro ao buscar posts";
-      set({ isLoadingPosts: false, error: message });
-      throw err;
-    }
-  },
-
-  fetchAllArticles: async () => {
-    set({ isLoadingPosts: true, error: null });
-    try {
-      const response = await api.get("/posts", { params: { kind: "article" } });
-      const articles = response.data.data || response.data;
-      set({ articles, isLoadingPosts: false });
-    } catch (err: any) {
-      const message = err.response?.data?.message || "Erro ao buscar artigos.";
-      set({ isLoadingPosts: false, error: message });
-      throw err;
-    }
-  },
-
-  fetchAllQuestions: async () => {
-    set({ isLoadingPosts: true, error: null });
-    try {
-      const response = await api.get("/posts", {
-        params: { kind: "question" },
-      });
-      const questions = response.data.data || response.data;
-      set({ questions, isLoadingPosts: false });
-    } catch (err: any) {
-      const message =
-        err.response?.data?.message || "Erro ao buscar perguntas.";
       set({ isLoadingPosts: false, error: message });
       throw err;
     }
@@ -159,8 +121,6 @@ export const usePostStore = create<PostState>((set, get) => ({
       const response = await api.get(`/posts/${id}`);
       set({
         currentPost: response.data,
-        currentQuestion: response.data,
-        currentArticle: response.data,
         isLoadingPosts: false,
       });
       return response.data;
@@ -171,8 +131,40 @@ export const usePostStore = create<PostState>((set, get) => ({
     }
   },
 
-  fetchArticleById: async (id: string) => get().fetchPostById(id),
-  fetchQuestionsById: async (id: string) => get().fetchPostById(id),
+  toggleLike: async (postId: number) => {
+    if (get().isLiking) return;
+
+    set({ isLiking: true });
+    try {
+      const response = await api.post(`/posts/${postId}/like`);
+      const { liked, likeCount } = response.data;
+
+      set((state) => ({
+        postList: state.postList.map((post) =>
+          post.id === postId
+            ? { ...post, likeCount: likeCount, isLikedByUser: liked }
+            : post,
+        ),
+        currentPost:
+          state.currentPost?.id === postId
+            ? {
+                ...state.currentPost,
+                likeCount: likeCount,
+                isLikedByUser: liked,
+              }
+            : state.currentPost,
+      }));
+
+      return response.data;
+    } catch (err: any) {
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+        useAuthModalStore.getState().openModal("signIn");
+      }
+      throw err;
+    } finally {
+      set({ isLiking: false });
+    }
+  },
 
   loadPostForEdit: (post: Post) => {
     set({
