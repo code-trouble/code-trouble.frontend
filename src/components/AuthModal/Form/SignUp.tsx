@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SignUpFormData, signUpSchema } from "../../../schema/authSchema";
 import { useAuthStore } from "../../../stores/authStore";
@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { SingUpProps } from "../../../types/authTypes";
 import { useNavigate } from "react-router-dom";
 import { useAuthModalStore } from "../../../stores/authModalStore";
+import { Eye, EyeOff } from "lucide-react";
 
 export const SignUp: React.FC<SingUpProps> = () => {
   const { signUp, signIn, isLoading, error: authError } = useAuthStore();
@@ -19,6 +20,11 @@ export const SignUp: React.FC<SingUpProps> = () => {
   } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
   });
+  const [visible, setVisible] = useState(false);
+  const [capsLock, setCapsLock] = useState(false);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setCapsLock(e.getModifierState("CapsLock"));
+  };
 
   const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
     try {
@@ -67,13 +73,30 @@ export const SignUp: React.FC<SingUpProps> = () => {
         </section>
         <section>
           <label htmlFor="password">Senha</label>
-          <input
-            type="password"
-            id="password"
-            {...register("password")}
-            placeholder="***********"
-            disabled={isLoading}
-          />
+
+          <div className="password-input-wrapper">
+            <input
+              className="password-input"
+              type={visible ? "text" : "password"}
+              id="password"
+              {...register("password")}
+              placeholder="***********"
+              disabled={isLoading}
+              onKeyDown={handleKeyDown}
+              onBlur={() => setCapsLock(false)}
+            />
+            <button
+              type="button"
+              className="toggle-password-visibility"
+              onClick={() => setVisible((v) => !v)}
+              aria-label={visible ? "Esconder senha" : "Mostrar senha"}
+            >
+              {visible ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+          {capsLock && (
+            <div className="capslock-indicator">Caps Lock ativado</div>
+          )}
           {errors.password && (
             <p className="error-message">{errors.password.message}</p>
           )}
