@@ -143,7 +143,6 @@ export const ProfilePage: React.FC = () => {
   const hiddenUserTags = userInterestTags.slice(maxVisibleTags);
   const remainingUserCount = hiddenUserTags.length;
 
-  console.log("Posts do usuário:", postList);
   return (
     <>
       <div className="profile-page-wrapper">
