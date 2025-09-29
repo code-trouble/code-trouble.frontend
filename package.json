@@ -25,6 +25,7 @@
     "framer-motion": "^11.11.9",
     "highlight.js": "^11.11.1",
     "html-react-parser": "^5.2.5",
+    "lucide-react": "^0.544.0",
     "quill": "^2.0.2",
     "quill-delta": "^5.1.0",
     "quill-delta-to-html": "^0.12.1",
@@ -58,7 +59,7 @@
     "lighthouse": "^12.2.1",
     "prettier": "^3.6.2",
     "typescript": "^5.5.3",
-    "vite": "^5.4.8",
+    "vite": "^7.1.7",
     "vite-plugin-compression": "^0.5.1"
   }
 }
