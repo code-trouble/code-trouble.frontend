@@ -11,12 +11,4 @@ export default defineConfig({
       disable: false,
     }),
   ],
-
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: "modern-compiler",
-      },
-    },
-  },
 });
