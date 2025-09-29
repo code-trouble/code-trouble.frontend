@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { SignInProps } from "../../../types/authTypes";
 import { useAuthModalStore } from "../../../stores/authModalStore";
 import { ClipLoader } from "react-spinners";
-import { Eye, EyeOff } from "lucide-react";
+import { eyeOff, eyeOn } from "../../../assets/images/svg";
 
 export const SignIn: React.FC<SignInProps> = ({ onForgot }) => {
   const { signIn, isLoading, error: authError } = useAuthStore();
@@ -75,7 +75,11 @@ export const SignIn: React.FC<SignInProps> = ({ onForgot }) => {
               onClick={() => setVisible((v) => !v)}
               aria-label={visible ? "Esconder senha" : "Mostrar senha"}
             >
-              {visible ? <EyeOff size={18} /> : <Eye size={18} />}
+              {visible ? (
+                <img src={eyeOff} alt="" />
+              ) : (
+                <img src={eyeOn} alt="" />
+              )}
             </button>
           </div>
 

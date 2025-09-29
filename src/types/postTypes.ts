@@ -55,6 +55,7 @@ export interface PostState {
   setKind: (kind: "article" | "question" | "answer") => void;
   reset: () => void;
   createPost: () => Promise<Post>;
+  clearPosts: () => void;
   updatePost: (id: number, data: Partial<Post>) => Promise<Post>;
   deletePost: (id: number) => Promise<void>;
   fetchAllPosts: (filters?: PostFilters) => Promise<void>;

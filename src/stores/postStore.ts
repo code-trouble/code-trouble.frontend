@@ -27,6 +27,7 @@ export const usePostStore = create<PostState>((set, get) => ({
   setBody: (body) => set({ body }),
   setKind: (kind) => set({ kind }),
   reset: () => set({ ...initialCreationState }),
+  clearPosts: () => set({ postList: [], currentPost: null }),
 
   createPost: async () => {
     const { title, body, kind } = get();

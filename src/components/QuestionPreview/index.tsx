@@ -1,11 +1,10 @@
 import React, { useRef } from "react";
 import { Avatar } from "../Avatar";
-import comments from "../../assets/images/svg/comments.svg";
 import { useDisableTabInside } from "../../hooks/useDisableTabInside";
 import { formatDate } from "../../utils/formatDate";
 import { TagSearcher } from "../TagSearcher";
 import { Post } from "../../types/postTypes";
-import { GreenUpvote } from "../../assets/images/svg";
+import { GreenComments, GreenUpvote } from "../../assets/images/svg";
 
 interface IQuestionsPreview {
   question: Post;
@@ -66,7 +65,7 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
           </div>
           <div className="previewQuestion-comments">
             <p>{question.commentCount || 0}</p>
-            <img src={comments} alt="ícone de comentário" />
+            <img src={GreenComments} alt="ícone de comentário" />
           </div>
         </div>
         <div>
