@@ -6,12 +6,15 @@ import favorite from "../../assets/images/svg/icons/favoriteBlog.svg";
 import dogImage from "../../assets/images/png/dogImage.png";
 import { Post } from "../../types/postTypes";
 import { formatDate } from "../../utils/formatDate";
+import { GreenUpvote } from "../../assets/images/svg";
 
 interface PostPreviewProps {
   post: Post;
   postTitle: string;
   postDescription: string;
   image?: boolean;
+  onClick?: () => void;
+  kind?: "article" | "question" | "answer";
 }
 
 export const PostPreview: React.FC<PostPreviewProps> = ({
@@ -19,10 +22,12 @@ export const PostPreview: React.FC<PostPreviewProps> = ({
   postTitle,
   postDescription,
   image,
+  onClick,
+  kind,
 }) => {
   const formattedDate = formatDate(post.created_at);
   return (
-    <div className="post-preview-container">
+    <div className="post-preview-container" onClick={onClick}>
       <div className="post-preview">
         <div className="post-preview-content">
           <Avatar
@@ -36,11 +41,17 @@ export const PostPreview: React.FC<PostPreviewProps> = ({
             <div className="footer-stats">
               <span>{formattedDate}</span>
               <p>
-                <img src={heart} alt="like icon" /> {post.likeCount || 0}
+                {kind === "question" ? (
+                  <img src={GreenUpvote} alt="" />
+                ) : (
+                  <img src={heart} alt="like icon" />
+                )}{" "}
+                {post.likeCount || 0}
               </p>
               <p>
                 <img src={comments} alt="comments icon" /> 0
               </p>
+              <code style={{ paddingLeft: "20px" }}>({kind})</code>
             </div>
             <div className="footer-actions">
               <img src={favorite} alt="favorite icon" />
@@ -57,7 +68,12 @@ export const PostPreview: React.FC<PostPreviewProps> = ({
         <div className="footer-stats">
           <span>{formattedDate}</span>
           <p>
-            <img src={heart} alt="like icon" /> {post.likeCount || 0}
+            {kind === "question" ? (
+              <img src={GreenUpvote} alt="" />
+            ) : (
+              <img src={heart} alt="like icon" />
+            )}{" "}
+            {post.likeCount || 0}
           </p>
           <p>
             <img src={comments} alt="comments icon" /> 0

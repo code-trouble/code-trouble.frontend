@@ -16,7 +16,10 @@ type PostKindFilter = "article" | "question" | "answer" | "";
 export const ProfilePage: React.FC = () => {
   const { username } = useParams<{ username: string }>();
   const navigate = useNavigate();
-
+  function navigateTo(path: string) {
+    window.scrollTo(0, 0);
+    navigate(path);
+  }
   const {
     currentUser,
     profileUser,
@@ -32,7 +35,8 @@ export const ProfilePage: React.FC = () => {
   const [isTagsPopupOpen, setIsTagsPopupOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [filtro, setFiltro] = useState<PostKindFilter>("");
-  const { postList, fetchAllPosts, isLoadingPosts } = usePostStore();
+  const { postList, fetchAllPosts, isLoadingPosts, clearPosts } =
+    usePostStore();
 
   const isOwnProfile = currentUser?.username === username;
 
@@ -74,6 +78,7 @@ export const ProfilePage: React.FC = () => {
   useEffect(() => {
     return () => {
       clearProfileUser();
+      clearPosts();
     };
   }, [clearProfileUser]);
 
@@ -273,14 +278,26 @@ export const ProfilePage: React.FC = () => {
             {isLoadingPosts ? (
               <ClipLoader color="#15181B" size={50} />
             ) : postList.length > 0 ? (
-              postList.map((post) => (
-                <PostPreview
-                  key={post.id}
-                  post={post}
-                  postTitle={post.title}
-                  postDescription={getPostDescription(post.body)}
-                />
-              ))
+              postList.map((post) =>
+                post.kind === "question" ? (
+                  <PostPreview
+                    key={post.id}
+                    post={post}
+                    postTitle={post.title}
+                    postDescription={getPostDescription(post.body)}
+                    kind={post.kind}
+                    onClick={() => navigateTo(`/questions/${post.id}`)}
+                  />
+                ) : (
+                  <PostPreview
+                    key={post.id}
+                    post={post}
+                    postTitle={post.title}
+                    postDescription={getPostDescription(post.body)}
+                    kind={post.kind}
+                  />
+                ),
+              )
             ) : (
               <p>Nenhum post encontrado para este filtro.</p>
             )}

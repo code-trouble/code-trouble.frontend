@@ -33,7 +33,7 @@
   .previewQuestion-avatar-area {
     display: flex;
     gap: 15px;
-    align-items: center;
+    align-items: baseline;
     &:hover {
       transform: scale(0.9);
     }
@@ -48,6 +48,12 @@
         font-weight: 400;
         font-family: $montserratFont;
         color: $dimGray;
+      }
+
+      img {
+        color: #ffff;
+        width: 18px;
+        height: 18px;
       }
     }
 

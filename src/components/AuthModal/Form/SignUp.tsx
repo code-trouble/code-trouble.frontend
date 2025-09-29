@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { SingUpProps } from "../../../types/authTypes";
 import { useNavigate } from "react-router-dom";
 import { useAuthModalStore } from "../../../stores/authModalStore";
-import { Eye, EyeOff } from "lucide-react";
+import { eyeOff, eyeOn } from "../../../assets/images/svg";
 
 export const SignUp: React.FC<SingUpProps> = () => {
   const { signUp, signIn, isLoading, error: authError } = useAuthStore();
@@ -91,7 +91,11 @@ export const SignUp: React.FC<SingUpProps> = () => {
               onClick={() => setVisible((v) => !v)}
               aria-label={visible ? "Esconder senha" : "Mostrar senha"}
             >
-              {visible ? <EyeOff size={18} /> : <Eye size={18} />}
+              {visible ? (
+                <img src={eyeOff} alt="" />
+              ) : (
+                <img src={eyeOn} alt="" />
+              )}{" "}
             </button>
           </div>
           {capsLock && (

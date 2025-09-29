@@ -1,6 +1,7 @@
 @use "../../base/variables" as *;
 
 .post-preview-container {
+  cursor: pointer;
   .post-preview-mobile-footer {
     display: none;
   }
