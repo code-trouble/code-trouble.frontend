@@ -6,11 +6,23 @@ export const usePostActions = () => {
   const { deletePost, loadPostForEdit } = usePostStore();
   const navigate = useNavigate();
 
-  const handleDelete = async (postId: number, redirectPath: string = "/") => {
+  const handleDelete = async (
+    postId: number,
+    options?: {
+      redirectPath?: string;
+      onSuccess?: () => void;
+    },
+  ) => {
     if (window.confirm("Tem certeza que deseja deletar este post?")) {
       try {
         await deletePost(postId);
-        navigate(redirectPath);
+
+        if (options?.onSuccess) {
+          options.onSuccess();
+        } else if (options?.redirectPath) {
+          navigate(options.redirectPath);
+        }
+
         return true;
       } catch (error) {
         console.error("Erro ao deletar:", error);
@@ -19,7 +31,6 @@ export const usePostActions = () => {
     }
     return null;
   };
-
   const handleEdit = (post: Post, editPath?: string) => {
     loadPostForEdit(post);
 
