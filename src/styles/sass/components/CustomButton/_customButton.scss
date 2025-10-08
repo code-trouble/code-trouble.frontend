@@ -6,7 +6,11 @@
   font-family: $hindFont;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 15px;
+
+  .custom-button:disabled {
+    background-color: gray;
+  }
 
   .custom-button:hover {
     transform: scale(1.05);
