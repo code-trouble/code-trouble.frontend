@@ -102,6 +102,9 @@ export const ProfilePage: React.FC = () => {
     }
     return "Sem descrição disponível";
   };
+
+  const displayedPosts = postList.filter((post) => post.kind !== "answer");
+
   if (!username) {
     return <div>URL inválida</div>;
   }
@@ -277,7 +280,7 @@ export const ProfilePage: React.FC = () => {
             {isLoadingPosts ? (
               <ClipLoader color="#15181B" size={50} />
             ) : postList.length > 0 ? (
-              postList.map((post) =>
+              displayedPosts.map((post) =>
                 post.kind === "question" ? (
                   <PostPreview
                     key={post.id}
