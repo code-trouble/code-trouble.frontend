@@ -9,6 +9,7 @@ const initialCreationState = {
   body: {},
   kind: "question" as const,
   isLoading: false,
+  isLoadingAnswer: false,
   error: null,
   success: false,
   isEditMode: false,
@@ -19,7 +20,7 @@ export const usePostStore = create<PostState>((set, get) => ({
   ...initialCreationState,
   postList: [],
   currentPost: null,
-  isLoadingPosts: false,
+  isLoadingPosts: true,
   pagination: null,
   isLiking: false,
 
@@ -29,29 +30,48 @@ export const usePostStore = create<PostState>((set, get) => ({
   reset: () => set({ ...initialCreationState }),
   clearPosts: () => set({ postList: [], currentPost: null }),
 
-  createPost: async () => {
-    const { title, body, kind } = get();
-    set({ isLoading: true, error: null, success: false });
+  createPost: async (overrides?: {
+    kind?: "question" | "article" | "answer";
+    title?: string;
+    body?: any;
+    parent_id?: number;
+  }) => {
+    const state = get();
+
+    const postData = {
+      kind: overrides?.kind ?? state.kind,
+      title: overrides?.title ?? state.title,
+      body: overrides?.body ?? state.body,
+      parent_id: overrides?.parent_id,
+    };
+
+    const isAnswer = postData.kind === "answer";
+    const loadingKey = isAnswer ? "isLoadingAnswer" : "isLoading";
+
+    set({ [loadingKey]: true, error: null, success: false });
 
     try {
-      const postData = { kind, title, body };
       const response = await api.post("/posts", postData);
-      set({ isLoading: false, success: true });
+      set({ [loadingKey]: false, success: true });
       return response.data;
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response?.status === 401) {
         useAuthModalStore.getState().openModal("signIn");
-        set({ isLoading: false });
+        set({ [loadingKey]: false });
         return;
       }
       const message = err.response?.data?.message || "Erro ao criar post";
-      set({ isLoading: false, error: message });
+      set({ [loadingKey]: false, error: message });
       throw err;
     }
   },
 
   updatePost: async (id: number, data: Partial<Post>) => {
-    set({ isLoading: true, error: null });
+    const isAnswer = data.kind === "answer";
+    const loadingKey = isAnswer ? "isLoadingAnswer" : "isLoading";
+
+    set({ [loadingKey]: true, error: null });
+
     try {
       const response = await api.put(`/posts/${id}`, data);
       const updatedPost = response.data;
@@ -60,7 +80,15 @@ export const usePostStore = create<PostState>((set, get) => ({
         postList: state.postList.map((p) => (p.id === id ? updatedPost : p)),
         currentPost:
           state.currentPost?.id === id ? updatedPost : state.currentPost,
-        isLoading: false,
+        ...(state.currentPost?.answers && {
+          currentPost: {
+            ...state.currentPost,
+            answers: state.currentPost.answers.map((a) =>
+              a.id === id ? updatedPost : a,
+            ),
+          },
+        }),
+        [loadingKey]: false,
         success: true,
       }));
 
@@ -70,7 +98,7 @@ export const usePostStore = create<PostState>((set, get) => ({
         useAuthModalStore.getState().openModal("signIn");
       }
       const message = err.response?.data?.message || "Erro ao atualizar post";
-      set({ isLoading: false, error: message });
+      set({ [loadingKey]: false, error: message });
       throw err;
     }
   },
@@ -78,9 +106,16 @@ export const usePostStore = create<PostState>((set, get) => ({
   deletePost: async (id: number) => {
     try {
       await api.delete(`/posts/${id}`);
+
       set((state) => ({
         postList: state.postList.filter((p) => p.id !== id),
         currentPost: state.currentPost?.id === id ? null : state.currentPost,
+        ...(state.currentPost?.answers && {
+          currentPost: {
+            ...state.currentPost,
+            answers: state.currentPost.answers.filter((a) => a.id !== id),
+          },
+        }),
       }));
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response?.status === 401) {
@@ -117,9 +152,15 @@ export const usePostStore = create<PostState>((set, get) => ({
   },
 
   fetchPostById: async (id: string) => {
+    const postId = Number(id);
+    if (isNaN(postId)) {
+      set({ isLoadingPosts: false, error: "ID de post inválido." });
+      return;
+    }
+
     set({ isLoadingPosts: true, error: null, currentPost: null });
     try {
-      const response = await api.get(`/posts/${id}`);
+      const response = await api.get(`/posts/${postId}`);
       set({
         currentPost: response.data,
         isLoadingPosts: false,
@@ -181,5 +222,40 @@ export const usePostStore = create<PostState>((set, get) => ({
 
   isPostOwner: (post: Post, currentUserId?: number) => {
     return currentUserId ? post.author_id === currentUserId : false;
+  },
+
+  createAnswer: async (questionId: number, body: any) => {
+    return get().createPost({
+      kind: "answer",
+      body: body,
+      parent_id: questionId,
+    });
+  },
+
+  acceptAnswer: async (questionId: number, answerId: number) => {
+    try {
+      await api.post(`/posts/${questionId}/accept-answer/${answerId}`);
+
+      set((state) => {
+        if (state.currentPost?.id === questionId && state.currentPost.answers) {
+          return {
+            currentPost: {
+              ...state.currentPost,
+              acceptedAnswerId: answerId,
+              answers: state.currentPost.answers.map((a) => ({
+                ...a,
+                isAccepted: a.id === answerId,
+              })),
+            },
+          };
+        }
+        return state;
+      });
+    } catch (err: any) {
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+        useAuthModalStore.getState().openModal("signIn");
+      }
+      throw err;
+    }
   },
 }));
