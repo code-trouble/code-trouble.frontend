@@ -64,7 +64,7 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
             <img src={GreenUpvote} alt="ícone de comentário" />
           </div>
           <div className="previewQuestion-comments">
-            <p>{question.commentCount || 0}</p>
+            <p>{question.answerCount || 0}</p>
             <img src={GreenComments} alt="ícone de comentário" />
           </div>
         </div>

@@ -49,7 +49,8 @@ export const PostPreview: React.FC<PostPreviewProps> = ({
                 {post.likeCount || 0}
               </p>
               <p>
-                <img src={comments} alt="comments icon" /> 0
+                <img src={comments} alt="comments icon" />{" "}
+                {post.commentCount || 0}
               </p>
               <code style={{ paddingLeft: "20px" }}>({kind})</code>
             </div>
@@ -76,7 +77,7 @@ export const PostPreview: React.FC<PostPreviewProps> = ({
             {post.likeCount || 0}
           </p>
           <p>
-            <img src={comments} alt="comments icon" /> 0
+            <img src={comments} alt="comments icon" /> {post.commentCount || 0}
           </p>
         </div>
         <div className="footer-actions">
