@@ -15,8 +15,13 @@ export interface Post {
   };
   commentCount?: number;
   likeCount?: number;
+  answerCount?: number;
   isLikedByUser?: boolean;
   tags?: { id: number; name: string }[];
+
+  answers?: Post[];
+  acceptedAnswerId?: number;
+  isAccepted?: boolean;
 }
 
 export interface PostFilters {
@@ -48,14 +53,22 @@ export interface PostState {
   postList: Post[];
   currentPost: Post | null;
   isLoadingPosts: boolean;
+  isLoadingAnswer: boolean;
   pagination: PostPagination | null;
 
   setTitle: (title: string) => void;
   setBody: (body: any) => void;
   setKind: (kind: "article" | "question" | "answer") => void;
   reset: () => void;
-  createPost: () => Promise<Post>;
   clearPosts: () => void;
+
+  createPost: (overrides?: {
+    kind?: "question" | "article" | "answer";
+    title?: string;
+    body?: any;
+    parent_id?: number;
+  }) => Promise<Post>;
+
   updatePost: (id: number, data: Partial<Post>) => Promise<Post>;
   deletePost: (id: number) => Promise<void>;
   fetchAllPosts: (filters?: PostFilters) => Promise<void>;
@@ -63,4 +76,7 @@ export interface PostState {
   toggleLike: (postId: number) => Promise<any>;
   loadPostForEdit: (post: Post) => void;
   isPostOwner: (post: Post, currentUserId?: number) => boolean;
+
+  createAnswer: (questionId: number, body: any) => Promise<Post>;
+  acceptAnswer: (questionId: number, answerId: number) => Promise<void>;
 }

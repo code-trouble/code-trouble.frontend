@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
 import correa from "../../assets/images/svg/mascote sp 1.svg";
 import { TagSelector } from "../../components/TagSelector";
 import { usePostStore } from "../../stores/postStore";
+import { TextEditor } from "../../components/Editor";
 
 export const AskAQuestion: React.FC = () => {
   const navigate = useNavigate();
@@ -156,11 +156,16 @@ export const AskAQuestion: React.FC = () => {
               Introduza o problema e desenvolva o que você colocou no título.
               Mínimo de 20 caracteres.
             </p>
-            <AltPostWriter
+            {/* <AltPostWriter
               isEditMode={isEditMode}
               value={description}
               onChange={setDescription}
-            />
+            /> */}
+            <TextEditor
+              isEditMode={isEditMode}
+              value={description}
+              onChange={setDescription}
+            />{" "}
           </div>
           <div className="question-details">
             <h6>
@@ -171,11 +176,16 @@ export const AskAQuestion: React.FC = () => {
               realmente aconteceu (como o erro, por exemplo). Mínimo de 20
               caracteres.
             </p>
-            <AltPostWriter
+            {/* <AltPostWriter
               isEditMode={isEditMode}
               value={details}
               onChange={setDetails}
-            />
+            /> */}
+            <TextEditor
+              isEditMode={isEditMode}
+              value={details}
+              onChange={setDetails}
+            />{" "}
           </div>
           <div className="message-box second-box">
             <h1>Revise antes de postar</h1>

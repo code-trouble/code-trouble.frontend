@@ -89,7 +89,6 @@ export const AltPostWriter: React.FC<IAltPostWriter> = ({
             },
           },
         },
-        placeholder: isEditMode ? "" : "Escreva seu texto...",
       });
 
       editorRef.current.on("text-change", (_delta, _oldDelta, source) => {
