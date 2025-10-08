@@ -5,6 +5,7 @@ import heart from "../../assets/images/svg/icons/blueHeart.svg";
 import favorite from "../../assets/images/svg/icons/favoriteBlog.svg";
 import dogImage from "../../assets/images/png/dogImage.png";
 import { Post } from "../../types/postTypes";
+import { formatDate } from "../../utils/formatDate";
 
 interface IBlogPostPreview {
   article: Post;
@@ -32,12 +33,13 @@ export const BlogPostPreview: React.FC<IBlogPostPreview> = ({
           <p className="blog-post-description">{blogPostDescription}</p>
           <div className="blog-post-footer">
             <div className="main-footer">
-              <span>10 Nov, 2024</span>
+              <span>{formatDate(article.created_at)}</span>
               <p>
                 <img src={heart} alt="like icon" /> {article.likeCount || 0}
               </p>
               <p>
-                <img src={comments} alt="comments icon" /> 302
+                <img src={comments} alt="comments icon" />{" "}
+                {article.commentCount || 0}
               </p>
             </div>
             <div className="sub-footer">
