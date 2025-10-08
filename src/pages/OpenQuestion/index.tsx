@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
 import DOMPurify, { Config as PurifyConfig } from "dompurify";
@@ -10,7 +10,6 @@ import comments from "../../assets/images/svg/greenComments.svg";
 import addToFavorite from "../../assets/images/svg/addToFavorite.svg";
 import threeDotMenu from "../../assets/images/svg/3dotsMenu.svg";
 import { Avatar } from "../../components/Avatar";
-import { AltPostWriter } from "../../components/AltPostWriter";
 import CustomButton from "../../components/CustomButton";
 import { OpenQuestionSkeleton } from "../../skeletons/OpenQuestionSkeleton";
 import { ClipLoader } from "react-spinners";
@@ -21,6 +20,9 @@ import { useUserStore } from "../../stores/userStore";
 import { usePostStore } from "../../stores/postStore";
 import { usePostActions } from "../../hooks/usePostActions";
 import { upvote } from "../../assets/images/png";
+import { TextEditor } from "../../components/Editor";
+import { AnswerCard } from "../../components/AnswerCard";
+import { Post } from "../../types/postTypes";
 
 export const OpenQuestion: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,9 +32,12 @@ export const OpenQuestion: React.FC = () => {
     isLoadingPosts,
     error,
     isPostOwner,
-    fetchPostById: fetchQuestionsById,
+    fetchPostById,
     toggleLike,
     isLiking,
+    createAnswer,
+    deletePost,
+    updatePost,
   } = usePostStore();
 
   const {
@@ -45,17 +50,29 @@ export const OpenQuestion: React.FC = () => {
 
   const { handleDelete, handleEdit } = usePostActions();
 
-  const [answer, setAnswer] = useState("");
-  const [answers] = useState<any[]>([]);
-  const [showMenu, setShowMenu] = useState(false);
+  // Estados separados para nova resposta e edição
+  const [newAnswer, setNewAnswer] = useState<{ ops: any[] }>({ ops: [] });
+  const [editingAnswer, setEditingAnswer] = useState<Post | null>(null);
+  const [editedAnswerBody, setEditedAnswerBody] = useState<{ ops: any[] }>({
+    ops: [],
+  });
 
-  useEffect(() => {
+  const [showMenu, setShowMenu] = useState(false);
+  const [isPostingAnswer, setIsPostingAnswer] = useState(false);
+  const [isUpdatingAnswer, setIsUpdatingAnswer] = useState(false);
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  const fetchPost = useCallback(async () => {
     if (id) {
-      fetchQuestionsById(id);
+      await fetchPostById(id);
     } else {
       navigate("/questions");
     }
-  }, [id, fetchQuestionsById, navigate]);
+  }, [id, navigate]);
+
+  useEffect(() => {
+    fetchPost();
+  }, [fetchPost]);
 
   useEffect(() => {
     if (!isLoadingPosts && question) {
@@ -79,29 +96,57 @@ export const OpenQuestion: React.FC = () => {
     return converter.convert();
   };
 
-  const handlePostAnswer = (e: React.FormEvent) => {
+  const handlePostNewAnswer = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Answer posting not implemented yet:", answer);
-    setAnswer("");
+
+    if (!question?.id) return;
+    if (!newAnswer?.ops?.length) {
+      alert("Digite algo antes de postar!");
+      return;
+    }
+
+    try {
+      setIsPostingAnswer(true);
+
+      const answerToSend = newAnswer;
+      await createAnswer(question.id, answerToSend);
+
+      setNewAnswer({ ops: [] });
+
+      editorRef.current?.scrollIntoView({ behavior: "smooth" });
+      await fetchPost();
+    } catch (err) {
+      console.error("Erro ao postar resposta:", err);
+    } finally {
+      setIsPostingAnswer(false);
+    }
   };
 
-  const onDelete = () => {
-    if (!question) return;
-    handleDelete(question?.id, "/questions");
-    setShowMenu(false);
+  const handleUpdateAnswer = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingAnswer || !editedAnswerBody?.ops?.length) return;
+
+    try {
+      setIsUpdatingAnswer(true);
+
+      const bodyToSend = editedAnswerBody;
+      await updatePost(editingAnswer.id, { body: bodyToSend });
+
+      // Reseta o estado só depois de concluir
+      setEditingAnswer(null);
+      setEditedAnswerBody({ ops: [] });
+
+      await fetchPost();
+    } catch (err) {
+      console.error("Erro ao atualizar resposta:", err);
+    } finally {
+      setIsUpdatingAnswer(false);
+    }
   };
 
-  const onEdit = () => {
-    if (!question) return;
-    handleEdit(question);
-    setShowMenu(false);
-  };
+  if (isLoadingPosts) return <OpenQuestionSkeleton />;
 
-  if (isLoadingPosts) {
-    return <OpenQuestionSkeleton />;
-  }
-
-  if (error || !question) {
+  if (error || !question)
     return (
       <div className="open-question-container">
         <div style={{ textAlign: "center", padding: "2rem" }}>
@@ -111,39 +156,51 @@ export const OpenQuestion: React.FC = () => {
         </div>
       </div>
     );
-  }
 
   const handleLikeClick = async (postId: number) => {
     try {
       await toggleLike(postId);
-    } catch (error) {
-      console.error("Error toggling like:", error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const tags = question.body.tags || [];
-  const descriptionHtml = convertDelta(question.body.description);
-  const detailsHtml = convertDelta(question.body.details);
+  const tags = question.body?.tags || [];
+  const descriptionHtml = convertDelta(question.body?.description);
+  const detailsHtml = convertDelta(question.body?.details);
 
   const cleanDesc = DOMPurify.sanitize(descriptionHtml, purifyConfig);
   const cleanDetails = detailsHtml
     ? DOMPurify.sanitize(detailsHtml, purifyConfig)
     : "";
 
-  const questionAuthor = question.author.id;
-
+  const questionAuthor = question.author?.id;
   const isFollowing = isFollowingUser(questionAuthor);
   const handleFollow = () => {
     if (question.author.id) {
       isFollowing ? unfollowUser(questionAuthor) : followUser(questionAuthor);
     }
   };
-
   const isLoadingFollow = isUpdatingFollowStatus(questionAuthor || 0);
+
+  const answers = question?.answers || [];
+
+  const handleEditAnswerClick = (ans: Post) => {
+    setEditingAnswer(ans);
+    setEditedAnswerBody(ans.body);
+    setTimeout(() => {
+      editorRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingAnswer(null);
+  };
 
   return (
     <div className="open-question-container">
       <div className="open-question-inner-container">
+        {/* Question title */}
         <div className="title-wrapper">
           <h1>{question.title}</h1>
           <p>
@@ -151,12 +208,18 @@ export const OpenQuestion: React.FC = () => {
             {formatDate(question.created_at)}
           </p>
         </div>
+
+        {/* Tags */}
         <div className="tagList-area">
-          {tags.length > 0 ? <TagList tags={tags} /> : <code> (sem tags)</code>}
+          {tags.length > 0 ? <TagList tags={tags} /> : <code>(sem tags)</code>}
         </div>
+
+        {/* Description */}
         <div className="question-description ql-container ql-snow">
           <div className="ql-editor">{parse(cleanDesc)}</div>
         </div>
+
+        {/* Details */}
         {cleanDetails && (
           <section>
             <div className="open-question-details ql-container ql-snow">
@@ -164,13 +227,13 @@ export const OpenQuestion: React.FC = () => {
             </div>
           </section>
         )}
+
+        {/* Likes & comments */}
         <div className="bottomGroupDiv">
           <div className="commentsNlikes">
             <button
               disabled={isLiking}
-              onClick={() => {
-                handleLikeClick(question.id);
-              }}
+              onClick={() => handleLikeClick(question.id)}
               className="like-button"
             >
               <img
@@ -185,6 +248,7 @@ export const OpenQuestion: React.FC = () => {
               {answers.length || 0}
             </p>
           </div>
+
           <div className="favoritesNoptions">
             <img src={addToFavorite} alt="add to favorites" />
             {isPostOwner(question, currentUser?.id) && (
@@ -210,7 +274,7 @@ export const OpenQuestion: React.FC = () => {
                     }}
                   >
                     <button
-                      onClick={onEdit}
+                      onClick={() => handleEdit(question)}
                       style={{
                         display: "block",
                         width: "100%",
@@ -224,7 +288,11 @@ export const OpenQuestion: React.FC = () => {
                       Editar
                     </button>
                     <button
-                      onClick={onDelete}
+                      onClick={() =>
+                        handleDelete(question.id, {
+                          redirectPath: "/questions",
+                        })
+                      }
                       style={{
                         display: "block",
                         width: "100%",
@@ -244,6 +312,8 @@ export const OpenQuestion: React.FC = () => {
             )}
           </div>
         </div>
+
+        {/* Question author */}
         <div className="questionCreator">
           <p>Criador(a) da pergunta</p>
           <div className="followUser">
@@ -255,9 +325,7 @@ export const OpenQuestion: React.FC = () => {
               onClick={() => navigate(`/${question.author.username}`)}
             />
             <div className="followButton">
-              {question.author.id == currentUser?.id ? (
-                ""
-              ) : (
+              {question.author.id === currentUser?.id ? null : (
                 <>
                   <span className="dot" />
                   <p
@@ -277,6 +345,8 @@ export const OpenQuestion: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Answers */}
         <div className="answersArea">
           <div className="upperAnswers">
             <p>
@@ -293,6 +363,7 @@ export const OpenQuestion: React.FC = () => {
               </div>
             </div>
           </div>
+
           {answers.length === 0 ? (
             <div className="answerDisplayBlock">
               <div className="answerUserArea">
@@ -306,42 +377,102 @@ export const OpenQuestion: React.FC = () => {
               </div>
             </div>
           ) : (
-            answers.map((ans) => (
-              <div key={ans.id} className="answerDisplayBlock">
-                <div className="answerUserArea">
-                  <Avatar sizes="large" name="Olivia Ryes" />
-                  <p>
-                    <span className="mutedCriado">
-                      Criado
-                      <br /> {formatDate(ans.createdAt)}
-                    </span>
-                  </p>
-                </div>
-                <div className="answerText">
-                  <div className="ql-container ql-snow">
-                    <div className="ql-editor">
-                      {parse(
-                        DOMPurify.sanitize(ans.text, purifyConfig) as string,
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))
+            [...answers]
+              .sort((a, b) => (a.isAccepted ? -1 : b.isAccepted ? 1 : 0))
+              .map((ans) => (
+                <AnswerCard
+                  key={ans.id}
+                  answer={ans}
+                  currentUserId={currentUser?.id ?? null}
+                  onEdit={() => handleEditAnswerClick(ans)}
+                  onDelete={async (id) => {
+                    if (
+                      window.confirm(
+                        "Tem certeza que deseja deletar esta resposta?",
+                      )
+                    ) {
+                      await deletePost(id);
+                      await fetchPost();
+                    }
+                  }}
+                />
+              ))
           )}
-          <form className="answerForm" onSubmit={handlePostAnswer}>
-            <h1>Responder</h1>
-            <AltPostWriter onChange={setAnswer} value={answer} />
-            <CustomButton
-              type="submit"
-              text="Poste sua resposta"
-              padding="10px 24px"
-              color="white"
-              backgroundColor="#2DBA4F"
-              fontSize="18px"
-              fontWeight="500"
-            />
-          </form>
+
+          {/* Formulários separados - Renderização condicional */}
+          <div ref={editorRef}>
+            {editingAnswer ? (
+              // FORMULÁRIO DE EDIÇÃO
+              <form className="answerForm" onSubmit={handleUpdateAnswer}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <h1>Editar Resposta</h1>
+                  <button
+                    type="button"
+                    onClick={handleCancelEdit}
+                    style={{
+                      padding: "8px 16px",
+                      background: "#f5f5f5",
+                      border: "1px solid #ccc",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Cancelar
+                  </button>
+                </div>
+                <div className="editor-wrapper">
+                  <TextEditor
+                    onChange={setEditedAnswerBody}
+                    value={editedAnswerBody}
+                  />
+                </div>
+                <CustomButton
+                  type="submit"
+                  text={
+                    isUpdatingAnswer ? "Atualizando..." : "Atualizar Resposta"
+                  }
+                  padding="10px 24px"
+                  color="white"
+                  backgroundColor="#2DBA4F"
+                  fontSize="18px"
+                  fontWeight="500"
+                  disabled={isUpdatingAnswer}
+                  children={isUpdatingAnswer ? <ClipLoader /> : ""}
+                />
+              </form>
+            ) : (
+              // FORMULÁRIO DE NOVA RESPOSTA
+              <form className="answerForm" onSubmit={handlePostNewAnswer}>
+                <h1>Responder</h1>
+                <div className="editor-wrapper">
+                  <TextEditor
+                    onChange={(val) => {
+                      setNewAnswer(val);
+                    }}
+                    value={newAnswer}
+                  />
+                </div>
+                <CustomButton
+                  type="submit"
+                  text={isPostingAnswer ? "Postando..." : "Poste sua resposta"}
+                  padding="10px 24px"
+                  color="white"
+                  backgroundColor="#2DBA4F"
+                  fontSize="18px"
+                  fontWeight="500"
+                  disabled={isPostingAnswer}
+                  children={isPostingAnswer ? <ClipLoader /> : ""}
+                />
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </div>
