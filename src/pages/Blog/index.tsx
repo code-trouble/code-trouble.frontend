@@ -23,7 +23,7 @@ export const Blog: React.FC = () => {
   } = useTagStore();
 
   const {
-    postList: articles,
+    articlesList: articles,
     isLoadingPosts: articlesLoading,
     error: articlesError,
     fetchAllPosts,

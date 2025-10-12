@@ -17,7 +17,7 @@ export const Questions: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showAllTopics, setShowAllTopics] = useState(false);
   const {
-    postList: questions,
+    questionsList: questions,
     isLoadingPosts,
     error,
     fetchAllPosts,

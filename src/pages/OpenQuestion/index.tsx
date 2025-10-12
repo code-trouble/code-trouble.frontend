@@ -144,18 +144,7 @@ export const OpenQuestion: React.FC = () => {
     }
   };
 
-  if (isLoadingPosts) return <OpenQuestionSkeleton />;
-
-  if (error || !question)
-    return (
-      <div className="open-question-container">
-        <div style={{ textAlign: "center", padding: "2rem" }}>
-          <button onClick={() => navigate("/questions")}>
-            Voltar para perguntas
-          </button>
-        </div>
-      </div>
-    );
+  if (error || !question || isLoadingPosts) return <OpenQuestionSkeleton />;
 
   const handleLikeClick = async (postId: number) => {
     try {

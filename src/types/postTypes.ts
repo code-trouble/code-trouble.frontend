@@ -50,7 +50,10 @@ export interface PostState {
   editingPostId: number | null;
   isLiking: boolean;
 
-  postList: Post[];
+  questionsList: Post[];
+  articlesList: Post[];
+  answersList: Post[];
+  userPosts: Post[];
   currentPost: Post | null;
   isLoadingPosts: boolean;
   isLoadingAnswer: boolean;
@@ -73,6 +76,10 @@ export interface PostState {
   deletePost: (id: number) => Promise<void>;
   fetchAllPosts: (filters?: PostFilters) => Promise<void>;
   fetchPostById: (id: string) => Promise<Post>;
+  fetchUserPosts: (
+    userId: number,
+    kind?: "article" | "question" | "answer",
+  ) => Promise<void>;
   toggleLike: (postId: number) => Promise<any>;
   loadPostForEdit: (post: Post) => void;
   isPostOwner: (post: Post, currentUserId?: number) => boolean;

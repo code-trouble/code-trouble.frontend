@@ -1,45 +1,82 @@
-import React, { forwardRef, useEffect, useLayoutEffect, useRef } from "react";
-import Quill from "quill"; // ✅ import Quill
+import React, {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
+import Quill from "quill";
 import "quill/dist/quill.snow.css";
-// Editor is an uncontrolled React component
+import { useImageUpload } from "../../hooks/useImageUpload";
+import { ClipLoader } from "react-spinners";
+
 const Editor = forwardRef(
-  ({ readOnly, defaultValue, onTextChange, onSelectionChange }, ref) => {
+  (
+    {
+      readOnly,
+      defaultValue,
+      onTextChange,
+      onSelectionChange,
+      toolbarId,
+      editorId,
+      onFocus,
+    },
+    ref,
+  ) => {
     const containerRef = useRef(null);
+    const quillInstanceRef = useRef(null);
     const defaultValueRef = useRef(defaultValue);
     const onTextChangeRef = useRef(onTextChange);
     const onSelectionChangeRef = useRef(onSelectionChange);
+    const { uploadFile } = useImageUpload();
+    const uploadFileRef = useRef(uploadFile);
+    const [uploading, setUploading] = useState(false);
+
+    // Use useId or generate a unique ID if not provided
+    const uniqueId = useRef(
+      editorId || `editor-${Math.random().toString(36).substr(2, 9)}`,
+    );
 
     useLayoutEffect(() => {
       onTextChangeRef.current = onTextChange;
       onSelectionChangeRef.current = onSelectionChange;
-    });
+      uploadFileRef.current = uploadFile;
+    }, [onTextChange, onSelectionChange, uploadFile]);
 
     useEffect(() => {
-      ref.current?.enable(!readOnly);
+      if (ref.current) {
+        ref.current.enable(!readOnly);
+      }
     }, [ref, readOnly]);
 
-    useEffect(() => {
+    // Initialize Quill editor
+    const initializeQuill = useCallback(() => {
       const container = containerRef.current;
-      const editorContainer = container.appendChild(
-        container.ownerDocument.createElement("div"),
-      );
-      const quill = new Quill(editorContainer, {
+      if (!container) return;
+
+      // Clear any existing content
+      container.innerHTML = "";
+
+      const editorContainer = document.createElement("div");
+      editorContainer.id = uniqueId.current;
+      container.appendChild(editorContainer);
+
+      const quill = new Quill(`#${uniqueId.current}`, {
         theme: "snow",
         modules: {
-          toolbar: [
-            // Group 1: Basic text formatting
-            ["bold", "italic", "underline", "strike"],
-
-            // Group 2: Blocks and lists
-            ["code-block", { list: "bullet" }, { list: "ordered" }],
-
-            // Group 3: Embeds
-            ["image", "video", "link"],
-          ],
+          toolbar: toolbarId
+            ? `#${toolbarId}`
+            : [
+                ["bold", "italic", "underline", "strike"],
+                ["code-block", { list: "bullet" }, { list: "ordered" }],
+                ["image", "video", "link"],
+              ],
         },
         placeholder: "Escreva seu texto",
       });
 
+      quillInstanceRef.current = quill;
       ref.current = quill;
 
       if (defaultValueRef.current) {
@@ -54,13 +91,116 @@ const Editor = forwardRef(
         onSelectionChangeRef.current?.(...args);
       });
 
-      return () => {
-        ref.current = null;
-        container.innerHTML = "";
+      const handleFocus = () => {
+        onFocus?.(quill);
       };
-    }, [ref]);
+      quill.root.addEventListener("focus", handleFocus);
 
-    return <div style={{ height: "100%" }} ref={containerRef}></div>;
+      // Image handler
+      const toolbar = quill.getModule("toolbar");
+      toolbar.addHandler("image", async () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.click();
+        input.onchange = async () => {
+          const file = input.files?.[0];
+          if (!file) return;
+          const range = quill.getSelection(true);
+          setUploading(true);
+          try {
+            const url = await uploadFileRef.current(file, "tmp-post-images");
+            quill.insertEmbed(range.index, "image", url, "user");
+            quill.setSelection(range.index + 1);
+          } finally {
+            setUploading(false);
+          }
+        };
+      });
+
+      // Paste handler
+      const handlePaste = async (e) => {
+        const items = e.clipboardData?.items;
+        if (!items) return;
+        for (const item of items) {
+          if (item.type.startsWith("image/")) {
+            e.preventDefault();
+            const file = item.getAsFile();
+            if (!file) return;
+            const range = quill.getSelection(true);
+            setUploading(true);
+            try {
+              const url = await uploadFileRef.current(file, "tmp-post-images");
+              quill.insertEmbed(range.index, "image", url, "user");
+              quill.setSelection(range.index + 1);
+            } finally {
+              setUploading(false);
+            }
+            return;
+          }
+        }
+      };
+
+      quill.root.addEventListener("paste", handlePaste);
+
+      return () => {
+        quill.root.removeEventListener("paste", handlePaste);
+        quill.root.removeEventListener("focus", handleFocus);
+        quill.off(Quill.events.TEXT_CHANGE);
+        quill.off(Quill.events.SELECTION_CHANGE);
+      };
+    }, [ref, toolbarId, onFocus]);
+
+    useEffect(() => {
+      const cleanup = initializeQuill();
+
+      return () => {
+        if (cleanup) cleanup();
+
+        // Properly destroy Quill instance
+        if (quillInstanceRef.current) {
+          const quill = quillInstanceRef.current;
+          quill.off(Quill.events.TEXT_CHANGE);
+          quill.off(Quill.events.SELECTION_CHANGE);
+
+          // Remove Quill elements
+          const container = containerRef.current;
+          if (container) {
+            const quillElements = container.querySelectorAll(
+              ".ql-container, .ql-toolbar",
+            );
+            quillElements.forEach((element) => {
+              if (element.parentNode === container) {
+                container.removeChild(element);
+              }
+            });
+          }
+
+          quillInstanceRef.current = null;
+          ref.current = null;
+        }
+      };
+    }, [initializeQuill, ref]);
+
+    return (
+      <div style={{ height: "100%", position: "relative" }} ref={containerRef}>
+        {uploading && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "rgba(255,255,255,0.6)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 10,
+            }}
+          >
+            <ClipLoader size={50} color="#36d7b7" />
+          </div>
+        )}
+      </div>
+    );
   },
 );
 
