@@ -2,87 +2,76 @@ import React, { useState, useRef } from "react";
 import {
   imgUploadIcon,
   pfpAddIcon,
-  pfpPageBanner, // Placeholder
-  fulanoPfp, // Placeholder
+  pfpPageBanner,
+  fulanoPfp,
 } from "../../assets/images/png";
 import { useUserStore } from "../../stores/userStore";
-import { toast } from "sonner";
-import { api } from "../../services/api";
-import axios from "axios";
-
-interface SignatureResponse {
-  timestamp: number;
-  signature: string;
-  folder: string;
-  api_key: string;
-  cloud_name: string;
-}
+import { useImageUpload } from "../../hooks/useImageUpload";
 
 export const ProfileImages: React.FC = () => {
   const { currentUser, updateProfile } = useUserStore();
 
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState<"banner" | "avatar" | null>(
-    null,
-  );
+  const [uploadingType, setUploadingType] = useState<
+    "banner" | "avatar" | null
+  >(null);
 
   const bannerInputRef = useRef<HTMLInputElement>(null);
   const pfpInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileUpload = async (
-    file: File,
-    folder: "user-banners" | "user-pfps",
+  // Use the generic hook for banner
+  const bannerUpload = useImageUpload({
+    onSuccess: async (url) => {
+      await updateProfile({ banner_url: url });
+      setBannerPreview(null);
+    },
+    showToast: true,
+  });
+
+  // Use the generic hook for avatar
+  const avatarUpload = useImageUpload({
+    onSuccess: async (url) => {
+      await updateProfile({ avatar_url: url });
+      setAvatarPreview(null);
+    },
+    showToast: true,
+  });
+
+  const handleBannerChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const uploadType = folder === "user-banners" ? "banner" : "avatar";
-    setIsUploading(uploadType);
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setBannerPreview(URL.createObjectURL(file));
+    setUploadingType("banner");
 
     try {
-      const { data: signData } = await api.post<SignatureResponse>(
-        "/cloudinary/sign-upload",
-        { folder },
-      );
-
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("api_key", signData.api_key);
-      formData.append("timestamp", String(signData.timestamp));
-      formData.append("signature", signData.signature);
-      formData.append("folder", signData.folder);
-
-      const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${signData.cloud_name}/image/upload`;
-      const cloudinaryResponse = await axios.post(cloudinaryUrl, formData);
-      const secureUrl = cloudinaryResponse.data.secure_url;
-
-      const fieldToUpdate =
-        uploadType === "banner"
-          ? { banner_url: secureUrl }
-          : { avatar_url: secureUrl };
-      await updateProfile(fieldToUpdate);
-
-      toast.success(
-        `${uploadType === "banner" ? "Banner" : "Foto de perfil"} atualizada com sucesso!`,
-      );
+      await bannerUpload.uploadFile(file, "user-banners");
     } catch (error) {
-      toast.error(`Falha no upload da imagem.`);
       console.error(error);
     } finally {
-      setIsUploading(null);
+      setUploadingType(null);
     }
   };
 
-  const handleBannerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePfpChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    setBannerPreview(URL.createObjectURL(file));
-    handleFileUpload(file, "user-banners");
-  };
 
-  const handlePfpChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
     setAvatarPreview(URL.createObjectURL(file));
-    handleFileUpload(file, "user-pfps");
+    setUploadingType("avatar");
+
+    try {
+      await avatarUpload.uploadFile(file, "user-pfps");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setUploadingType(null);
+    }
   };
 
   const displayBanner =
@@ -113,8 +102,10 @@ export const ProfileImages: React.FC = () => {
       >
         <img src={displayBanner} alt="Banner do usuário" className="banner" />
         <img src={imgUploadIcon} alt="Ícone de upload" className="uploadIcon" />
-        {isUploading === "banner" && (
-          <div className="spinner-overlay">Enviando...</div>
+        {uploadingType === "banner" && (
+          <div className="spinner-overlay">
+            Enviando... {bannerUpload.uploadProgress}%
+          </div>
         )}
       </div>
 
@@ -132,8 +123,10 @@ export const ProfileImages: React.FC = () => {
             className="pfp-add-icon"
           />
         </button>
-        {isUploading === "avatar" && (
-          <div className="spinner-overlay-pfp">Enviando...</div>
+        {uploadingType === "avatar" && (
+          <div className="spinner-overlay-pfp">
+            Enviando... {avatarUpload.uploadProgress}%
+          </div>
         )}
       </div>
     </div>
