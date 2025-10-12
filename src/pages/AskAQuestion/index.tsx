@@ -5,6 +5,7 @@ import correa from "../../assets/images/svg/mascote sp 1.svg";
 import { TagSelector } from "../../components/TagSelector";
 import { usePostStore } from "../../stores/postStore";
 import { TextEditor } from "../../components/Editor";
+import { useImageUpload } from "../../hooks/useImageUpload";
 
 export const AskAQuestion: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +23,8 @@ export const AskAQuestion: React.FC = () => {
     title: storeTitle,
     body: storeBody,
   } = usePostStore();
+
+  const { moveTmpImagesInDeltas } = useImageUpload();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState({});
@@ -58,6 +61,8 @@ export const AskAQuestion: React.FC = () => {
     };
 
     try {
+      await moveTmpImagesInDeltas({ deltas: [description, details] });
+
       let result;
       if (isEditMode && editingPostId) {
         result = await updatePost(editingPostId, {
