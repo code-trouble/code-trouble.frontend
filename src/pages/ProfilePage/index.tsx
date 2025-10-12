@@ -35,7 +35,7 @@ export const ProfilePage: React.FC = () => {
   const [isTagsPopupOpen, setIsTagsPopupOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [filtro, setFiltro] = useState<PostKindFilter>("");
-  const { postList, fetchAllPosts, isLoadingPosts, clearPosts } =
+  const { userPosts, fetchUserPosts, isLoadingPosts, clearPosts } =
     usePostStore();
 
   const isOwnProfile = currentUser?.username === username;
@@ -83,12 +83,10 @@ export const ProfilePage: React.FC = () => {
   }, [clearProfileUser]);
 
   useEffect(() => {
-    // Só executa a busca se displayUser e seu ID existirem
-    if (displayUser?.id) {
-      const kind = filtro === "" ? undefined : filtro;
-      fetchAllPosts({ author_id: displayUser.id, kind: kind });
-    }
-  }, [filtro, displayUser, fetchAllPosts]);
+    if (!displayUser?.id) return;
+    const kind = filtro === "" ? undefined : filtro;
+    fetchUserPosts(displayUser.id, kind);
+  }, [filtro, displayUser?.id, fetchUserPosts]);
 
   const getPostDescription = (body: any): string => {
     if (body?.content?.ops) {
@@ -103,7 +101,7 @@ export const ProfilePage: React.FC = () => {
     return "Sem descrição disponível";
   };
 
-  const displayedPosts = postList.filter((post) => post.kind !== "answer");
+  const displayedPosts = userPosts.filter((post) => post.kind !== "answer");
 
   if (!username) {
     return <div>URL inválida</div>;
@@ -279,7 +277,7 @@ export const ProfilePage: React.FC = () => {
           <div className="posts-display">
             {isLoadingPosts ? (
               <ClipLoader color="#15181B" size={50} />
-            ) : postList.length > 0 ? (
+            ) : userPosts.length > 0 ? (
               displayedPosts.map((post) =>
                 post.kind === "question" ? (
                   <PostPreview

@@ -73,7 +73,6 @@ export const Onboarding = () => {
           ([_, value]) => value !== "" && value !== null && value !== undefined,
         ),
       );
-      console.log(interestsArray);
 
       const promises = [updateProfile(cleanProfileData)];
       if (interestsArray.length >= 1) {
