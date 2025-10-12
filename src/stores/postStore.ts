@@ -18,7 +18,10 @@ const initialCreationState = {
 
 export const usePostStore = create<PostState>((set, get) => ({
   ...initialCreationState,
-  postList: [],
+  questionsList: [],
+  articlesList: [],
+  answersList: [],
+  userPosts: [],
   currentPost: null,
   isLoadingPosts: true,
   pagination: null,
@@ -28,7 +31,13 @@ export const usePostStore = create<PostState>((set, get) => ({
   setBody: (body) => set({ body }),
   setKind: (kind) => set({ kind }),
   reset: () => set({ ...initialCreationState }),
-  clearPosts: () => set({ postList: [], currentPost: null }),
+  clearPosts: () =>
+    set({
+      questionsList: [],
+      articlesList: [],
+      answersList: [],
+      currentPost: null,
+    }),
 
   createPost: async (overrides?: {
     kind?: "question" | "article" | "answer";
@@ -76,21 +85,44 @@ export const usePostStore = create<PostState>((set, get) => ({
       const response = await api.put(`/posts/${id}`, data);
       const updatedPost = response.data;
 
-      set((state) => ({
-        postList: state.postList.map((p) => (p.id === id ? updatedPost : p)),
-        currentPost:
-          state.currentPost?.id === id ? updatedPost : state.currentPost,
-        ...(state.currentPost?.answers && {
-          currentPost: {
+      set((state) => {
+        const updates: any = {
+          [loadingKey]: false,
+          success: true,
+        };
+
+        // Update in the appropriate list
+        if (updatedPost.kind === "question") {
+          updates.questionsList = state.questionsList.map((p) =>
+            p.id === id ? updatedPost : p,
+          );
+        } else if (updatedPost.kind === "article") {
+          updates.articlesList = state.articlesList.map((p) =>
+            p.id === id ? updatedPost : p,
+          );
+        } else if (updatedPost.kind === "answer") {
+          updates.answersList = state.answersList.map((p) =>
+            p.id === id ? updatedPost : p,
+          );
+        }
+
+        // Update currentPost if it's the same
+        if (state.currentPost?.id === id) {
+          updates.currentPost = updatedPost;
+        }
+
+        // Update answer in currentPost's answers array if applicable
+        if (state.currentPost?.answers) {
+          updates.currentPost = {
             ...state.currentPost,
             answers: state.currentPost.answers.map((a) =>
               a.id === id ? updatedPost : a,
             ),
-          },
-        }),
-        [loadingKey]: false,
-        success: true,
-      }));
+          };
+        }
+
+        return updates;
+      });
 
       return updatedPost;
     } catch (err: any) {
@@ -108,7 +140,9 @@ export const usePostStore = create<PostState>((set, get) => ({
       await api.delete(`/posts/${id}`);
 
       set((state) => ({
-        postList: state.postList.filter((p) => p.id !== id),
+        questionsList: state.questionsList.filter((p) => p.id !== id),
+        articlesList: state.articlesList.filter((p) => p.id !== id),
+        answersList: state.answersList.filter((p) => p.id !== id),
         currentPost: state.currentPost?.id === id ? null : state.currentPost,
         ...(state.currentPost?.answers && {
           currentPost: {
@@ -128,6 +162,7 @@ export const usePostStore = create<PostState>((set, get) => ({
 
   fetchAllPosts: async (filters?: PostFilters) => {
     set({ isLoadingPosts: true, error: null });
+
     try {
       const params = new URLSearchParams();
       if (filters?.kind) params.append("kind", filters.kind);
@@ -139,11 +174,25 @@ export const usePostStore = create<PostState>((set, get) => ({
         params.append("parent_id", filters.parent_id.toString());
 
       const response = await api.get(`/posts?${params.toString()}`);
-      set({
-        postList: response.data.data,
+
+      // Determine which list to update based on kind filter
+      const updates: any = {
         pagination: response.data.pagination,
         isLoadingPosts: false,
-      });
+      };
+
+      if (filters?.kind === "question") {
+        updates.questionsList = response.data.data;
+      } else if (filters?.kind === "article") {
+        updates.articlesList = response.data.data;
+      } else if (filters?.kind === "answer") {
+        updates.answersList = response.data.data;
+      } else {
+        // No kind specified - default to questions
+        updates.questionsList = response.data.data;
+      }
+
+      set(updates);
     } catch (err: any) {
       const message = err.response?.data?.message || "Erro ao buscar posts";
       set({ isLoadingPosts: false, error: message });
@@ -173,6 +222,32 @@ export const usePostStore = create<PostState>((set, get) => ({
     }
   },
 
+  fetchUserPosts: async (
+    userId: number,
+    kind?: "article" | "question" | "answer",
+  ) => {
+    set({ isLoadingPosts: true, error: null });
+
+    try {
+      const params: Record<string, any> = { author_id: userId };
+      if (kind) params.kind = kind;
+
+      const response = await api.get("/posts", { params });
+
+      set({
+        userPosts: response.data.data,
+        isLoadingPosts: false,
+        pagination: response.data.pagination || null,
+      });
+    } catch (err: any) {
+      const message =
+        err.response?.data?.message || "Erro ao buscar posts do usuário";
+      console.error("Erro ao buscar posts do usuário:", err);
+      set({ isLoadingPosts: false, error: message });
+      throw err;
+    }
+  },
+
   toggleLike: async (postId: number) => {
     if (get().isLiking) return;
 
@@ -181,21 +256,26 @@ export const usePostStore = create<PostState>((set, get) => ({
       const response = await api.post(`/posts/${postId}/like`);
       const { liked, likeCount } = response.data;
 
-      set((state) => ({
-        postList: state.postList.map((post) =>
+      set((state) => {
+        const updatePost = (post: Post) =>
           post.id === postId
             ? { ...post, likeCount: likeCount, isLikedByUser: liked }
-            : post,
-        ),
-        currentPost:
-          state.currentPost?.id === postId
-            ? {
-                ...state.currentPost,
-                likeCount: likeCount,
-                isLikedByUser: liked,
-              }
-            : state.currentPost,
-      }));
+            : post;
+
+        return {
+          questionsList: state.questionsList.map(updatePost),
+          articlesList: state.articlesList.map(updatePost),
+          answersList: state.answersList.map(updatePost),
+          currentPost:
+            state.currentPost?.id === postId
+              ? {
+                  ...state.currentPost,
+                  likeCount: likeCount,
+                  isLikedByUser: liked,
+                }
+              : state.currentPost,
+        };
+      });
 
       return response.data;
     } catch (err: any) {
