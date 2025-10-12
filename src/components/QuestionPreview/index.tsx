@@ -5,6 +5,7 @@ import { formatDate } from "../../utils/formatDate";
 import { TagSearcher } from "../TagSearcher";
 import { Post } from "../../types/postTypes";
 import { GreenComments, GreenUpvote } from "../../assets/images/svg";
+import { useQuillToHtml } from "../../hooks/useDeltaToHtml";
 
 interface IQuestionsPreview {
   question: Post;
@@ -21,8 +22,8 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   useDisableTabInside(containerRef);
-
-  const descriptionHtml = question.body.description?.ops?.[0]?.insert || "";
+  const { convertDescription } = useQuillToHtml();
+  const descriptionHtml = convertDescription(question.body);
 
   const handleAvatarClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -46,8 +47,10 @@ export const QuestionsPreview: React.FC<IQuestionsPreview> = ({
           overflow: "hidden",
           textOverflow: "ellipsis",
         }}
-        dangerouslySetInnerHTML={{ __html: descriptionHtml }}
-      />
+      >
+        {descriptionHtml}
+      </div>
+
       <div className="previewQuestion-bottom">
         <div
           className="previewQuestion-avatar-area"
