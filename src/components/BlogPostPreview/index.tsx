@@ -12,6 +12,7 @@ interface IBlogPostPreview {
   blogPostTitle: string;
   blogPostDescription: string;
   image?: boolean;
+  onClick?: () => void;
 }
 
 export const BlogPostPreview: React.FC<IBlogPostPreview> = ({
@@ -19,9 +20,10 @@ export const BlogPostPreview: React.FC<IBlogPostPreview> = ({
   blogPostTitle,
   blogPostDescription,
   image,
+  onClick,
 }) => {
   return (
-    <div className="outer-post-wrapper">
+    <div className="outer-post-wrapper" onClick={onClick}>
       <div className="post-wrapper">
         <div className="post-content">
           <Avatar
