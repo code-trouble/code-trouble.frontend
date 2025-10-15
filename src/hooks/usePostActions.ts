@@ -34,6 +34,7 @@ export const usePostActions = () => {
   const handleEdit = (post: Post, editPath?: string) => {
     loadPostForEdit(post);
 
+    // Determine the correct edit path based on post kind
     const path =
       editPath ||
       (post.kind === "question" ? "/ask-a-question" : "/write-a-post");

@@ -14,6 +14,7 @@ import { Onboarding } from "../pages/Onboarding";
 import { ProfilePage } from "../pages/ProfilePage";
 import { PassResetHandler } from "../pages/PassResetHandler";
 import { ProtectedRoute } from "./guards/authGuard";
+import { OpenArticle } from "../pages/OpenArticle";
 
 const protect = (element: React.ReactNode) => (
   <ProtectedRoute>{element}</ProtectedRoute>
@@ -36,6 +37,7 @@ export const AppRoutes = () => {
       <Route element={<BlogLayout />}>
         <Route path="/write-a-post" element={protect(<WriteAPost />)} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<OpenArticle />} />
       </Route>
 
       <Route path="coming-soon" element={<ComingSoonPage />} />

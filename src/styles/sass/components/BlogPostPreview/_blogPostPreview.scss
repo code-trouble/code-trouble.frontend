@@ -1,6 +1,7 @@
 @use "../../base/variables" as *;
 
 .outer-post-wrapper {
+  cursor: pointer;
   .blog-post-mobile-footer {
     display: none;
   }

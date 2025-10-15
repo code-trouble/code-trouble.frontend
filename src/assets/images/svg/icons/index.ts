@@ -10,3 +10,5 @@ export { default as dribbleSocial } from "./dribbbleSocial.svg";
 export { default as linkedinSocial } from "./linkedinSocial.svg";
 export { default as githubSocial } from "./githubSocial.svg";
 export { default as behanceSocial } from "./behanceSocial.svg";
+export { default as blueHeart } from "./blueHeart.svg";
+export { default as blueComment } from "./blueComment.svg";

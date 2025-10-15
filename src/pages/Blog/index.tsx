@@ -83,7 +83,7 @@ export const Blog: React.FC = () => {
     console.log("Tag clicked:", tagName);
   };
 
-  if (articlesLoading) {
+  if (articlesLoading || displayedPosts.length < 0) {
     return <QuestionsSkeleton />;
   }
 
@@ -140,10 +140,13 @@ export const Blog: React.FC = () => {
                         blogPostDescription={getArticleDescription(
                           article.body,
                         )}
+                        //                        onClick={() => navigateTo(`/blog/${article.id}`)}
+                        onClick={() => navigateTo(`/blog/${article.id}`)}
                         image={hasImage(article.body)}
                       />
                     ))
                   ) : (
+                    //this shouldnt ever happen. the skeleton will remain while displayed posts < 0 leaving it here just in case
                     <div style={{ padding: "2rem", textAlign: "center" }}>
                       Nenhum artigo encontrado.
                     </div>
