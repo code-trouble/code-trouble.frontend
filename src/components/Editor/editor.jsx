@@ -3,8 +3,8 @@ import React, {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
   useCallback,
+  useState,
 } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
@@ -33,7 +33,6 @@ const Editor = forwardRef(
     const uploadFileRef = useRef(uploadFile);
     const [uploading, setUploading] = useState(false);
 
-    // Use useId or generate a unique ID if not provided
     const uniqueId = useRef(
       editorId || `editor-${Math.random().toString(36).substr(2, 9)}`,
     );
@@ -50,12 +49,10 @@ const Editor = forwardRef(
       }
     }, [ref, readOnly]);
 
-    // Initialize Quill editor
     const initializeQuill = useCallback(() => {
       const container = containerRef.current;
       if (!container) return;
 
-      // Clear any existing content
       container.innerHTML = "";
 
       const editorContainer = document.createElement("div");
@@ -72,6 +69,11 @@ const Editor = forwardRef(
                 ["code-block", { list: "bullet" }, { list: "ordered" }],
                 ["image", "video", "link"],
               ],
+          clipboard: toolbarId
+            ? {
+                matchVisual: false,
+              }
+            : undefined,
         },
         placeholder: "Escreva seu texto",
       });
@@ -80,7 +82,7 @@ const Editor = forwardRef(
       ref.current = quill;
 
       if (defaultValueRef.current) {
-        quill.setContents(defaultValueRef.current);
+        quill.setContents(defaultValueRef.current, "silent");
       }
 
       quill.on(Quill.events.TEXT_CHANGE, (...args) => {
@@ -96,25 +98,43 @@ const Editor = forwardRef(
       };
       quill.root.addEventListener("focus", handleFocus);
 
-      // Image handler
       const toolbar = quill.getModule("toolbar");
-      toolbar.addHandler("image", async () => {
+
+      toolbar.addHandler("image", () => {
         const input = document.createElement("input");
         input.type = "file";
         input.accept = "image/*";
         input.click();
-        input.onchange = async () => {
+        input.onchange = () => {
           const file = input.files?.[0];
           if (!file) return;
-          const range = quill.getSelection(true);
-          setUploading(true);
-          try {
-            const url = await uploadFileRef.current(file, "tmp-post-images");
-            quill.insertEmbed(range.index, "image", url, "user");
-            quill.setSelection(range.index + 1);
-          } finally {
-            setUploading(false);
-          }
+
+          setTimeout(async () => {
+            quill.focus();
+
+            let range = quill.getSelection(true);
+            if (!range) {
+              const length = quill.getLength();
+              quill.setSelection(length, 0, "silent");
+              range = quill.getSelection(true);
+            }
+
+            if (!range) {
+              console.error("Failed to get valid selection range");
+              return;
+            }
+
+            setUploading(true);
+            try {
+              const url = await uploadFileRef.current(file, "tmp-post-images");
+              quill.insertEmbed(range.index, "image", url, "user");
+              quill.setSelection(range.index + 1, 0, "user");
+            } catch (error) {
+              console.error("Image upload failed:", error);
+            } finally {
+              setUploading(false);
+            }
+          }, 100);
         };
       });
 
@@ -125,14 +145,32 @@ const Editor = forwardRef(
         for (const item of items) {
           if (item.type.startsWith("image/")) {
             e.preventDefault();
+            e.stopImmediatePropagation();
+
             const file = item.getAsFile();
             if (!file) return;
-            const range = quill.getSelection(true);
+
+            quill.focus();
+
+            let range = quill.getSelection(true);
+            if (!range) {
+              const length = quill.getLength();
+              quill.setSelection(length, 0, "silent");
+              range = quill.getSelection(true);
+            }
+
+            if (!range) {
+              console.error("Failed to get valid selection range on paste");
+              return;
+            }
+
             setUploading(true);
             try {
               const url = await uploadFileRef.current(file, "tmp-post-images");
               quill.insertEmbed(range.index, "image", url, "user");
-              quill.setSelection(range.index + 1);
+              quill.setSelection(range.index + 1, 0, "user");
+            } catch (error) {
+              console.error("Image upload failed on paste:", error);
             } finally {
               setUploading(false);
             }
@@ -157,13 +195,11 @@ const Editor = forwardRef(
       return () => {
         if (cleanup) cleanup();
 
-        // Properly destroy Quill instance
         if (quillInstanceRef.current) {
           const quill = quillInstanceRef.current;
           quill.off(Quill.events.TEXT_CHANGE);
           quill.off(Quill.events.SELECTION_CHANGE);
 
-          // Remove Quill elements
           const container = containerRef.current;
           if (container) {
             const quillElements = container.querySelectorAll(
@@ -174,6 +210,10 @@ const Editor = forwardRef(
                 container.removeChild(element);
               }
             });
+          }
+
+          if (document.getSelection) {
+            document.getSelection().removeAllRanges();
           }
 
           quillInstanceRef.current = null;

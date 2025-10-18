@@ -14,6 +14,7 @@ declare type EditorProps = {
     oldRange: Quill.RangeStatic | null,
     source: string,
   ) => void;
+  toolbarId?: string;
 };
 
 declare const Editor: React.ForwardRefExoticComponent<
