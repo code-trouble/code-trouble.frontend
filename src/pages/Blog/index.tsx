@@ -91,14 +91,14 @@ export const Blog: React.FC = () => {
     return "Sem descrição disponível";
   };
 
-  const hasImage = (body: any): boolean => {
-    if (body?.content?.ops) {
-      return body.content.ops.some(
-        (op: any) => typeof op.insert === "object" && op.insert?.image,
-      );
-    }
-    return false;
-  };
+  // const hasImage = (body: any): boolean => {
+  //   if (body?.content?.ops) {
+  //     return body.content.ops.some(
+  //       (op: any) => typeof op.insert === "object" && op.insert?.image,
+  //     );
+  //   }
+  //   return false;
+  // };
 
   const tagNames = displayedTags;
 
