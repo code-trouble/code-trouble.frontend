@@ -3,7 +3,7 @@ import React from "react";
 
 declare type EditorProps = {
   readOnly?: boolean;
-  defaultValue?: DeltaStatic; // matches what you pass in TextEditor
+  defaultValue?: DeltaStatic;
   onTextChange?: (
     delta: DeltaStatic,
     oldDelta: DeltaStatic,
@@ -15,10 +15,13 @@ declare type EditorProps = {
     source: string,
   ) => void;
   toolbarId?: string;
+  editorId?: string;
+  onFocus?: (editor: Quill) => void;
+  onPaste?: (event: Event, editor: Quill) => void;
 };
 
-declare const Editor: React.ForwardRefExoticComponent<
+declare const AEditor: React.ForwardRefExoticComponent<
   EditorProps & React.RefAttributes<Quill>
 >;
 
-export default Editor;
+export default AEditor;

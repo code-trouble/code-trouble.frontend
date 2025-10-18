@@ -3,7 +3,6 @@ import { Avatar } from "../Avatar";
 import comments from "../../assets/images/svg/icons/blueComment.svg";
 import heart from "../../assets/images/svg/icons/blueHeart.svg";
 import favorite from "../../assets/images/svg/icons/favoriteBlog.svg";
-import dogImage from "../../assets/images/png/dogImage.png";
 import { Post } from "../../types/postTypes";
 import { formatDate } from "../../utils/formatDate";
 
@@ -12,6 +11,7 @@ interface IBlogPostPreview {
   blogPostTitle: string;
   blogPostDescription: string;
   image?: boolean;
+  imgSrc?: string;
   onClick?: () => void;
 }
 
@@ -20,6 +20,7 @@ export const BlogPostPreview: React.FC<IBlogPostPreview> = ({
   blogPostTitle,
   blogPostDescription,
   image,
+  imgSrc,
   onClick,
 }) => {
   return (
@@ -51,18 +52,18 @@ export const BlogPostPreview: React.FC<IBlogPostPreview> = ({
         </div>
         {image && ( // Conditionally render the image container
           <div className="post-image">
-            <img src={dogImage} alt="Blog Post placeholder image" />
+            <img src={imgSrc} alt="Blog Post placeholder image" />
           </div>
         )}
       </div>
       <div className="blog-post-mobile-footer">
         <div className="main-footer">
-          <span>10 Nov, 2024</span>
+          <span>{formatDate(article.created_at)}</span>
           <p>
-            <img src={heart} alt="like icon" /> 120k
+            <img src={heart} alt="like icon" /> {article.likeCount}
           </p>
           <p>
-            <img src={comments} alt="comments icon" /> 302
+            <img src={comments} alt="comments icon" /> {article.commentCount}
           </p>
         </div>
         <div className="sub-footer">
