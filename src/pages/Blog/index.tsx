@@ -49,6 +49,29 @@ export const Blog: React.FC = () => {
     navigate(path);
   }
 
+  type QuillOp = {
+    insert?: string | { image?: string };
+  };
+
+  type ArticleBody = {
+    content?: { ops?: QuillOp[] };
+  };
+
+  const getFirstImage = (body: ArticleBody): string | null => {
+    const ops = body?.content?.ops || [];
+
+    const imageOp = ops.find((op) => {
+      // Só considera ops cujo insert seja um objeto com a propriedade image
+      return typeof op.insert === "object" && "image" in op.insert;
+    });
+
+    if (imageOp && typeof imageOp.insert === "object") {
+      return imageOp.insert.image || null;
+    }
+
+    return null;
+  };
+
   const TOPICS_LIMIT = 5;
   const displayedTags = showAllTopics
     ? tags.map((tag) => tag.name)
@@ -62,7 +85,7 @@ export const Blog: React.FC = () => {
           .map((op: any) => (typeof op.insert === "string" ? op.insert : ""))
           .join("")
           .trim()
-          .slice(0, 100) + (body.content.ops.join("").length > 100 ? "..." : "")
+          .slice(0, 100) + (body.content.ops.join("").length > 70 ? "..." : "")
       );
     }
     return "Sem descrição disponível";
@@ -132,21 +155,24 @@ export const Blog: React.FC = () => {
               <>
                 <div className="blog-list">
                   {displayedPosts.length > 0 ? (
-                    displayedPosts.map((article) => (
-                      <BlogPostPreview
-                        article={article}
-                        key={article.id}
-                        blogPostTitle={article.title || "untitled"}
-                        blogPostDescription={getArticleDescription(
-                          article.body,
-                        )}
-                        //                        onClick={() => navigateTo(`/blog/${article.id}`)}
-                        onClick={() => navigateTo(`/blog/${article.id}`)}
-                        image={hasImage(article.body)}
-                      />
-                    ))
+                    displayedPosts.map((article) => {
+                      const firstImage = getFirstImage(article.body);
+
+                      return (
+                        <BlogPostPreview
+                          article={article}
+                          key={article.id}
+                          blogPostTitle={article.title || "untitled"}
+                          blogPostDescription={getArticleDescription(
+                            article.body,
+                          )}
+                          onClick={() => navigateTo(`/blog/${article.id}`)}
+                          image={!!firstImage}
+                          imgSrc={firstImage || ""}
+                        />
+                      );
+                    })
                   ) : (
-                    //this shouldnt ever happen. the skeleton will remain while displayed posts < 0 leaving it here just in case
                     <div style={{ padding: "2rem", textAlign: "center" }}>
                       Nenhum artigo encontrado.
                     </div>

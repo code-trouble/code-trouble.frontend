@@ -2,17 +2,20 @@
 
 .open-article-wrapper {
   display: flex;
+  width: 100%;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   .open-article-content {
     max-width: 1052px;
+    display: flex;
+    flex-direction: column;
     .text-block {
       margin: 60px 0px;
       display: flex;
       flex-direction: column;
       gap: 20px;
-
       h1 {
         font-family: $montserratFont;
         font-size: 48px;
@@ -51,6 +54,7 @@
       .likes-and-actions {
         display: flex;
         justify-content: space-between;
+        margin-top: 50px;
         .likes-comments {
           display: flex;
           height: 24px;
@@ -74,6 +78,83 @@
         border-top: 1px solid black;
         border-bottom: 1px solid black;
         margin-bottom: 49px;
+      }
+    }
+
+    .delta-render-area {
+      .ql-editor {
+        padding: 0px !important;
+        font-size: 20px;
+        font-family: $hindFont;
+        color: $eerieBlack;
+        line-height: 160%;
+
+        img {
+          width: 100%;
+        }
+        li {
+          padding-left: 0px;
+        }
+
+        ul,
+        ol {
+          padding-left: 30px;
+        }
+
+        ul > li {
+          list-style-type: disc !important;
+        }
+
+        ol > li {
+          list-style-type: decimal !important;
+        }
+
+        .hljs {
+          padding: 10px;
+          border-radius: 8px;
+        }
+
+        &::before {
+          font-size: 16px;
+        }
+      }
+
+      .ql-container {
+        border: none;
+      }
+
+      .ql-toolbar {
+        display: flex;
+        justify-content: space-between;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+
+        .ql-formats {
+          display: flex;
+          flex: 1;
+          justify-content: space-between;
+          width: 100%;
+        }
+
+        button {
+          width: 50px;
+          height: 38px;
+        }
+
+        .ql-bold,
+        .ql-italic,
+        .ql-strike {
+          width: 70px;
+        }
+
+        .ql-underline {
+          width: 100px;
+        }
+
+        img {
+          width: 20px;
+          height: 15px;
+        }
       }
     }
   }
