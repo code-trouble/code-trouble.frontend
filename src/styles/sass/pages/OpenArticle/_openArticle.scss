@@ -88,7 +88,7 @@
         font-family: $hindFont;
         color: $eerieBlack;
         line-height: 160%;
-
+        margin-bottom: 100px;
         img {
           width: 100%;
         }
@@ -154,6 +154,105 @@
         img {
           width: 20px;
           height: 15px;
+        }
+      }
+    }
+  }
+
+  .open-article-extras {
+    background-color: #f7f7f7;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .extras-wrapper {
+      padding-top: 30px;
+      max-width: 1052px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 50px 0px;
+      .user-avatar {
+        img {
+          border-radius: 100%;
+        }
+      }
+
+      .user-information {
+        min-width: 1052px;
+        .escrito-por {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 18px;
+          h1 {
+            font-family: $loraItalicFont;
+            font-size: 32px;
+            color: $eerieBlack;
+            font-weight: 500;
+            font-style: italic;
+          }
+
+          button {
+            padding: 10px 24px;
+            font-size: 18px;
+            border: 2px solid #3347a4;
+            background-color: transparent;
+            color: #3347a4;
+            border-radius: 40px;
+            height: 49px;
+            font-weight: 550;
+            font-family: $hindFont;
+          }
+        }
+        span {
+          font-family: $hindFont;
+          font-size: 16px;
+          color: $dimGray;
+          display: block;
+          font-style: normal;
+          margin-bottom: 18px;
+        }
+
+        p {
+          font-family: $hindFont;
+          font-size: 16px;
+          color: $eerieBlack;
+          margin-bottom: 50px;
+        }
+      }
+
+      .artigo-author-info {
+        border-top: 1px solid $dimGray;
+        padding: 30px 0px 0px 0px;
+        .text-display {
+          padding: 20px 0px;
+          h1 {
+            font-family: $montserratFont;
+            font-size: 40px;
+            font-weight: 600;
+            color: $eerieBlack;
+            margin-bottom: 25px;
+          }
+          p {
+            font-family: $loraItalicFont;
+            font-style: italic;
+            font-size: 24px;
+            color: $eerieBlack;
+            display: flex;
+            gap: 5px;
+          }
+        }
+      }
+
+      .mais-artigos {
+        display: flex;
+        gap: 22px;
+        .more-articles-section {
+          .articles-list {
+            display: flex;
+            gap: 20px;
+          }
         }
       }
     }
