@@ -14,6 +14,7 @@ import "highlight.js/styles/github-dark.css";
 import "quill/dist/quill.snow.css";
 import { useUserStore } from "../../stores/userStore";
 import { usePostActions } from "../../hooks/usePostActions";
+import MoreArticlesSection from "../../components/MoreArticlesSection";
 
 export const OpenArticle: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -29,7 +30,13 @@ export const OpenArticle: React.FC = () => {
     isPostOwner,
   } = usePostStore();
 
-  const { currentUser } = useUserStore();
+  const {
+    currentUser,
+    profileUser,
+
+    fetchUserProfile,
+  } = useUserStore();
+
   const { handleDelete, handleEdit } = usePostActions();
 
   const convertDelta = (delta: any): string => {
@@ -59,6 +66,14 @@ export const OpenArticle: React.FC = () => {
       });
     }
   }, [article, isLoadingPosts]);
+
+  useEffect(() => {
+    if (article?.author?.username) {
+      fetchUserProfile(article.author.username);
+    }
+  }, [article?.author?.username]);
+
+  const postOwner = profileUser;
 
   const purifyConfig: PurifyConfig = {
     USE_PROFILES: { html: true },
@@ -190,7 +205,47 @@ export const OpenArticle: React.FC = () => {
         </div>
       </div>
 
-      <div className="open-article-extras"></div>
+      <div className="open-article-extras">
+        <div className="extras-wrapper">
+          <div className="user-avatar">
+            <img
+              src={article.author.avatar_url}
+              alt="foto de perfil do autor"
+            />
+          </div>
+          <div className="user-information">
+            <div className="escrito-por">
+              <h1>
+                Escrito por <strong>{article.author.display_name}</strong>{" "}
+              </h1>
+              <button>Seguir</button>
+            </div>
+            <span>{postOwner?._count?.followers} seguidores</span>
+
+            <p>{postOwner?.bio}</p>
+          </div>
+          <div className="artigo-author-info">
+            <div className="text-display">
+              <h1>Mais artigos de {article.author.display_name}</h1>
+              <p>
+                E outros com{" "}
+                {(article.body.tags as string[]).map((tag) => (
+                  <strong key={tag}>
+                    {" "}
+                    <span>{tag}</span>
+                  </strong>
+                ))}{" "}
+              </p>
+            </div>
+          </div>
+          <div className="mais-artigos">
+            <MoreArticlesSection
+              authorId={article.author_id}
+              currentArticleId={article.id}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

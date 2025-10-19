@@ -295,6 +295,7 @@ export const ProfilePage: React.FC = () => {
                     postTitle={post.title}
                     postDescription={getPostDescription(post.body)}
                     kind={post.kind}
+                    onClick={() => navigateTo(`/blog/${post.id}`)}
                   />
                 ),
               )

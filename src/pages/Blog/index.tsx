@@ -61,7 +61,6 @@ export const Blog: React.FC = () => {
     const ops = body?.content?.ops || [];
 
     const imageOp = ops.find((op) => {
-      // Só considera ops cujo insert seja um objeto com a propriedade image
       return typeof op.insert === "object" && "image" in op.insert;
     });
 
