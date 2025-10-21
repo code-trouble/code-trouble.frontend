@@ -1,3 +1,7 @@
+import { blueUpvote, logosArticleImg } from "../../assets/images/png";
+import { ThreeDotsMenu } from "../../assets/images/svg";
+import { blueComment } from "../../assets/images/svg/icons";
+
 interface IMoreArticlesPreview {
   imgSrc?: string;
   author?: string;
@@ -7,10 +11,10 @@ interface IMoreArticlesPreview {
   date?: string;
   title?: string;
   tags?: string;
+  onClick?: () => void;
 }
 
 const MoreArticlesPreview: React.FC<IMoreArticlesPreview> = ({
-  imgSrc,
   author,
   authorPfp,
   articleComments,
@@ -18,11 +22,14 @@ const MoreArticlesPreview: React.FC<IMoreArticlesPreview> = ({
   date,
   title,
   tags,
+  onClick,
 }) => {
   return (
-    <div className="more-article-card">
+    <div className="more-article-card" onClick={onClick}>
       <div className="card-image">
-        <img src={imgSrc} alt="" />
+        {/* <img src={imgSrc} alt="" /> */}
+
+        <img src={logosArticleImg} alt="" />
       </div>
 
       <div className="card-content">
@@ -36,12 +43,20 @@ const MoreArticlesPreview: React.FC<IMoreArticlesPreview> = ({
         <p className="article-tags">{tags}</p>
 
         <div className="card-footer">
-          <span className="article-date">{date}</span>
-          <div className="article-stats">
-            <span className="likes">▲ {articleLikes}</span>
-            <span className="comments">💬 {articleComments}</span>
+          <div className="left-footer-side">
+            <span className="article-date">{date}</span>
+            <div className="article-stats">
+              <span className="likes">
+                <img src={blueUpvote} alt="" /> {articleLikes}
+              </span>
+              <span className="comments">
+                <img src={blueComment} alt="" /> {articleComments}
+              </span>
+            </div>
           </div>
-          <button className="more-options">⋯</button>
+          <button className="more-options">
+            <img src={ThreeDotsMenu} alt="" />
+          </button>
         </div>
       </div>
     </div>

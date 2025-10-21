@@ -1,109 +1,58 @@
-import { useEffect, useState } from "react";
-import { api } from "../../services/api";
-import { useUserStore } from "../../stores/userStore";
+import { useEffect } from "react";
+import { usePostStore } from "../../stores/postStore";
 import MoreArticlesPreview from "../MoreArticlesPreview";
 import { formatDate } from "../../utils/formatDate";
-
-interface ArticleSummary {
-  id: number;
-  title: string;
-  description: string;
-  author: string;
-  authorPfp: string;
-  likeCount: number;
-  commentCount: number;
-  createdAt: string;
-  imgSrc: string;
-}
+import { useNavigate } from "react-router-dom";
 
 interface MoreArticlesSectionProps {
   currentArticleId: number;
   authorId: number;
 }
 
-// type QuillOp = {
-//   insert?: string | { image?: string };
-// };
-
-// type ArticleBody = {
-//   content?: { ops?: QuillOp[] };
-// };
-
-// const getFirstImage = (body: ArticleBody): string | null => {
-//   const ops = body?.content?.ops || [];
-
-//   const imageOp = ops.find((op) => {
-//     // Só considera ops cujo insert seja um objeto com a propriedade image
-//     return typeof op.insert === "object" && "image" in op.insert;
-//   });
-
-//   if (imageOp && typeof imageOp.insert === "object") {
-//     return imageOp.insert.image || null;
-//   }
-
-//   return null;
-// };
-
 const MoreArticlesSection: React.FC<MoreArticlesSectionProps> = ({
   currentArticleId,
   authorId,
 }) => {
-  const profileUser = useUserStore((state) => state.profileUser);
-  const [articles, setArticles] = useState<ArticleSummary[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { fetchUserPosts, userPosts, isLoadingPosts } = usePostStore();
+  const navigate = useNavigate();
+  function navigateTo(path: string) {
+    window.scrollTo(0, 0);
+    navigate(path);
+  }
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      setIsLoading(true);
-      try {
-        const response = await api.get("/posts", {
-          params: {
-            author_id: authorId,
-            kind: "article",
-          },
-        });
+    if (authorId) {
+      fetchUserPosts(authorId, "article");
+    }
+  }, [authorId, fetchUserPosts]);
 
-        const filtered = response.data.data
-          .filter((a: any) => a.id !== currentArticleId)
-          .slice(0, 2)
-          .map((a: any) => ({
-            id: a.id,
-            title: a.title,
-            description: a.body?.description || "",
-            author: profileUser?.display_name || "",
-            authorPfp: profileUser?.avatar_url || "",
-            likeCount: a.likeCount || 0,
-            commentCount: a.commentCount || 0,
-            createdAt: a.created_at,
-          }));
+  const filteredArticles = userPosts
+    .filter((article) => article.id !== currentArticleId)
+    .slice(0, 2);
 
-        setArticles(filtered);
-      } catch (error) {
-        console.error("Error fetching articles:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchArticles();
-  }, [authorId, currentArticleId, profileUser]);
-
-  if (isLoading) {
+  if (isLoadingPosts) {
     return <div>Loading...</div>;
+  }
+
+  if (filteredArticles.length === 0) {
+    return null;
   }
 
   return (
     <div className="more-articles-section">
       <div className="articles-list">
-        {articles.map((article) => (
+        {filteredArticles.map((article) => (
           <MoreArticlesPreview
-            imgSrc={article.imgSrc}
             key={article.id}
-            author={article.author}
-            authorPfp={article.authorPfp}
-            articleLikes={article.likeCount.toString()}
-            articleComments={article.commentCount.toString()}
-            date={formatDate(article.createdAt)}
+            title={article.title}
+            imgSrc={article.body?.coverImage} // Adjust based on your data structure
+            author={article.author?.display_name || article.author?.username}
+            authorPfp={article.author?.avatar_url}
+            articleLikes={article.likeCount?.toString() || "0"}
+            articleComments={article.commentCount?.toString() || "0"}
+            date={formatDate(article.created_at)}
+            tags={article.body?.tags?.join(", ") || ""} // Join tags if array
+            onClick={() => navigateTo(`/blog/${article.id}`)}
           />
         ))}
       </div>
