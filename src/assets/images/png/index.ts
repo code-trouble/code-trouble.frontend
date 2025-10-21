@@ -11,3 +11,5 @@ export { default as upvote } from "./upvote.png";
 export { default as fulanoPfp } from "./fulanoPfp.png";
 export { default as pfpAddIcon } from "./pfpAddIcon.png";
 export { default as imgUploadIcon } from "./imgUploadIcon.png";
+export { default as blueUpvote } from "./Play.png";
+export { default as logosArticleImg } from "./Logos 1.png";

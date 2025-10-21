@@ -15,9 +15,11 @@ import "quill/dist/quill.snow.css";
 import { useUserStore } from "../../stores/userStore";
 import { usePostActions } from "../../hooks/usePostActions";
 import MoreArticlesSection from "../../components/MoreArticlesSection";
+import { ClipLoader } from "react-spinners";
 
 export const OpenArticle: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [isLoadingArticle, setIsLoadingArticle] = useState(true); // Local state
 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -25,16 +27,20 @@ export const OpenArticle: React.FC = () => {
   const {
     fetchPostById,
     currentPost: article,
-    isLoadingPosts,
     error,
     isPostOwner,
+    toggleLike,
+    isLiking,
   } = usePostStore();
 
   const {
     currentUser,
     profileUser,
-
     fetchUserProfile,
+    isFollowingUser,
+    followUser,
+    unfollowUser,
+    isUpdatingFollowStatus,
   } = useUserStore();
 
   const { handleDelete, handleEdit } = usePostActions();
@@ -49,23 +55,28 @@ export const OpenArticle: React.FC = () => {
 
   const fetchPost = useCallback(async () => {
     if (id) {
-      await fetchPostById(id);
+      setIsLoadingArticle(true);
+      try {
+        await fetchPostById(id);
+      } finally {
+        setIsLoadingArticle(false);
+      }
     } else {
       navigate("/blog");
     }
-  }, [id, navigate]);
+  }, [id, navigate, fetchPostById]);
 
   useEffect(() => {
     fetchPost();
   }, [fetchPost]);
 
   useEffect(() => {
-    if (!isLoadingPosts && article) {
+    if (!isLoadingArticle && article) {
       document.querySelectorAll("pre").forEach((block) => {
         hljs.highlightElement(block as HTMLElement);
       });
     }
-  }, [article, isLoadingPosts]);
+  }, [article, isLoadingArticle]);
 
   useEffect(() => {
     if (article?.author?.username) {
@@ -75,17 +86,35 @@ export const OpenArticle: React.FC = () => {
 
   const postOwner = profileUser;
 
+  const authorId = article?.author?.id;
+  const isFollowing = authorId ? isFollowingUser(authorId) : false;
+  const isLoadingFollow = authorId ? isUpdatingFollowStatus(authorId) : false;
+
+  const handleFollow = () => {
+    if (!authorId) return;
+    isFollowing ? unfollowUser(authorId) : followUser(authorId);
+  };
+
   const purifyConfig: PurifyConfig = {
     USE_PROFILES: { html: true },
     ADD_TAGS: ["iframe"],
     ADD_ATTR: ["class", "src", "href", "alt", "target"],
   };
 
-  if (error || !article || isLoadingPosts) return <OpenQuestionSkeleton />;
+  if (error || !article || isLoadingArticle) return <OpenQuestionSkeleton />;
 
   const tags = article.body?.tags || [];
   const bodyHtml = convertDelta(article.body.content);
   const cleanBody = DOMPurify.sanitize(bodyHtml, purifyConfig);
+
+  const handleToggleLike = async () => {
+    if (!article || isLiking) return;
+    try {
+      await toggleLike(article.id);
+    } catch (err) {
+      console.error("Failed to toggle like:", err);
+    }
+  };
 
   return (
     <div className="open-article-wrapper">
@@ -104,17 +133,54 @@ export const OpenArticle: React.FC = () => {
             src={article.author?.avatar_url}
             onClick={() => navigate(`/${article.author?.username}`)}
           />
-          <button>Seguir</button>
+          {article.author.id !== currentUser?.id && (
+            <button
+              onClick={!isLoadingFollow ? handleFollow : undefined}
+              disabled={isLoadingFollow}
+            >
+              {isLoadingFollow ? (
+                <ClipLoader color="#2DBA4F" size={15} />
+              ) : isFollowing ? (
+                "Seguindo"
+              ) : (
+                "Seguir"
+              )}
+            </button>
+          )}{" "}
         </div>
 
         {/* Likes / favorites / tags */}
         <div className="post-details">
           <div className="likes-and-actions">
             <div className="likes-comments">
-              <p>
-                <img src={blueHeart} alt="likes" />
-                {article.likeCount || 0}
-              </p>
+              <button
+                onClick={handleToggleLike}
+                disabled={isLiking}
+                className="like-button"
+                style={{
+                  background: "none",
+                  border: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  cursor: isLiking ? "not-allowed" : "pointer",
+                }}
+              >
+                <img
+                  src={blueHeart}
+                  alt="likes"
+                  style={{
+                    filter: article.isLikedByUser
+                      ? "invert(39%) sepia(99%) saturate(500%) hue-rotate(320deg)"
+                      : "none",
+                    transform: article.isLikedByUser
+                      ? "scale(1.1)"
+                      : "scale(1)",
+                    transition: "transform 0.2s ease, filter 0.2s ease",
+                  }}
+                />
+                <span>{article.likeCount || 0}</span>
+              </button>
               <p>
                 <img src={blueComment} alt="comments" />
                 {article.commentCount || 0}
@@ -218,7 +284,20 @@ export const OpenArticle: React.FC = () => {
               <h1>
                 Escrito por <strong>{article.author.display_name}</strong>{" "}
               </h1>
-              <button>Seguir</button>
+              {article.author.id !== currentUser?.id && (
+                <button
+                  onClick={!isLoadingFollow ? handleFollow : undefined}
+                  disabled={isLoadingFollow}
+                >
+                  {isLoadingFollow ? (
+                    <ClipLoader color="#2DBA4F" size={15} />
+                  ) : isFollowing ? (
+                    "Seguindo"
+                  ) : (
+                    "Seguir"
+                  )}
+                </button>
+              )}{" "}
             </div>
             <span>{postOwner?._count?.followers} seguidores</span>
 
@@ -228,7 +307,7 @@ export const OpenArticle: React.FC = () => {
             <div className="text-display">
               <h1>Mais artigos de {article.author.display_name}</h1>
               <p>
-                E outros com{" "}
+                E outros com:{" "}
                 {(article.body.tags as string[]).map((tag) => (
                   <strong key={tag}>
                     {" "}
